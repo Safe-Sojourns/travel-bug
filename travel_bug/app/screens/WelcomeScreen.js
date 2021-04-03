@@ -8,13 +8,31 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   SafeAreaView,
+  Button,
+  Alert,
+  Dimensions,
 } from 'react-native';
 
 function WelcomeScreen(props) {
   const handlePress = () => console.log('Text pressed');
 
+  console.log(Dimensions.get('screen'));
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, containerStyle]}>
+      <View
+        style={{
+          backgroundColor: 'dodgerblue',
+          width: '100%',
+          height: '30%',
+        }}
+      />
+      <Button
+        title="First Click"
+        onPress={() => {
+          Alert.prompt('My title', 'My message', text => console.log(text));
+        }}
+      />
       <Text onPress={handlePress}>Hello From Gabe</Text>
       <TouchableHighlight
         onPress={() => {
@@ -28,9 +46,21 @@ function WelcomeScreen(props) {
           }}
         />
       </TouchableHighlight>
+      <Button
+        title="Click Me"
+        color="orange"
+        onPress={() => {
+          Alert.alert('My title', 'My message', [
+            {text: 'Yes', onPress: () => console.log('Yes')},
+            {text: 'No', onPress: () => console.log('No')},
+          ]);
+        }}
+      />
     </SafeAreaView>
   );
 }
+
+const containerStyle = {backgroundColor: 'grey'};
 
 const styles = StyleSheet.create({
   container: {
