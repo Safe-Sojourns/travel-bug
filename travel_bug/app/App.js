@@ -115,9 +115,7 @@ import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import WelcomeScreen from './screens/WelcomeScreen.js';
 
 function App(props) {
-  return (
-    <WelcomeScreen />
-  );
+  return <WelcomeScreen />;
 }
 
 export default App;
