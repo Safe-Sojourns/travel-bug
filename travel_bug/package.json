@@ -14,6 +14,9 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-native-fontawesome": "^0.2.6",
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
     "react": "17.0.1",
     "react-native": "0.64.0",
     "react-native-svg": "^12.1.0"
