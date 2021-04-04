@@ -19,6 +19,7 @@
     "react-native": "0.64.0",
     "react-native-calendar-picker": "^7.1.1",
     "react-native-cards": "^1.1.4",
+    "react-native-modal": "^11.7.0",
     "react-native-svg": "^12.1.0"
   },
   "devDependencies": {

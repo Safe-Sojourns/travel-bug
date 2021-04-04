@@ -12,6 +12,7 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import Footer from '../footer/Footer';
 
 function WelcomeScreen(props) {
   const handlePress = () => console.log('Text pressed');
@@ -56,6 +57,7 @@ function WelcomeScreen(props) {
           ]);
         }}
       />
+      <Footer />
     </SafeAreaView>
   );
 }
