@@ -1,39 +1,26 @@
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faClipboardList, faMapMarkedAlt, faExclamationTriangle, faCommentDots} from '@fortawesome/free-solid-svg-icons';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+// import WelcomeScreen from './screens/WelcomeScreen.js';
+import Itinerary from './screens/Itinerary.js';
+import MapView from './screens/MapView.js';
+import EmergencyPage from './screens/EmergencyPage.js';
+import Messages from './screens/Messages.js';
 
 const Stack = createStackNavigator();
-
-const Itinerary = () => {
-  return (
-    <Text>Itinerary Screen</Text>
-  );
-};
-
-const MapView = () => {
-  return (
-    <Text>Map Screen</Text>
-  );
-};
-
-const EmergencyPage = () => {
-  return (
-    <Text>Emergency Information Screen</Text>
-  );
-};
-
-const Messages = () => {
-  return (
-    <Text>Messages Screen</Text>
-  );
-};
 
 const Login = ({navigation}) => {
   return (
     <View accessible={true} style={styles.footerStyle}>
+      {/* <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('WelcomeScreen');
+        }}>
+        <Text>Welcome</Text>
+      </TouchableOpacity> */}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('Itinerary');
@@ -85,8 +72,13 @@ const Login = ({navigation}) => {
 const Routes = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator
+        // screenOptions= {{
+        //   header: () => null,
+        // }}
+        initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
+        {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
         <Stack.Screen name="Itinerary" component={Itinerary} />
         <Stack.Screen name="MapView" component={MapView} />
         <Stack.Screen name="EmergencyPage" component={EmergencyPage} />
@@ -104,6 +96,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '8%',
     backgroundColor: '#ABDA9A',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 50,
   },
 });
 

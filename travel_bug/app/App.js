@@ -117,7 +117,9 @@ import Routes from './Routes.js';
 
 function App(props) {
   // return <WelcomeScreen />;
-  return <Routes />;
+  return (
+    <Routes />
+  );
 }
 
 export default App;
