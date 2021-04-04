@@ -7,40 +7,37 @@ import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
-const handleItinerary = ({navigation}) => {
-  return(
-    <TouchableOpacity onPress={() => {
-      navigation.navigate("Itinerary");
-    }}>
-      <FontAwesomeIcon
-        icon={faClipboardList}
-        size={30}
-        color={'#5B58AD'}
-        accessibilityLabel="Itinerary"
-      />
-    </TouchableOpacity>
-  )
+const Itinerary = () => {
+  return (
+    <Text>Itinerary Screen</Text>
+  );
 };
 
-const handleMaps = ({navigation}) => {
-  console.log('Go to map screen');
+const MapView = () => {
+  return (
+    <Text>Map Screen</Text>
+  );
 };
 
-const handleEmergency = ({navigation}) => {
-  console.log('Go to EmergencyPage');
+const EmergencyPage = () => {
+  return (
+    <Text>Emergency Information Screen</Text>
+  );
 };
 
-const handleMessages = ({navigation}) => {
-  console.log('Go to messages screen');
+const Messages = () => {
+  return (
+    <Text>Messages Screen</Text>
+  );
 };
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <View accessible={true} style={styles.footerStyle}>
-      <Text>I am a login screen</Text>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate("Itinerary")
-      }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Itinerary');
+        }}>
         <FontAwesomeIcon
           icon={faClipboardList}
           size={30}
@@ -48,9 +45,10 @@ const Login = () => {
           accessibilityLabel="Itinerary"
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate("Itinerary")
-      }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('MapView');
+        }}>
         <FontAwesomeIcon
           icon={faMapMarkedAlt}
           size={30}
@@ -58,9 +56,10 @@ const Login = () => {
           accessibilityLabel="Map"
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate("Itinerary")
-      }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('EmergencyPage');
+        }}>
         <FontAwesomeIcon
           icon={faExclamationTriangle}
           size={30}
@@ -68,9 +67,10 @@ const Login = () => {
           accessibilityLabel="Emergency Contact"
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate("Itinerary")
-      }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Messages');
+        }}>
         <FontAwesomeIcon
           icon={faCommentDots}
           size={30}
@@ -85,71 +85,16 @@ const Login = () => {
 const Routes = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Itinerary" component={Itinerary} />
-        <Stack.Screen name="Map" component={MapView} />
+        <Stack.Screen name="MapView" component={MapView} />
         <Stack.Screen name="EmergencyPage" component={EmergencyPage} />
         <Stack.Screen name="Messages" component={Messages} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
-// const handleItinerary = () => {
-//   console.log('Go to itinerary screen for today');
-// };
-
-// const handleMaps = () => {
-//   console.log('Go to map screen');
-// };
-
-// const handleEmergency = () => {
-//   console.log('Go to EmergencyPage');
-// };
-
-// const handleMessages = () => {
-//   console.log('Go to messages screen');
-// };
-
-// const Routes = () => {
-//   return (
-//     <View accessible={true} style={styles.footerStyle}>
-//       <TouchableOpacity onPress={handleItinerary}>
-//         <FontAwesomeIcon
-//           icon={faClipboardList}
-//           size={30}
-//           color={'#5B58AD'}
-//           accessibilityLabel="Itinerary"
-//         />
-//       </TouchableOpacity>
-//       <TouchableOpacity onPress={handleMaps}>
-//         <FontAwesomeIcon
-//           icon={faMapMarkedAlt}
-//           size={30}
-//           color={'#5B58AD'}
-//           accessibilityLabel="Map"
-//         />
-//       </TouchableOpacity>
-//       <TouchableOpacity onPress={handleEmergency}>
-//         <FontAwesomeIcon
-//           icon={faExclamationTriangle}
-//           size={30}
-//           color={'#5B58AD'}
-//           accessibilityLabel="Emergency Contact"
-//         />
-//       </TouchableOpacity>
-//       <TouchableOpacity onPress={handleMessages}>
-//         <FontAwesomeIcon
-//           icon={faCommentDots}
-//           size={30}
-//           color={'#5B58AD'}
-//           accessibilityLabel="Messages"
-//         />
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
 
 const styles = StyleSheet.create({
   footerStyle: {
