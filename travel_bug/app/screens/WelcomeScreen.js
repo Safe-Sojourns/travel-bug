@@ -1,8 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-
-=======
 import {
   View,
   Text,
@@ -17,7 +13,6 @@ import {
   Dimensions,
 } from 'react-native';
 import Routes from '../Routes';
->>>>>>> 7de569347ba6dd9339f8ad0c5d1bfab27c047601
 
 function WelcomeScreen(props) {
   const handlePress = () => console.log('Text pressed');
