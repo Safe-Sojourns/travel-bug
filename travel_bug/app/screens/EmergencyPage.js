@@ -33,7 +33,9 @@ function EmergencyPage(props) {
           placeholder="Add any information important to you."
           onChange={e => onChangeEmergencyInput(e.target.value)}
         />
-        <Text style={styles.textNum}>Edit</Text>
+        <View style={styles.buttonView}>
+          <Button title="Edit" type="outline" />
+        </View>
       </Card>
     </SafeAreaView>
   );
@@ -50,10 +52,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  buttonView: {
+    width: 70,
+    height: 40,
+    backgroundColor: '#6EAD58',
+    alignSelf: 'flex-end',
+    margin: 5,
+    borderRadius: 5,
+  },
   card: {
     backgroundColor: '#ABDA9A',
     width: 300,
-    height: 400,
+    height: 410,
     padding: 20,
   },
   iconText: {
