@@ -57,7 +57,7 @@ function WelcomeScreen(props) {
           ]);
         }}
       />
-      {/* <Routes /> */}
+      <Routes />
     </SafeAreaView>
   );
 }

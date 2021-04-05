@@ -3,7 +3,7 @@ import {Text} from 'react-native';
 
 const Itinerary = (props) => {
   return (
-    <Text>Itinerary</Text>
+    <Text>Itinerary test this here</Text>
   );
 };
 
