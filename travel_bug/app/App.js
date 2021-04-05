@@ -111,12 +111,14 @@
 // });
 
 import React from 'react';
-import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import WelcomeScreen from './screens/WelcomeScreen.js';
+import MapMain from './screens/maps/mapMain.js';
 
 function App(props) {
   return (
-    <WelcomeScreen />
+    // <WelcomeScreen />
+    <MapMain />
   );
 }
 
