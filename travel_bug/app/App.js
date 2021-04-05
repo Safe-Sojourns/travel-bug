@@ -112,11 +112,11 @@
 
 import React from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import EmergencyPage from './screens/EmergencyPage.js';
+import WelcomeScreen from './screens/WelcomeScreen.js';
 
 function App(props) {
   return (
-    <EmergencyPage />
+    <WelcomeScreen />
   );
 }
 
