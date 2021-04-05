@@ -1,8 +1,8 @@
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, SafeAreaView } from 'react-native';
 import PopUpFromMap from './PopUpFromMap.js';
+import SearchAutoComplete from './SearchAutoComplete.js';
 
 
 const styles = StyleSheet.create({
@@ -28,22 +28,11 @@ const MapMain = () => {
           longitudeDelta: 0.0121,
         }}>
         <SafeAreaView style={styles.searchView}>
-          <GooglePlacesAutocomplete
-            placeholder='Search'
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              console.log(data, details);
-            }}
-            query={{
-              key: { PROVIDER_GOOGLE },
-              language: 'en',
-            }}
-          />
+          <SearchAutoComplete />
         </SafeAreaView>
         {arrayOfEventLocations.map((event, index) => (
           <Marker
             onPress={() => {
-              console.log('pressed again');
               setPinView(!pinView);
             }}
             key={event.eventIdNumber}
