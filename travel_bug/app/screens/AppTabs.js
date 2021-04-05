@@ -5,63 +5,13 @@ import {faClipboardList, faMapMarkedAlt, faExclamationTriangle, faCommentDots} f
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator, tabBarIcon, tabBarOptions, screenOptions} from '@react-navigation/bottom-tabs';
 import Itinerary from './Itinerary.js';
-import mapMain from './mapMain.js';
+import mapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
 
 const Tabs = createBottomTabNavigator();
 
-// <View accessible={true} style={styles.footerStyle}>
-//   {/* <TouchableOpacity
-//     onPress={() => {
-//       navigation.navigate('WelcomeScreen');
-//     }}>
-//     <Text>Welcome</Text>
-//   </TouchableOpacity> */}
-//   <TouchableOpacity
-//     onPress={() => {
-//       navigation.navigate('Itinerary');
-//     }}>
-//     <FontAwesomeIcon
-//       icon={faClipboardList}
-//       size={30}
-//       color={'#5B58AD'}
-//       accessibilityLabel="Itinerary"
-//     />
-//   </TouchableOpacity>
-//   <TouchableOpacity
-//     onPress={() => {
-//       navigation.navigate('mapMain');
-//     }}>
-//     <FontAwesomeIcon
-//       icon={faMapMarkedAlt}
-//       size={30}
-//       color={'#5B58AD'}
-//       accessibilityLabel="Map"
-//     />
-//   </TouchableOpacity>
-//   <TouchableOpacity
-//     onPress={() => {
-//       navigation.navigate('EmergencyPage');
-//     }}>
-//     <FontAwesomeIcon
-//       icon={faExclamationTriangle}
-//       size={30}
-//       color={'#5B58AD'}
-//       accessibilityLabel="Emergency Contact"
-//     />
-//   </TouchableOpacity>
-// <TouchableOpacity
-//   onPress={() => {
-//     navigation.navigate('Messages');
-//   }}>
-//   <FontAwesomeIcon
-//     icon={faCommentDots}
-//     size={30}
-//     color={'#5B58AD'}
-//     accessibilityLabel="Messages"
-//   />
-// </TouchableOpacity>
+// TouchableOpacity required??
 
 const AppTabs = ({navigation}) => {
   return (

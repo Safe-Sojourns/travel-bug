@@ -1,13 +1,16 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-// import Routes from '../Routes';
 
 const EmergencyPage = (props) => {
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
       <Text>Emergency Information Screen</Text>
     </View>
-    // <Routes />
   );
 };
 

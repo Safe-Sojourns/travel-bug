@@ -1,9 +1,16 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 
 const Itinerary = (props) => {
   return (
-    <Text>Itinerary test this here</Text>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Text>Itinerary</Text>
+    </View>
   );
 };
 
