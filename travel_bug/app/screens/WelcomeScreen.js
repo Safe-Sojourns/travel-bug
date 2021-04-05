@@ -14,7 +14,7 @@ function WelcomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
   }
 })
 
