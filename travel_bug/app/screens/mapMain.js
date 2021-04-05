@@ -1,10 +1,10 @@
 import React from 'react';
 import {Text} from 'react-native';
 
-const MapView = (props) => {
+const mapMain = (props) => {
   return (
     <Text>Map View</Text>
   );
 };
 
-export default MapView;
+export default mapMain;

@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 // import WelcomeScreen from './screens/WelcomeScreen.js';
 import Itinerary from './screens/Itinerary.js';
-import MapView from './screens/MapView.js';
+import mapMain from './screens/mapMain.js';
 import EmergencyPage from './screens/EmergencyPage.js';
 import Messages from './screens/Messages.js';
 
@@ -34,7 +34,7 @@ const Login = ({navigation}) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('MapView');
+          navigation.navigate('mapMain');
         }}>
         <FontAwesomeIcon
           icon={faMapMarkedAlt}
@@ -80,7 +80,7 @@ const Routes = () => {
         <Stack.Screen name="Login" component={Login} />
         {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
         <Stack.Screen name="Itinerary" component={Itinerary} />
-        <Stack.Screen name="MapView" component={MapView} />
+        <Stack.Screen name="mapMain" component={mapMain} />
         <Stack.Screen name="EmergencyPage" component={EmergencyPage} />
         <Stack.Screen name="Messages" component={Messages} />
       </Stack.Navigator>
