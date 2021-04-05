@@ -30,7 +30,16 @@ WHAT DOES THE APP DO HERE
 
 # Tech stack
 -React Native
+-React Native Cards
+-React Native Maps
+-React Native CalendarPicker
+-React Navigation
 -Jest
+-React Testing Libraries
+-Express
+-Axios
+-MongoDB
+-PostgreSQL
 
 # Technical Challenges
 

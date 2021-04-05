@@ -1,18 +1,10 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  Pressable,
-} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, TextInput} from 'react-native';
 import {Card, Button} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faAmbulance,
   faUser,
-  faEdit,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
