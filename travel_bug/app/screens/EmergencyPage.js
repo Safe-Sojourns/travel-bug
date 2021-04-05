@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TextInput, Header} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, TextInput} from 'react-native';
+import {Card, Button, Icon} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faAmbulance, faUser, faEdit} from '@fortawesome/free-solid-svg-icons';
 
@@ -9,10 +10,11 @@ function EmergencyPage(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.textHeader}>Emergency Page</Text>
-      <View style={styles.view}>
+      <Card containerStyle={styles.card} title="title">
+        <Card.Title style={styles.titleText}>EMERGENCY INFORMATION</Card.Title>
+        <Card.Divider />
         <View style={styles.iconText}>
-          <FontAwesomeIcon style={styles.icon} icon={faAmbulance} size={25} />
+        <FontAwesomeIcon style={styles.icon} icon={faAmbulance} size={25} />
           <Text style={styles.text}>Emergency:</Text>
           <Text style={styles.textNum}>911</Text>
         </View>
@@ -23,7 +25,7 @@ function EmergencyPage(props) {
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon style={styles.icon} icon={faEdit} size={25} />
-          <Text style={styles.text}>Edit:</Text>
+          <Text style={styles.text}>Additional Information:</Text>
         </View>
         <TextInput
           style={styles.input}
@@ -31,7 +33,8 @@ function EmergencyPage(props) {
           placeholder="Add any information important to you."
           onChange={e => onChangeEmergencyInput(e.target.value)}
         />
-      </View>
+        <Text style={styles.textNum}>Edit</Text>
+      </Card>
     </SafeAreaView>
   );
 }
@@ -47,10 +50,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  view: {
+  card: {
     backgroundColor: '#ABDA9A',
     width: 300,
-    height: 350,
+    height: 400,
     padding: 20,
   },
   iconText: {
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    height: 150,
+    height: 120,
     width: 250,
     backgroundColor: 'white',
     borderWidth: 1,
@@ -72,13 +75,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  textHeader: {
-    paddingTop: 10,
-    paddingBottom: 100,
-    paddingLeft: 10,
+  titleText: {
     color: '#013220',
-    fontSize: 40,
-    fontWeight: 'bold',
+    fontSize: 20,
   },
   textNum: {
     paddingLeft: 5,
