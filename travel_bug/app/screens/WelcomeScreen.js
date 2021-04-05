@@ -12,6 +12,7 @@ import {
   Alert,
   Dimensions,
 } from 'react-native';
+import Routes from '../Routes';
 
 function WelcomeScreen(props) {
   const handlePress = () => console.log('Text pressed');
@@ -56,6 +57,7 @@ function WelcomeScreen(props) {
           ]);
         }}
       />
+      {/* <Routes /> */}
     </SafeAreaView>
   );
 }
