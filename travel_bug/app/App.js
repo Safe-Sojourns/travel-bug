@@ -111,14 +111,25 @@
 // });
 
 import React from 'react';
+<<<<<<< HEAD
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import WelcomeScreen from './screens/WelcomeScreen.js';
 import MapMain from './screens/maps/mapMain.js';
+=======
+import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
+// import WelcomeScreen from './screens/WelcomeScreen.js';
+import Routes from './Routes.js';
+>>>>>>> 7de569347ba6dd9339f8ad0c5d1bfab27c047601
 
 function App(props) {
+  // return <WelcomeScreen />;
   return (
+<<<<<<< HEAD
     // <WelcomeScreen />
     <MapMain />
+=======
+    <Routes />
+>>>>>>> 7de569347ba6dd9339f8ad0c5d1bfab27c047601
   );
 }
 
