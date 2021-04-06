@@ -20,8 +20,6 @@ export default function Messages() {
   //eventually change user to what is passed down in props
 
   useEffect(() => {
-    socket.emit('client', 'hey from client');
-    socket.on('greeting', response => console.log(response));
     socket.on('new messages', msg => {
       setChatMessages([...chatMessages, msg]);
       // setChatMessage('');

@@ -11,8 +11,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
 io.on('connection', socket => {
-  socket.on('client', response => console.log(response));
-  socket.emit('greetings', 'hey from server');
   socket.on('chat message', data => {
     socket.emit('new messages', data);
   });
