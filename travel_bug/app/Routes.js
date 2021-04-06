@@ -1,12 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  Text,
-  View,
-  Button,
   ActivityIndicator,
   ImageBackground,
   StyleSheet,
   AsyncStorage,
+  Button,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -14,7 +15,7 @@ import AppTabs from './screens/AppTabs.js';
 
 const Stack = createStackNavigator();
 
-// const login = (userStr) => {
+// const login = (userOjb) => {
 //   return (
 //     value={{
 //       userStr,
@@ -30,7 +31,11 @@ const Stack = createStackNavigator();
 //   );
 // };
 
-const SignIn = ({navigation}) => {
+const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState({});
+
   return (
     <View
       style={{
@@ -45,11 +50,11 @@ const SignIn = ({navigation}) => {
           // login();
         }}
       />
-      <Button
-        title="Go to register"
-        onPress={() => {
-          navigation.navigate('Register');
-        }}
+      <TextInput
+        style={styles.inputField}
+        onChangeText={text => setPassword(text)}
+        defaultValue={password}
+        placeholder="Password"
       />
     </View>
   );
