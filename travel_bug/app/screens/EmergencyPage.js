@@ -19,7 +19,6 @@ function EmergencyPage(props) {
   const [emergencyInput, onChangeText] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
