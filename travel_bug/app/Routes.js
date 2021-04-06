@@ -42,7 +42,7 @@ const SignIn = ({navigation}) => {
       <Button
         title="Log me in"
         onPress={() => {
-          login();
+          // login();
         }}
       />
       <Button
