@@ -22,9 +22,9 @@ const MapMain = () => {
   };
 
   return (
-    <View>
+    <SafeAreaView>
       <MapView
-        style={{ height: '90%', width: '100%' }}
+        style={{ height: '100%', width: '100%' }}
         provider={PROVIDER_GOOGLE}
         region={{
           latitude: currentLat,
@@ -64,7 +64,7 @@ const MapMain = () => {
         ))}
       </MapView>
       <PopUpFromMap changePinView={changePinView} pinView={pinView} />
-    </View>
+    </SafeAreaView>
   );
 };
 
