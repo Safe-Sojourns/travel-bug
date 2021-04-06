@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
-  Button,
   StyleSheet,
+  Image,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -36,26 +37,41 @@ const SignIn = () => {
   const [user, setUser] = useState({});
 
   return (
-    <View style={styles.loginScreen}>
-      <TextInput
-        style={styles.inputField}
-        onChangeText={text => setEmail(text)}
-        defaultValue={email}
-        placeholder="Email"
+    <View style={styles.loginScreen} autoCapitalize="none">
+      <Image
+        accessible={true}
+        accessibilityLable="Travel Bug"
+        source={require('./screens/maps/bug.png')}
       />
       <TextInput
         style={styles.inputField}
+        autoCapitalize="none"
+        type="email"
+        defaultValue={email}
+        placeholder="Email"
+        onChangeText={text => setEmail(text)}
+      />
+      <TextInput
+        style={styles.inputField}
+        autoCapitalize="none"
         onChangeText={text => setPassword(text)}
         defaultValue={password}
         placeholder="Password"
+        secureTextEntry={true}
       />
-      <Button
-        title="Log me in"
+      <TouchableOpacity
+        accessible={true}
+        accessibilityLable="Login button"
         onPress={() => {
           // login(user);
           setUser({email: email, password: password});
-        }}
-      />
+          setEmail('');
+          setPassword('');
+        }}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Let's Go Traveling!</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -104,7 +120,7 @@ const Routes = ({}) => {
 
   return (
     <NavigationContainer>
-      {user ? (
+      {/* {user ? (
         <AppTabs />
       ) : (
         <Stack.Navigator
@@ -114,8 +130,8 @@ const Routes = ({}) => {
           initialRouteName="Login">
           <Stack.Screen name="Login" component={SignIn} />
         </Stack.Navigator>
-      )}
-      {/* <AppTabs /> */}
+      )} */}
+      <AppTabs />
     </NavigationContainer>
   );
 };
@@ -125,17 +141,30 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#EAF9FF',
   },
   inputField: {
     height: 30,
     width: 200,
     margin: 12,
     borderWidth: 1,
+    backgroundColor: 'white',
+    color: '#6EAD58',
   },
   loadingIcon: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  button: {
+    elevation: 8,
+    backgroundColor: '#ABDA9A',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  buttonText: {
+    color: '#5B58AD',
   },
 });
 
