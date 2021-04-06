@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
+  AsyncStorage,
   StyleSheet,
   Image,
   Text,
@@ -74,25 +75,25 @@ const Routes = ({}) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  // useEffect(() => {
-  //   // check if the user is logged in or not with async function
-  //   AsyncStorage.getItem('user')
-  //     .then(userString => {
-  //       if (userString) {
-  //         // Decode it
-  //       }
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   useEffect(() => {
-    if (user) {
-      setLoading(false);
-    }
+    // check if the user is logged in or not with async function
+    AsyncStorage.getItem('user')
+      .then(userString => {
+        if (userString) {
+          // Decode it
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
+
+  // useEffect(() => {
+  //   if (user) {
+  //     setLoading(false);
+  //   }
+  // }, []);
 
   if (loading) {
     return (
@@ -104,7 +105,7 @@ const Routes = ({}) => {
 
   return (
     <NavigationContainer>
-      {user ? (
+      {/* {user ? (
         <AppTabs />
       ) : (
         <Stack.Navigator
@@ -114,8 +115,8 @@ const Routes = ({}) => {
           initialRouteName="Login">
           <Stack.Screen name="Login" component={SignIn} />
         </Stack.Navigator>
-      )}
-      {/* <AppTabs /> */}
+      )} */}
+      <AppTabs />
     </NavigationContainer>
   );
 };
