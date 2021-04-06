@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
-  AsyncStorage,
   StyleSheet,
   Image,
   Text,
@@ -22,11 +21,20 @@ const SignIn = () => {
   const [user, setUser] = useState({});
 
   return (
-    <View style={styles.loginScreen} autoCapitalize="none">
-      <Text style={styles.introText}>Weclome to Travel Bug</Text>
+    <View
+      style={styles.loginScreen}
+      accessible={true}
+      accessibilityLabel="Login screen"
+      autoCapitalize="none">
+      <Text
+        style={styles.introText}
+        accessibilityLabel="Welcome to travel bug"
+        accessibilityRole="text">
+        Weclome to Travel Bug
+      </Text>
       <Image
-        accessible={true}
-        accessibilityLable="Travel Bug"
+        accessibilityRole="image"
+        accessibilityLabel="Travel Bug"
         source={require('./screens/maps/bug.png')}
       />
       <TextInput
@@ -47,7 +55,7 @@ const SignIn = () => {
       />
       <TouchableOpacity
         accessible={true}
-        accessibilityLable="Login button"
+        accessibilityLabel="Login button"
         onPress={() => {
           setUser({email: email, password: password});
           Authenticate();
