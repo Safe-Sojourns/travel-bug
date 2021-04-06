@@ -16,6 +16,7 @@ const MapMain = () => {
   const [currentLong, setCurrentLong] = useState(12.4922);
   const [searchLat, setSearchLat] = useState();
   const [searchLong, setSearchLong] = useState();
+  const [currentModal, setCurrentModal] = useState({});
 
   const changePinView = () => {
     setPinView(!pinView);
@@ -47,6 +48,7 @@ const MapMain = () => {
         {arrayOfEventLocations.map((event, index) => (
           <Marker
             onPress={() => {
+              setCurrentModal(event);
               setCurrentLat(event.latitude);
               setCurrentLong(event.longitude);
               setPinView(!pinView);
@@ -62,6 +64,11 @@ const MapMain = () => {
               style={{ height: 40, width: 40 }}
               resizeMode="contain"
             />
+            <PopUpFromMap
+              changePinView={changePinView}
+              pinView={pinView}
+              currentModal={currentModal}
+            />
           </Marker>
         ))}
         {searchLat && searchLong ? (
@@ -73,7 +80,6 @@ const MapMain = () => {
           />
         ) : null}
       </MapView>
-      <PopUpFromMap changePinView={changePinView} pinView={pinView} />
     </SafeAreaView>
   );
 };
@@ -82,19 +88,28 @@ export default MapMain;
 
 const arrayOfEventLocations = [
   {
-    name: 'Colosseum of Rome',
-    longitude: 12.4922,
-    latitude: 41.8902,
-    eventIdNumber: 1,
-  },
-  {
     name: 'Roman Forum',
+    description: 'Via della Salara Vecchia, 5/6, 00186 Roma RM, Italy',
+    date: 'March 16, 2021',
+    time: '1100 am',
     longitude: 12.4853,
     latitude: 41.8925,
     eventIdNumber: 2,
   },
   {
+    name: 'Colosseum of Rome',
+    description: 'Piazza del Colosseo, 1, 00184 Roma RM, Italy',
+    date: 'March 16, 2021',
+    time: '0900 am',
+    longitude: 12.4922,
+    latitude: 41.8902,
+    eventIdNumber: 1,
+  },
+  {
     name: 'Pantheon',
+    description: 'Piazza della Rotonda, 00186 Roma RM, Italy',
+    date: 'March 16, 2021',
+    time: '1300 pm',
     longitude: 12.4748,
     latitude: 41.8996,
     eventIdNumber: 3,
