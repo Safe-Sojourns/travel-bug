@@ -44,7 +44,7 @@ function SearchAutoComplete({
       query={{
         // available options: https://developers.google.com/places/web-service/autocomplete
         key: `${key}`,
-        language: 'en',
+        language: 'en', // language of the results
         location: `${currentLat},${currentLong}`,
         radius: 2000,
       }}
