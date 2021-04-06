@@ -22,7 +22,6 @@ const Itinerary = props => {
   var month = months[new Date().getMonth()];
   var year = new Date().getFullYear();
   return (
-
     <SafeAreaView style={styles.calendar}>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.calendarDisplay}>
