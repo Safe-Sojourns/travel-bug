@@ -38,7 +38,7 @@ function EmergencyPage(props) {
           <Text style={styles.text}>Additional Information:</Text>
         </View>
         <View style={styles.info}>
-          <Text>{emergencyInput}</Text>
+          <Text style={styles.infoText}>{emergencyInput}</Text>
         </View>
         <View style={styles.buttonView}>
           <Button title="Edit" onPress={() => setModalVisible(true)} />
@@ -85,8 +85,10 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#6EAD58',
     alignSelf: 'flex-end',
-    margin: 5,
+    marginTop: 5,
+    marginBottom: 5,
     borderRadius: 5,
+    marginRight: 12,
   },
   button: {
     borderRadius: 10,
@@ -104,12 +106,14 @@ const styles = StyleSheet.create({
     width: 300,
     height: 350,
     padding: 20,
+    borderRadius: 15,
   },
   cardModal: {
     backgroundColor: '#ABDA9A',
     width: 300,
     height: 250,
     padding: 20,
+    borderRadius: 5,
   },
   iconText: {
     flexDirection: 'row',
@@ -128,6 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     paddingTop: 10,
+    borderRadius: 5,
   },
   text: {
     paddingTop: 10,
@@ -145,6 +150,10 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     color: '#013220',
     fontSize: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    color: '#013220',
   },
   icon: {
     color: '#013220',

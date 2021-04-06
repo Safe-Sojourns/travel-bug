@@ -32,6 +32,7 @@ const MapMain = () => {
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
+        <View>
           <SearchAutoComplete
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -44,6 +45,7 @@ const MapMain = () => {
             currentLong={currentLong}
             setCurrentLat={setCurrentLat}
           />
+        </View>
         {arrayOfEventLocations.map((event, index) => (
           <Marker
             onPress={() => {
