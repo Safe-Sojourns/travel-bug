@@ -1,8 +1,8 @@
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, SafeAreaView } from 'react-native';
 import PopUpFromMap from './PopUpFromMap.js';
+import SearchAutoComplete from './SearchAutoComplete.js';
 
 
 const styles = StyleSheet.create({
@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
 });
 const MapMain = () => {
   const [pinView, setPinView] = useState(false);
+  const [searchTerm, setSearchTerm] = useState();
+  const [currentLat, setCurrentLat] = useState(41.8902);
+  const [currentLong, setCurrentLong] = useState(12.4922);
+  const [searchLat, setSearchLat] = useState();
+  const [searchLong, setSearchLong] = useState();
 
   const changePinView = () => {
     setPinView(!pinView);
@@ -22,28 +27,26 @@ const MapMain = () => {
         style={{ height: '100%', width: '100%' }}
         provider={PROVIDER_GOOGLE}
         region={{
-          latitude: 41.8902,
-          longitude: 12.4922,
+          latitude: currentLat,
+          longitude: currentLong,
           latitudeDelta: 0.015,
           longitudeDelta: 0.0121,
         }}>
-        <SafeAreaView style={styles.searchView}>
-          <GooglePlacesAutocomplete
-            placeholder='Search'
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              console.log(data, details);
-            }}
-            query={{
-              key: { PROVIDER_GOOGLE },
-              language: 'en',
-            }}
+          <SearchAutoComplete
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            searchLat={searchLat}
+            searchLong={searchLong}
+            setSearchLat={setSearchLat}
+            setSearchLong={setSearchLong}
+            setCurrentLong={setCurrentLong}
+            currentLat={currentLat}
+            currentLong={currentLong}
+            setCurrentLat={setCurrentLat}
           />
-        </SafeAreaView>
         {arrayOfEventLocations.map((event, index) => (
           <Marker
             onPress={() => {
-              console.log('pressed again');
               setPinView(!pinView);
             }}
             key={event.eventIdNumber}
