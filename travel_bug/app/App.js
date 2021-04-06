@@ -114,11 +114,9 @@ import React from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 // import WelcomeScreen from './screens/WelcomeScreen.js';
 import Routes from './Routes';
-import Providers from './Providers';
 
 function App(props) {
   // return <WelcomeScreen />;
-  // return <Providers />;
   return <Routes />;
 }
 

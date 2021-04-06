@@ -16,6 +16,7 @@ const Tabs = createBottomTabNavigator();
 const AppTabs = ({navigation}) => {
   return (
     <Tabs.Navigator
+      barStyle={{backgroundColor: '#3BAD87'}}
       screenOptions={({route}) => ({
         tabBarIcon: ({icon, size, color, accessibilityLabel}) => {
           if (route.name === 'Itinerary') {
@@ -23,7 +24,8 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faClipboardList}
                 size={30}
-                color={'#5B58AD'}
+                color={'#ABDA9A'}
+                // color={'#5B58AD'}
                 accessibilityLabel="Itinerary"
               />
             );
@@ -32,7 +34,8 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faMapMarkedAlt}
                 size={30}
-                color={'#5B58AD'}
+                color={'#ABDA9A'}
+                // color={'#5B58AD'}
                 accessibilityLabel="Map"
               />
             );
@@ -41,7 +44,8 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faExclamationTriangle}
                 size={30}
-                color={'#5B58AD'}
+                color={'#ABDA9A'}
+                // color={'#5B58AD'}
                 accessibilityLabel="Important Contacts"
               />
             );
@@ -50,7 +54,8 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faCommentDots}
                 size={30}
-                color={'#5B58AD'}
+                color={'#ABDA9A'}
+                // color={'#5B58AD'}
                 accessibilityLabel="Messages"
               />
             );

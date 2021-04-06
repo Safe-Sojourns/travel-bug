@@ -8,13 +8,27 @@ import {
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {AuthContext} from './AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 
 const Stack = createStackNavigator();
 
-const Login = ({navigation}) => {
-  const {login} = useContext(AuthContext);
+// const login = (userStr) => {
+//   return (
+//     value={{
+//       userStr,
+//       login: () => {
+//         const fakeUser = {username: 'Frodo'};
+//         setUser(fakeUser);
+//         AsyncStorage.setItem('user', JSON.stringify(fakeUser));
+//       },
+//       logout: () => {
+//         AsyncStorage.removeItem('user');
+//       },
+//     }}>
+//   );
+// };
+
+const SignIn = ({navigation}) => {
   return (
     <View
       style={{
@@ -59,8 +73,8 @@ const Register = ({navigation}) => {
 };
 
 const Routes = ({}) => {
-  const {user, login} = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // check if the user is logged in or not with async function
@@ -100,7 +114,7 @@ const Routes = ({}) => {
             header: () => null,
           }}
           initialRouteName="Login">
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login" component={SignIn} />
           <Stack.Screen name="Register" component={Register} />
         </Stack.Navigator>
       )} */}
