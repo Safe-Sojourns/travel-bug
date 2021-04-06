@@ -1,6 +1,6 @@
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, Image, SafeAreaView} from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Image, SafeAreaView } from 'react-native';
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
 
@@ -24,28 +24,26 @@ const MapMain = () => {
     <SafeAreaView>
       <View>
         <MapView
-          style={{height: '100%', width: '100%'}}
+          style={{ height: '100%', width: '100%' }}
           provider={PROVIDER_GOOGLE}
           region={{
             latitude: currentLat,
             longitude: currentLong,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.03,
           }}>
-          <View>
-            <SearchAutoComplete
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              searchLat={searchLat}
-              searchLong={searchLong}
-              setSearchLat={setSearchLat}
-              setSearchLong={setSearchLong}
-              setCurrentLong={setCurrentLong}
-              currentLat={currentLat}
-              currentLong={currentLong}
-              setCurrentLat={setCurrentLat}
-            />
-          </View>
+          <SearchAutoComplete
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            searchLat={searchLat}
+            searchLong={searchLong}
+            setSearchLat={setSearchLat}
+            setSearchLong={setSearchLong}
+            setCurrentLong={setCurrentLong}
+            currentLat={currentLat}
+            currentLong={currentLong}
+            setCurrentLat={setCurrentLat}
+          />
           {arrayOfEventLocations.map((event, index) => (
             <Marker
               onPress={() => {
@@ -59,7 +57,7 @@ const MapMain = () => {
               }}>
               <Image
                 source={require('./bug.png')}
-                style={{height: 40, width: 40}}
+                style={{ height: 40, width: 40 }}
                 resizeMode="contain"
               />
             </Marker>
