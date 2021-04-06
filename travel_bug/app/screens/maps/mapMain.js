@@ -20,53 +20,51 @@ const MapMain = () => {
   const changePinView = () => {
     setPinView(!pinView);
   };
-  return (
-    <SafeAreaView>
-      <View>
-        <MapView
-          style={{ height: '100%', width: '100%' }}
-          provider={PROVIDER_GOOGLE}
-          region={{
-            latitude: currentLat,
-            longitude: currentLong,
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03,
-          }}>
-          <SearchAutoComplete
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            searchLat={searchLat}
-            searchLong={searchLong}
-            setSearchLat={setSearchLat}
-            setSearchLong={setSearchLong}
-            setCurrentLong={setCurrentLong}
-            currentLat={currentLat}
-            currentLong={currentLong}
-            setCurrentLat={setCurrentLat}
-          />
-          {arrayOfEventLocations.map((event, index) => (
-            <Marker
-              onPress={() => {
-                setPinView(!pinView);
-              }}
-              key={event.eventIdNumber}
-              title={event.name}
-              coordinate={{
-                latitude: event.latitude,
-                longitude: event.longitude,
-              }}>
-              <Image
-                source={require('./bug.png')}
-                style={{ height: 40, width: 40 }}
-                resizeMode="contain"
-              />
-            </Marker>
-          ))}
-        </MapView>
 
-        <PopUpFromMap changePinView={changePinView} pinView={pinView} />
-      </View>
-    </SafeAreaView>
+  return (
+    <View>
+      <MapView
+        style={{ height: '90%', width: '100%' }}
+        provider={PROVIDER_GOOGLE}
+        region={{
+          latitude: currentLat,
+          longitude: currentLong,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}>
+        <SearchAutoComplete
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchLat={searchLat}
+          searchLong={searchLong}
+          setSearchLat={setSearchLat}
+          setSearchLong={setSearchLong}
+          setCurrentLong={setCurrentLong}
+          currentLat={currentLat}
+          currentLong={currentLong}
+          setCurrentLat={setCurrentLat}
+        />
+        {arrayOfEventLocations.map((event, index) => (
+          <Marker
+            onPress={() => {
+              setPinView(!pinView);
+            }}
+            key={event.eventIdNumber}
+            title={event.name}
+            coordinate={{
+              latitude: event.latitude,
+              longitude: event.longitude,
+            }}>
+            <Image
+              source={require('./bug.png')}
+              style={{ height: 40, width: 40 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        ))}
+      </MapView>
+      <PopUpFromMap changePinView={changePinView} pinView={pinView} />
+    </View>
   );
 };
 

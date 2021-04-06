@@ -73,8 +73,12 @@ function SearchAutoComplete({
         // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
         fields: 'formatted_address,geometry',
       }}
-      filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+      filterReverseGeocodingByTypes={[
+        'locality',
+        'administrative_area_level_3',
+      ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+    // eslint-disable-next-line react/jsx-one-expression-per-line
     />
   );
 }
