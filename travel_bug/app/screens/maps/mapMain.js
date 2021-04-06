@@ -1,9 +1,8 @@
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, SafeAreaView } from 'react-native';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
+import React, {useState} from 'react';
+import {View, StyleSheet, Text, Image, SafeAreaView} from 'react-native';
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
-
 
 const styles = StyleSheet.create({
   searchView: {
@@ -24,7 +23,7 @@ const MapMain = () => {
   return (
     <View>
       <MapView
-        style={{ height: '100%', width: '100%' }}
+        style={{height: '100%', width: '100%'}}
         provider={PROVIDER_GOOGLE}
         region={{
           latitude: currentLat,
@@ -59,7 +58,7 @@ const MapMain = () => {
             }}>
             <Image
               source={require('./bug.png')}
-              style={{ height: 40, width: 40 }}
+              style={{height: 40, width: 40}}
               resizeMode="contain"
             />
           </Marker>
@@ -92,4 +91,4 @@ const arrayOfEventLocations = [
     latitude: 41.8996,
     eventIdNumber: 3,
   },
-]
+];
