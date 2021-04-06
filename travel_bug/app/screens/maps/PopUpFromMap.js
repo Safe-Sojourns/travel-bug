@@ -36,8 +36,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    top: 50,
+    top: 15,
   },
+  h2: {
+    fontSize: 8
+  }
 });
 
 function PopUpFromMap({ changePinView, pinView, currentModal }) {
@@ -51,10 +54,14 @@ function PopUpFromMap({ changePinView, pinView, currentModal }) {
           animationType="bottom-half">
           <View style={styles.centeredView}>
             <Text style={{ textAlign: 'center' }}>⬇</Text>
-            <Text>Name: {currentModal.name}</Text>
-            <Text>Address: {currentModal.description}</Text>
-            <Text>Date: {currentModal.date}</Text>
-            <Text>Time: {currentModal.time}</Text>
+            <Text style={styles.h2}>Name </Text>
+            <Text>{currentModal.name}</Text>
+            <Text style={styles.h2}>Address </Text>
+            <Text>{currentModal.description}</Text>
+            <Text style={styles.h2}>Date </Text>
+            <Text>{currentModal.date}</Text>
+            <Text style={styles.h2}>Time </Text>
+            <Text>{currentModal.time}</Text>
             <View style={styles.buttonContainer}>
               <View style={styles.textBox}>
                 <Button
