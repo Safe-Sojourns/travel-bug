@@ -24,24 +24,43 @@ function EmergencyPage(props) {
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
         <View style={styles.iconText}>
-          <FontAwesomeIcon style={styles.icon} icon={faAmbulance} size={25} />
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faAmbulance}
+            size={25}
+            accessibilityLabel="Ambulance"
+          />
           <Text style={styles.text}>Emergency:</Text>
           <Text style={styles.textNum}>911</Text>
         </View>
         <View style={styles.iconText}>
-          <FontAwesomeIcon style={styles.icon} icon={faUser} size={25} />
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faUser}
+            size={25}
+            accessibilityLabel="User"
+          />
           <Text style={styles.text}>Staff:</Text>
           <Text style={styles.textNum}>425-567-8976</Text>
         </View>
         <View style={styles.iconText}>
-          <FontAwesomeIcon style={styles.icon} icon={faInfoCircle} size={25} />
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faInfoCircle}
+            size={25}
+            accessibilityLabel="Info"
+          />
           <Text style={styles.text}>Additional Information:</Text>
         </View>
         <View style={styles.info}>
           <Text style={styles.infoText}>{emergencyInput}</Text>
         </View>
         <View style={styles.buttonView}>
-          <Button title="Edit" onPress={() => setModalVisible(true)} />
+          <Button
+            color="white"
+            title="Edit"
+            onPress={() => setModalVisible(true)}
+          />
         </View>
         <View>
           <Modal isVisible={modalVisible}>
@@ -53,7 +72,11 @@ function EmergencyPage(props) {
                   onChangeText={text => onChangeText(text)}
                 />
                 <View style={styles.buttonView}>
-                  <Button title="Save" onPress={() => setModalVisible(false)} />
+                  <Button
+                    color="white"
+                    title="Save"
+                    onPress={() => setModalVisible(false)}
+                  />
                 </View>
               </View>
             </View>
@@ -65,10 +88,6 @@ function EmergencyPage(props) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 40,
-    color: '#013220',
-  },
   container: {
     flex: 1,
     backgroundColor: '#EAF9FF',
@@ -83,23 +102,12 @@ const styles = StyleSheet.create({
   buttonView: {
     width: 70,
     height: 40,
-    backgroundColor: '#6EAD58',
+    backgroundColor: '#013220',
     alignSelf: 'flex-end',
-    marginTop: 5,
+    marginTop: 10,
     marginBottom: 5,
     borderRadius: 5,
     marginRight: 12,
-  },
-  button: {
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2,
-    margin: 10,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   card: {
     backgroundColor: '#ABDA9A',
@@ -129,10 +137,10 @@ const styles = StyleSheet.create({
   info: {
     height: 120,
     width: 250,
-    backgroundColor: 'white',
+    backgroundColor: '#EAF9FF',
     borderWidth: 1,
-    paddingTop: 10,
     borderRadius: 5,
+    marginTop: 10,
   },
   text: {
     paddingTop: 10,
