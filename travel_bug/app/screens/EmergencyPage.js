@@ -16,8 +16,9 @@ import {
 import Modal from 'react-native-modal';
 
 function EmergencyPage(props) {
-  const [emergencyInput, setEmergencyInput] = React.useState('');
+  const [emergencyInput, onChangeText] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,8 +37,8 @@ function EmergencyPage(props) {
           <FontAwesomeIcon style={styles.icon} icon={faInfoCircle} size={25} />
           <Text style={styles.text}>Additional Information:</Text>
         </View>
-        <View>
-          <Text>In progress</Text>
+        <View style={styles.info}>
+          <Text>{emergencyInput}</Text>
         </View>
         <View style={styles.buttonView}>
           <Button title="Edit" onPress={() => setModalVisible(true)} />
@@ -49,7 +50,7 @@ function EmergencyPage(props) {
                 <TextInput
                   style={styles.input}
                   value={emergencyInput}
-                  onChange={e => setEmergencyInput(e.target.value)}
+                  onChangeText={text => onChangeText(text)}
                 />
                 <View style={styles.buttonView}>
                   <Button title="Save" onPress={() => setModalVisible(false)} />
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#ABDA9A',
     width: 300,
-    height: 410,
+    height: 350,
     padding: 20,
   },
   cardModal: {
