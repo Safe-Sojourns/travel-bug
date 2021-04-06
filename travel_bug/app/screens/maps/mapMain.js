@@ -30,8 +30,8 @@ const MapMain = () => {
         region={{
           latitude: currentLat,
           longitude: currentLong,
-          latitudeDelta: 0.035,
-          longitudeDelta: 0.0321,
+          latitudeDelta: 0.04,
+          longitudeDelta: 0.04,
         }}>
         <SearchAutoComplete
           searchTerm={searchTerm}
@@ -61,7 +61,7 @@ const MapMain = () => {
             }}>
             <Image
               source={require('./bug.png')}
-              style={{height: 40, width: 40}}
+              style={{ height: 40, width: 40 }}
               resizeMode="contain"
             />
             <PopUpFromMap
@@ -71,6 +71,14 @@ const MapMain = () => {
             />
           </Marker>
         ))}
+        {searchLat && searchLong ? (
+          <Marker
+            coordinate={{
+              latitude: searchLat,
+              longitude: searchLong,
+            }}
+          />
+        ) : null}
       </MapView>
     </SafeAreaView>
   );

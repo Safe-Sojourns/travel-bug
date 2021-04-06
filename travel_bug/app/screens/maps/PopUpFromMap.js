@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function PopUpFromMap({changePinView, pinView, currentModal}) {
+function PopUpFromMap({ changePinView, pinView, currentModal }) {
   return (
     <SafeAreaView>
       <GestureRecognizer onSwipeDown={() => changePinView()}>
@@ -50,7 +50,7 @@ function PopUpFromMap({changePinView, pinView, currentModal}) {
           style={styles.modal}
           animationType="bottom-half">
           <View style={styles.centeredView}>
-            <Text style={{textAlign: 'center'}}>⬇</Text>
+            <Text style={{ textAlign: 'center' }}>⬇</Text>
             <Text>Name: {currentModal.name}</Text>
             <Text>Address: {currentModal.description}</Text>
             <Text>Date: {currentModal.date}</Text>
