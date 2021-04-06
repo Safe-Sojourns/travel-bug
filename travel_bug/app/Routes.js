@@ -1,10 +1,12 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  Text,
-  View,
-  Button,
   ActivityIndicator,
   AsyncStorage,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,7 +14,7 @@ import AppTabs from './screens/AppTabs.js';
 
 const Stack = createStackNavigator();
 
-// const login = (userStr) => {
+// const login = (userOjb) => {
 //   return (
 //     value={{
 //       userStr,
@@ -28,44 +30,30 @@ const Stack = createStackNavigator();
 //   );
 // };
 
-const SignIn = ({navigation}) => {
+const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState({});
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Text>I am a login screen</Text>
+    <View style={styles.loginScreen}>
+      <TextInput
+        style={styles.inputField}
+        onChangeText={text => setEmail(text)}
+        defaultValue={email}
+        placeholder="Email"
+      />
+      <TextInput
+        style={styles.inputField}
+        onChangeText={text => setPassword(text)}
+        defaultValue={password}
+        placeholder="Password"
+      />
       <Button
         title="Log me in"
         onPress={() => {
-          login();
-        }}
-      />
-      <Button
-        title="Go to register"
-        onPress={() => {
-          navigation.navigate('Register');
-        }}
-      />
-    </View>
-  );
-};
-
-const Register = ({navigation}) => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Text>I am a register screen</Text>
-      <Button
-        title="Go to login"
-        onPress={() => {
-          navigation.navigate('Login');
+          // login(user);
+          setUser({email: email, password: password});
         }}
       />
     </View>
@@ -75,6 +63,21 @@ const Register = ({navigation}) => {
 const Routes = ({}) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
+  // useEffect(() => {
+  //   // check if the user is logged in or not with async function
+  //   AsyncStorage.getItem('user')
+  //     .then(userString => {
+  //       if (userString) {
+  //         // Decode it
+  //         login();
+  //       }
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   useEffect(() => {
     // check if the user is logged in or not with async function
@@ -93,12 +96,7 @@ const Routes = ({}) => {
 
   if (loading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+      <View style={styles.loadingIcon}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -106,7 +104,7 @@ const Routes = ({}) => {
 
   return (
     <NavigationContainer>
-      {/* {user ? (
+      {user ? (
         <AppTabs />
       ) : (
         <Stack.Navigator
@@ -115,12 +113,30 @@ const Routes = ({}) => {
           }}
           initialRouteName="Login">
           <Stack.Screen name="Login" component={SignIn} />
-          <Stack.Screen name="Register" component={Register} />
         </Stack.Navigator>
-      )} */}
-      <AppTabs />
+      )}
+      {/* <AppTabs /> */}
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  loginScreen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputField: {
+    height: 30,
+    width: 200,
+    margin: 12,
+    borderWidth: 1,
+  },
+  loadingIcon: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Routes;
