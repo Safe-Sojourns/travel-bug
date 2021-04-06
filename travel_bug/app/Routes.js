@@ -7,6 +7,7 @@ import {
   Button,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -31,34 +32,63 @@ const Stack = createStackNavigator();
 //   );
 // };
 
-const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState({});
+// const SignIn = () => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [user, setUser] = useState({});
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Text>I am a login screen</Text>
-      <Button
-        title="Log me in"
-        onPress={() => {
-          // login();
-        }}
-      />
-      <TextInput
-        style={styles.inputField}
-        onChangeText={text => setPassword(text)}
-        defaultValue={password}
-        placeholder="Password"
-      />
-    </View>
-  );
-};
+//   return (
+//     <View
+//       style={{
+//         flex: 1,
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//       }}>
+//       <Text>I am a login screen</Text>
+//       <Button
+//         title="Log me in"
+//         onPress={() => {
+//           // login();
+//         }}
+//         />
+//     <View style={styles.loginScreen} autoCapitalize="none">
+//       <Image
+//         accessible={true}
+//         accessibilityLable="Travel Bug"
+//         source={require('./screens/maps/bug.png')}
+//       />
+//       <TextInput
+//         style={styles.inputField}
+//         autoCapitalize="none"
+//         type="email"
+//         defaultValue={email}
+//         placeholder="Email"
+//         onChangeText={text => setEmail(text)}
+//       />
+//       <TextInput
+//         style={styles.inputField}
+//         autoCapitalize="none"
+//         onChangeText={text => setPassword(text)}
+//         defaultValue={password}
+//         placeholder="Password"
+//         secureTextEntry={true}
+//       />
+//       <TouchableOpacity
+//         accessible={true}
+//         accessibilityLable="Login button"
+//         onPress={() => {
+//           // login(user);
+//           setUser({email: email, password: password});
+//           setEmail('');
+//           setPassword('');
+//         }}>
+//         <View style={styles.button}>
+//           <Text style={styles.buttonText}>Let's Go Traveling!</Text>
+//         </View>
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
 
 function SplashScreenPage({navigation}) {
   setTimeout(() => {
@@ -107,7 +137,7 @@ const Routes = ({}) => {
 
   return (
     <NavigationContainer>
-      {user ? (
+      {/* {user ? (
         <AppTabs />
       ) : (
         <Stack.Navigator
@@ -118,8 +148,8 @@ const Routes = ({}) => {
           <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
           <Stack.Screen name="Login" component={AppTabs} />
         </Stack.Navigator>
-      )}
-      {/* <AppTabs /> */}
+      )} */}
+      <AppTabs />
     </NavigationContainer>
   );
 };
@@ -133,6 +163,35 @@ const styles = StyleSheet.create({
     top: 80,
     color: 'white',
     fontStyle: 'italic',
+  },
+  loginScreen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#EAF9FF',
+  },
+  inputField: {
+    height: 30,
+    width: 200,
+    margin: 12,
+    borderWidth: 1,
+    backgroundColor: 'white',
+    color: '#6EAD58',
+  },
+  loadingIcon: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    elevation: 8,
+    backgroundColor: '#ABDA9A',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  buttonText: {
+    color: '#5B58AD',
   },
 });
 
