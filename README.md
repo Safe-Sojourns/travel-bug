@@ -30,7 +30,13 @@ WHAT DOES THE APP DO HERE
 
 # Tech stack
 -React Native
+-React Navigation
 -Jest
+-React Testing Libraries
+-Express
+-Axios
+-MongoDB
+-PostgreSQL
 
 # Technical Challenges
 
