@@ -16,21 +16,22 @@ const MapMain = () => {
   const [currentLong, setCurrentLong] = useState(12.4922);
   const [searchLat, setSearchLat] = useState();
   const [searchLong, setSearchLong] = useState();
+  const [currentModal, setCurrentModal] = useState({});
 
   const changePinView = () => {
     setPinView(!pinView);
   };
 
   return (
-    <View>
+    <SafeAreaView>
       <MapView
-        style={{ height: '90%', width: '100%' }}
+        style={{ height: '100%', width: '100%' }}
         provider={PROVIDER_GOOGLE}
         region={{
           latitude: currentLat,
           longitude: currentLong,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
+          latitudeDelta: 0.035,
+          longitudeDelta: 0.0321,
         }}>
         <SearchAutoComplete
           searchTerm={searchTerm}
@@ -47,6 +48,9 @@ const MapMain = () => {
         {arrayOfEventLocations.map((event, index) => (
           <Marker
             onPress={() => {
+              setCurrentModal(event);
+              setCurrentLat(event.latitude);
+              setCurrentLong(event.longitude);
               setPinView(!pinView);
             }}
             key={event.eventIdNumber}
@@ -57,14 +61,18 @@ const MapMain = () => {
             }}>
             <Image
               source={require('./bug.png')}
-              style={{ height: 40, width: 40 }}
+              style={{height: 40, width: 40}}
               resizeMode="contain"
+            />
+            <PopUpFromMap
+              changePinView={changePinView}
+              pinView={pinView}
+              currentModal={currentModal}
             />
           </Marker>
         ))}
       </MapView>
-      <PopUpFromMap changePinView={changePinView} pinView={pinView} />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -72,19 +80,28 @@ export default MapMain;
 
 const arrayOfEventLocations = [
   {
-    name: 'Colosseum of Rome',
-    longitude: 12.4922,
-    latitude: 41.8902,
-    eventIdNumber: 1,
-  },
-  {
     name: 'Roman Forum',
+    description: 'Via della Salara Vecchia, 5/6, 00186 Roma RM, Italy',
+    date: 'March 16, 2021',
+    time: '1100 am',
     longitude: 12.4853,
     latitude: 41.8925,
     eventIdNumber: 2,
   },
   {
+    name: 'Colosseum of Rome',
+    description: 'Piazza del Colosseo, 1, 00184 Roma RM, Italy',
+    date: 'March 16, 2021',
+    time: '0900 am',
+    longitude: 12.4922,
+    latitude: 41.8902,
+    eventIdNumber: 1,
+  },
+  {
     name: 'Pantheon',
+    description: 'Piazza della Rotonda, 00186 Roma RM, Italy',
+    date: 'March 16, 2021',
+    time: '1300 pm',
     longitude: 12.4748,
     latitude: 41.8996,
     eventIdNumber: 3,
