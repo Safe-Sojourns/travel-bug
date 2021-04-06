@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   textBox: {
     backgroundColor: '#ABDA9A',
-    borderRadius: 5,
+    borderRadius: 15,
     borderWidth: 2,
     borderColor: '#5B58AD',
     padding: 5,
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    top: 90,
+    top: 50,
   },
 });
 
-function PopUpFromMap({ changePinView, pinView }) {
+function PopUpFromMap({changePinView, pinView, currentModal}) {
   return (
     <SafeAreaView>
       <GestureRecognizer onSwipeDown={() => changePinView()}>
@@ -50,8 +50,11 @@ function PopUpFromMap({ changePinView, pinView }) {
           style={styles.modal}
           animationType="bottom-half">
           <View style={styles.centeredView}>
-            <Text style={{ textAlign: 'center' }}>⬇</Text>
-            <Text>Name: </Text>
+            <Text style={{textAlign: 'center'}}>⬇</Text>
+            <Text>Name: {currentModal.name}</Text>
+            <Text>Address: {currentModal.description}</Text>
+            <Text>Date: {currentModal.date}</Text>
+            <Text>Time: {currentModal.time}</Text>
             <View style={styles.buttonContainer}>
               <View style={styles.textBox}>
                 <Button
