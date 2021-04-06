@@ -1,6 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TextInput} from 'react-native';
-import {Card, Button} from 'react-native-elements';
+import {
+  Button,
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TextInput,
+} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faAmbulance,
@@ -15,9 +21,7 @@ function EmergencyPage(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Card containerStyle={styles.card} title="title">
-        <Card.Title style={styles.titleText}>EMERGENCY INFORMATION</Card.Title>
-        <Card.Divider />
+      <View style={styles.card}>
         <View style={styles.iconText}>
           <FontAwesomeIcon style={styles.icon} icon={faAmbulance} size={25} />
           <Text style={styles.text}>Emergency:</Text>
@@ -41,11 +45,7 @@ function EmergencyPage(props) {
         <View>
           <Modal isVisible={modalVisible}>
             <View style={styles.modal}>
-              <Card containerStyle={styles.cardModal} title="title">
-                <Card.Title style={styles.titleText}>
-                  Add additional Information
-                </Card.Title>
-                <Card.Divider />
+              <View containerStyle={styles.cardModal} title="title">
                 <TextInput
                   style={styles.input}
                   value={emergencyInput}
@@ -54,11 +54,11 @@ function EmergencyPage(props) {
                 <View style={styles.buttonView}>
                   <Button title="Save" onPress={() => setModalVisible(false)} />
                 </View>
-              </Card>
+              </View>
             </View>
           </Modal>
         </View>
-      </Card>
+      </View>
     </SafeAreaView>
   );
 }
