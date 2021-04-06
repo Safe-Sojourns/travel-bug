@@ -4,6 +4,8 @@ import {
   View,
   Button,
   ActivityIndicator,
+  ImageBackground,
+  StyleSheet,
   AsyncStorage,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -53,74 +55,80 @@ const SignIn = ({navigation}) => {
   );
 };
 
-const Register = ({navigation}) => {
+function SplashScreenPage({navigation}) {
+  setTimeout(() => {
+    navigation.navigate('Login');
+  }, 5000);
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Text>I am a register screen</Text>
-      <Button
-        title="Go to login"
-        onPress={() => {
-          navigation.navigate('Login');
-        }}
-      />
-    </View>
+    <ImageBackground
+      style={{flex: 1}}
+      source={require('./screens/assets/globe.gif')}>
+      <Text style={styles.splashscreen}>Travel Bug</Text>
+    </ImageBackground>
   );
-};
+}
 
 const Routes = ({}) => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // check if the user is logged in or not with async function
-    AsyncStorage.getItem('user')
-      .then(userString => {
-        if (userString) {
-          // Decode it
-          login();
-        }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   // check if the user is logged in or not with async function
+  //   AsyncStorage.getItem('user')
+  //     .then(userString => {
+  //       if (userString) {
+  //         // Decode it
+  //         login();
+  //       }
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
-  if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //       }}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <NavigationContainer>
-      {/* {user ? (
+      {user ? (
         <AppTabs />
       ) : (
         <Stack.Navigator
           screenOptions={{
             header: () => null,
           }}
-          initialRouteName="Login">
-          <Stack.Screen name="Login" component={SignIn} />
-          <Stack.Screen name="Register" component={Register} />
+          initialRouteName="SplashScreen">
+          <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
+          <Stack.Screen name="Login" component={AppTabs} />
         </Stack.Navigator>
-      )} */}
-      <AppTabs />
+      )}
+      {/* <AppTabs /> */}
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  splashscreen: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    display: 'flex',
+    top: 80,
+    color: 'white',
+    fontStyle: 'italic',
+  },
+});
 
 export default Routes;
