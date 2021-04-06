@@ -6,7 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 // import WelcomeScreen from './screens/WelcomeScreen.js';
 import Itinerary from './screens/Itinerary.js';
-import mapMain from './screens/mapMain.js';
+import mapMain from './screens/maps/mapMain.js';
 import EmergencyPage from './screens/EmergencyPage.js';
 import Messages from './screens/Messages.js';
 
