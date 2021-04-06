@@ -29,8 +29,8 @@ const MapMain = () => {
         region={{
           latitude: currentLat,
           longitude: currentLong,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
+          latitudeDelta: 0.04,
+          longitudeDelta: 0.04,
         }}>
         <SearchAutoComplete
           searchTerm={searchTerm}
@@ -47,6 +47,8 @@ const MapMain = () => {
         {arrayOfEventLocations.map((event, index) => (
           <Marker
             onPress={() => {
+              setCurrentLat(event.latitude);
+              setCurrentLong(event.longitude);
               setPinView(!pinView);
             }}
             key={event.eventIdNumber}
@@ -62,6 +64,14 @@ const MapMain = () => {
             />
           </Marker>
         ))}
+        {searchLat && searchLong ? (
+          <Marker
+            coordinate={{
+              latitude: searchLat,
+              longitude: searchLong,
+            }}
+          />
+        ) : null}
       </MapView>
       <PopUpFromMap changePinView={changePinView} pinView={pinView} />
     </SafeAreaView>

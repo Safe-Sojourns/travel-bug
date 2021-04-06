@@ -5,10 +5,10 @@ import { View, StyleSheet, Text, Image, SafeAreaView } from 'react-native';
 import key from './keyConfig.js';
 
 function SearchAutoComplete({
-  searchLat,
   searchLong,
-  setSearchLat,
+  searchLat,
   setSearchLong,
+  setSearchLat,
   setCurrentLong,
   currentLat,
   currentLong,
@@ -37,8 +37,8 @@ function SearchAutoComplete({
       fetchDetails={true}
       renderDescription={row => row.description} // custom description render
       onPress={(data, details) => {
-        console.log('data: ', data);
-        console.log('details: ', details);
+        setSearchLat(details.geometry.location.lat);
+        setSearchLong(details.geometry.location.lng);
       }}
       getDefaultValue={() => ''}
       query={{
