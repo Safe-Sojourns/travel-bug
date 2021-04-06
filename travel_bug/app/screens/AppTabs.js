@@ -12,8 +12,6 @@ import Messages from './Messages.js';
 
 const Tabs = createBottomTabNavigator();
 
-// TouchableOpacity required??
-
 const AppTabs = ({navigation}) => {
   return (
     <Tabs.Navigator

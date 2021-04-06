@@ -34,7 +34,7 @@ WHAT DOES THE APP DO HERE
 -Jest
 -React Testing Libraries
 -Express
--Axios
+-Firebase
 -MongoDB
 -PostgreSQL
 
