@@ -2,6 +2,7 @@ import React from 'react';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import {View, StyleSheet, Text, Image, SafeAreaView} from 'react-native';
+import key from './keyConfig.js';
 
 function SearchAutoComplete({
   searchLat,
@@ -15,7 +16,7 @@ function SearchAutoComplete({
   searchTerm,
   setSearchTerm,
 }) {
-  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyAF8SjzcLDDOgUBzoy7zUYScF7LcdhZXDM&input=p=${currentLat}, ${currentLong}&radius=2000`;
+  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${key}&input=p=${currentLat}, ${currentLong}&radius=2000`;
 
   const home = 'Pantheon';
 
@@ -36,7 +37,7 @@ function SearchAutoComplete({
         getDefaultValue={() => ''}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: "AIzaSyAF8SjzcLDDOgUBzoy7zUYScF7LcdhZXDM",
+          key: `${key}`,
           language: 'en', // language of the results
           location: `${currentLat},${currentLong}`,
           radius: 2000
