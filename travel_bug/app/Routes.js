@@ -74,7 +74,7 @@ const Register = ({navigation}) => {
 
 const Routes = ({}) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState('Luci');
 
   useEffect(() => {
     // check if the user is logged in or not with async function
@@ -105,7 +105,7 @@ const Routes = ({}) => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer navigation={'type'}>
       {/* {user ? (
         <AppTabs />
       ) : (
@@ -118,7 +118,7 @@ const Routes = ({}) => {
           <Stack.Screen name="Register" component={Register} />
         </Stack.Navigator>
       )} */}
-      <AppTabs />
+      <AppTabs user={user} />
     </NavigationContainer>
   );
 };

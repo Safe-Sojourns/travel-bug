@@ -1,9 +1,26 @@
-import React from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  TouchableOpacityComponent,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faClipboardList, faMapMarkedAlt, faExclamationTriangle, faCommentDots} from '@fortawesome/free-solid-svg-icons';
+import {
+  faClipboardList,
+  faMapMarkedAlt,
+  faExclamationTriangle,
+  faCommentDots,
+} from '@fortawesome/free-solid-svg-icons';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator, tabBarIcon, tabBarOptions, screenOptions} from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+  tabBarIcon,
+  tabBarOptions,
+  screenOptions,
+} from '@react-navigation/bottom-tabs';
 import Itinerary from './Itinerary.js';
 import mapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
@@ -13,7 +30,8 @@ const Tabs = createBottomTabNavigator();
 
 // TouchableOpacity required??
 
-const AppTabs = ({navigation}) => {
+const AppTabs = ({user}) => {
+  const [urgentMessage, setUrgentMessage] = useState(false);
   return (
     <Tabs.Navigator
       barStyle={{backgroundColor: '#3BAD87'}}
@@ -65,7 +83,19 @@ const AppTabs = ({navigation}) => {
       <Tabs.Screen name="Itinerary" component={Itinerary} />
       <Tabs.Screen name="Map" component={mapMain} />
       <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
-      <Tabs.Screen name="Messages" component={Messages} />
+      <Tabs.Screen
+        name="Messages"
+        options={!urgentMessage ? null : {tabBarBadge: '!'}}>
+        {props => (
+          <Messages
+            {...props}
+            user={user}
+            urgentMessage={urgentMessage}
+            setUrgentMessage={setUrgentMessage}
+            admin={'true'}
+          />
+        )}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };
