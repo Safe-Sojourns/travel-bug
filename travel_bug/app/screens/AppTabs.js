@@ -1,9 +1,19 @@
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faClipboardList, faMapMarkedAlt, faExclamationTriangle, faCommentDots} from '@fortawesome/free-solid-svg-icons';
+import {
+  faClipboardList,
+  faMapMarkedAlt,
+  faExclamationTriangle,
+  faCommentDots,
+} from '@fortawesome/free-solid-svg-icons';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator, tabBarIcon, tabBarOptions, screenOptions} from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+  tabBarIcon,
+  tabBarOptions,
+  screenOptions,
+} from '@react-navigation/bottom-tabs';
 import Itinerary from './Itinerary.js';
 import mapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
@@ -65,7 +75,11 @@ const AppTabs = ({navigation}) => {
       <Tabs.Screen name="Itinerary" component={Itinerary} />
       <Tabs.Screen name="Map" component={mapMain} />
       <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
-      <Tabs.Screen name="Messages" component={Messages} />
+      <Tabs.Screen
+        name="Messages"
+        component={Messages}
+        options={{tabBarBadge: '!'}}
+      />
     </Tabs.Navigator>
   );
 };
