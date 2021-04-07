@@ -9,16 +9,15 @@ function SearchAutoComplete({
   searchLat,
   setSearchLong,
   setSearchLat,
-  setCurrentLong,
+  setCenteredLong,
+  setCenteredLat,
   currentLat,
   currentLong,
-  setCurrentLat,
   searchTerm,
   setSearchTerm,
+  setSearchAddr,
 }) {
-  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${key}&input=p=${currentLat}, ${currentLong}&radius=2000`;
 
-  const home = 'Pantheon';
   const homePlace = { description: 'Dreaming Rome Hostel', geometry: { location: { lat: 41.88194, lng: 12.50947 } } };
   const workPlace = { description: 'Embassy', geometry: { location: { lat: 41.907188, lng: 12.490300 } } };
   const hospital = { description: 'Hospital', geometry: { location: { lat: 41.885970, lng: 12.503200 } } };
@@ -28,6 +27,7 @@ function SearchAutoComplete({
   return (
     <GooglePlacesAutocomplete
       placeholder="Search"
+      keyboardShouldPersistTaps='never'
       minLength={2} // minimum length of text to search
       autoFocus
       returnKeyType={"search"}// Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytypehtml#keyboardappearance
@@ -37,6 +37,9 @@ function SearchAutoComplete({
       onPress={(data, details) => {
         setSearchLat(details.geometry.location.lat);
         setSearchLong(details.geometry.location.lng);
+        setCenteredLat(details.geometry.location.lat);
+        setCenteredLong(details.geometry.location.lng);
+        setSearchAddr(details.formatted_address);
       }}
       getDefaultValue={() => ''}
       query={{
