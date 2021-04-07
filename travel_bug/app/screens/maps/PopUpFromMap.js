@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, View, StyleSheet, Text, SafeAreaView, Linking, TouchableWithoutFeedback} from 'react-native';
-import { Button, Linking, View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import Modal from 'react-native-modal';
 
@@ -91,13 +90,6 @@ function PopUpFromMap({ changePinView, pinView, currentModal, centeredLat, cente
                   title="Get Directions"
                   accesibilityLabel="Get Directions"
                   onPress={() => Linking.openURL(`http://maps.apple.com/?sll=${centeredLat},${centeredLong}&daddr=${currentModal.description}`)}
-                  title="Google me"
-                  accesibilityLabel="Google me"
-                  onPress={() =>
-                    Linking.openURL(
-                      `https://www.google.com/search?q=${currentModal.name}`,
-                    )
-                  }
                 />
               </View>
               <View style={styles.textBox}>
