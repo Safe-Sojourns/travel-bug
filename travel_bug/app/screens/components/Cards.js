@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 320,
     display: 'flex',
+    left: 20,
   },
   paragraph: {
     fontSize: 14,
