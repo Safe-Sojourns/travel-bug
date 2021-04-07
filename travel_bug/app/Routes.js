@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
+  ImageBackground,
   AsyncStorage,
   StyleSheet,
   Image,
@@ -13,115 +14,48 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Authenticate from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
+import SignIn from './navigation/SignIn';
 
 const Stack = createStackNavigator();
 
-const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState({});
-
+function SplashScreenPage({navigation}) {
+  setTimeout(() => {
+    navigation.navigate('Login');
+  }, 5000);
   return (
-    <View
-      style={styles.loginScreen}
-      accessible={true}
-      accessibilityLabel="Login screen"
-      autoCapitalize="none">
-      <Text
-        style={styles.introText}
-        accessibilityLabel="Welcome to travel bug"
-        accessibilityRole="text">
-        Weclome to Travel Bug
-      </Text>
-      <Image
-        accessibilityRole="image"
-        accessibilityLabel="Travel Bug"
-        source={require('./screens/maps/bug.png')}
-      />
-      <TextInput
-        style={styles.inputField}
-        autoCapitalize="none"
-        type="email"
-        defaultValue={email}
-        placeholder="Email"
-        onChangeText={text => setEmail(text)}
-      />
-      <TextInput
-        style={styles.inputField}
-        autoCapitalize="none"
-        onChangeText={text => setPassword(text)}
-        defaultValue={password}
-        placeholder="Password"
-        secureTextEntry={true}
-      />
-      <TouchableOpacity
-        accessible={true}
-        accessibilityLabel="Login button"
-        onPress={() => {
-          setUser({email: email, password: password});
-          Authenticate();
-          setEmail('');
-          setPassword('');
-        }}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Let's Go Traveling!</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <ImageBackground
+      style={{flex: 1}}
+      source={require('./screens/assets/globe.gif')}>
+      <Text style={styles.splashscreen}>Travel Bug</Text>
+    </ImageBackground>
   );
-};
+}
 
 const Routes = ({}) => {
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // check if the user is logged in or not with async function
-    AsyncStorage.getItem('user')
-      .then(userString => {
-        if (userString) {
-          // Decode it
-        }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     setLoading(false);
-  //   }
-  // }, []);
-
-  if (loading) {
-    return (
-      <View style={styles.loadingIcon}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <NavigationContainer>
-      {/* {user ? (
-        <AppTabs />
-      ) : (
-        <Stack.Navigator
-          screenOptions={{
-            header: () => null,
-          }}
-          initialRouteName="Login">
-          <Stack.Screen name="Login" component={SignIn} />
-        </Stack.Navigator>
-      )} */}
-      <AppTabs />
+      <Stack.Navigator
+        screenOptions={{
+          header: () => null,
+        }}
+        initialRouteName="SplashScreen">
+        <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
+        <Stack.Screen name="Login" component={SignIn} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
+  splashscreen: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    display: 'flex',
+    top: 80,
+    color: 'white',
+    fontStyle: 'italic',
+  },
   loginScreen: {
     flex: 1,
     alignItems: 'center',
