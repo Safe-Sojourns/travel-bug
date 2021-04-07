@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   ImageBackground,
-  StyleSheet,
   AsyncStorage,
-  Button,
+  StyleSheet,
+  Image,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,7 +12,9 @@ import {
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import Authenticate from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
+import SignIn from './navigation/SignIn';
 
 const Stack = createStackNavigator();
 
@@ -60,13 +62,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#EAF9FF',
   },
+  introText: {
+    color: '#6EAD58',
+    fontSize: 35,
+    marginBottom: 50,
+  },
   inputField: {
     height: 30,
     width: 200,
     margin: 12,
+    paddingLeft: 5,
     borderWidth: 1,
     backgroundColor: 'white',
-    color: '#6EAD58',
+    color: '#5B58AD',
   },
   loadingIcon: {
     flex: 1,

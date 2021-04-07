@@ -29,7 +29,6 @@ const Itinerary = props => {
         </Text>
         <Calendar />
       </View>
-
       <ScrollView style={{height: 500}}>
         <CardDetails />
         <CardDetails />

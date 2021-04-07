@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {SafeAreaView, View, Text} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-const Authenticate = () => {
+const Authenticate = (props) => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState('');
+  const {person} = props;
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -17,7 +18,7 @@ const Authenticate = () => {
 
   useEffect(() => {
     auth()
-      .createUserWithEmailAndPassword('aaronfink@tempmail.com', 'password')
+      .createUserWithEmailAndPassword(person.email, person.password)
       .then(() => {
         console.log('User signed in!');
       })
