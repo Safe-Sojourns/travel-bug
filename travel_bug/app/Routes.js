@@ -16,23 +16,29 @@ import SignIn from './navigation/SignIn';
 
 const Stack = createStackNavigator();
 
-function SplashScreenPage({navigation}) {
-  setTimeout(() => {
-    navigation.navigate('Login');
-  }, 5000);
-  return (
-    <ImageBackground
-      style={{flex: 1}}
-      source={require('./screens/assets/globe.gif')}>
-      <Text style={styles.splashscreen}>Travel Bug</Text>
-    </ImageBackground>
-  );
-}
+// function SplashScreenPage({navigation}) {
+//   setTimeout(() => {
+//     navigation.navigate('Login');
+//   }, 5000);
+//   return (
+//     <ImageBackground
+//       style={{flex: 1}}
+//       source={require('./screens/assets/globe.gif')}>
+//       <Text style={styles.splashscreen}>Travel Bug</Text>
+//     </ImageBackground>
+//   );
+// }
 
 const Routes = () => {
   const {user, setUser, logout} = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
-  // const [loading, setLoading] = useState(true);
+  const [splash, setSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSplash(false);
+    }, 5000);
+  }, []);
 
   const onAuthStateChanged = (user) => {
     setUser(user);
@@ -43,7 +49,6 @@ const Routes = () => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    // setLoading(false);
     return subscriber;
   }, []);
 
@@ -51,28 +56,19 @@ const Routes = () => {
     return null;
   }
 
-  // if (initializing) {
-  //   return (
-  //     <Stack.Screen
-  //       name="SplashScreen"
-  //       component={SplashScreenPage}
-  //       options={{header: () => null}}
-  //     />
-  //   );
-  // }
-
-  // if (loading) {
-  //   return <View name="SplashScreen" component={SplashScreenPage} />;
-  // }
+  if (splash) {
+    return (
+      <ImageBackground
+        style={{flex: 1}}
+        source={require('./screens/assets/globe.gif')}>
+        <Text style={styles.splashscreen}>Travel Bug</Text>
+      </ImageBackground>
+    );
+  }
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
-        {/* <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreenPage}
-          options={{header: () => null}}
-        /> */}
         {user ? (
           <Stack.Screen
             name="Travel Bug"
@@ -103,21 +99,6 @@ const Routes = () => {
     </NavigationContainer>
   );
 };
-
-// return (
-//   <NavigationContainer>
-//     <Stack.Navigator
-//       screenOptions={{
-//         header: () => null,
-//       }}
-//       initialRouteName="SplashScreen">
-//       <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
-//       <Stack.Screen name="Login" component={SignIn} />
-//       <Stack.Screen name="AppTabs" component={AppTabs} />
-//     </Stack.Navigator>
-//     {/* {user ? <AppTabs /> : <SignIn />} */}
-//   </NavigationContainer>
-// );
 
 const styles = StyleSheet.create({
   splashscreen: {
