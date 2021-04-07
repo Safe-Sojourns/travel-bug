@@ -40,7 +40,7 @@ const Routes = () => {
     }, 5000);
   }, []);
 
-  const onAuthStateChanged = (user) => {
+  const onAuthStateChanged = user => {
     setUser(user);
     if (initializing) {
       setInitializing(false);
