@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, View, ScrollView} from 'react-native';
+import {Text, StyleSheet, View, ScrollView, SafeAreaView} from 'react-native';
 import Calendar from './components/Calendar';
 import CardDetails from './components/Cards';
 
@@ -22,14 +22,13 @@ const Itinerary = props => {
   var month = months[new Date().getMonth()];
   var year = new Date().getFullYear();
   return (
-    <View style={styles.calendar}>
+    <SafeAreaView style={styles.calendar}>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.calendarDisplay}>
           {date}th {month}, {year}
         </Text>
         <Calendar />
       </View>
-
       <ScrollView style={{height: 500}}>
         <CardDetails />
         <CardDetails />
@@ -38,7 +37,7 @@ const Itinerary = props => {
         <CardDetails />
         <CardDetails />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
