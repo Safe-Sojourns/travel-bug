@@ -22,24 +22,21 @@ const Itinerary = props => {
   var month = months[new Date().getMonth()];
   var year = new Date().getFullYear();
   return (
-    <SafeAreaView>
-      <View style={styles.calendar}>
-        <View style={{alignItems: 'center'}}>
-          <Text testID="date" style={styles.calendarDisplay}>
-            {date}th {month}, {year}
-          </Text>
-          <Calendar />
-        </View>
-
-        <ScrollView style={{height: 500}}>
-          <CardDetails testID="card" />
-          <CardDetails />
-          <CardDetails />
-          <CardDetails />
-          <CardDetails />
-          <CardDetails />
-        </ScrollView>
+    <SafeAreaView style={styles.calendar}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.calendarDisplay}>
+          {date}th {month}, {year}
+        </Text>
+        <Calendar />
       </View>
+      <ScrollView style={{height: 500}}>
+        <CardDetails />
+        <CardDetails />
+        <CardDetails />
+        <CardDetails />
+        <CardDetails />
+        <CardDetails />
+      </ScrollView>
     </SafeAreaView>
   );
 };
