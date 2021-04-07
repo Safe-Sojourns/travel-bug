@@ -74,7 +74,7 @@ const Register = ({navigation}) => {
 
 const Routes = ({}) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState('Luci');
+  const [user, setUser] = useState('user');
 
   useEffect(() => {
     // check if the user is logged in or not with async function
