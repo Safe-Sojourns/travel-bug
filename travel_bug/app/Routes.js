@@ -1,15 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {
-  ActivityIndicator,
   Button,
   ImageBackground,
-  AsyncStorage,
   StyleSheet,
-  Image,
   Text,
-  TextInput,
   TouchableOpacity,
-  SafeAreaView,
   View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -35,8 +30,9 @@ function SplashScreenPage({navigation}) {
 }
 
 const Routes = () => {
-  const {user, setUser} = useContext(AuthContext);
+  const {user, setUser, logout} = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   const onAuthStateChanged = (user) => {
     setUser(user);
@@ -47,6 +43,7 @@ const Routes = () => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    // setLoading(false);
     return subscriber;
   }, []);
 
@@ -54,60 +51,73 @@ const Routes = () => {
     return null;
   }
 
-  // if (!user) {
+  // if (initializing) {
   //   return (
-  //     <NavigationContainer>
-  //       <SafeAreaView>
-  //         <View>
-  //           <Text>Login</Text>
-  //         </View>
-  //       </SafeAreaView>
-  //     </NavigationContainer>
+  //     <Stack.Screen
+  //       name="SplashScreen"
+  //       component={SplashScreenPage}
+  //       options={{header: () => null}}
+  //     />
   //   );
   // }
 
-  // return (
-  //   <NavigationContainer>
-  //     <SafeAreaView>
-  //       <View>
-  //         <AppTabs />
-  //       </View>
-  //     </SafeAreaView>
-  //   </NavigationContainer>
-  // );
-  console.log('user: ', user);
+  // if (loading) {
+  //   return <View name="SplashScreen" component={SplashScreenPage} />;
+  // }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {!user ? (
-          <Stack.Screen name="Login" component={SignIn} />
-        ) : (
+      <Stack.Navigator initialRouteName="SplashScreen">
+        {/* <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreenPage}
+          options={{header: () => null}}
+        /> */}
+        {user ? (
           <Stack.Screen
             name="Travel Bug"
             component={AppTabs}
-            options={{headerRight: () => <Button title="Logout" />}}
+            options={{
+              headerRight: () => (
+                <TouchableOpacity accessible={true} accessibilityLabel="logout">
+                  <Button title="Logout" onPress={() => logout()} />
+                </TouchableOpacity>
+              ),
+              headerStyle: {
+                backgroundColor: '#ABDA9A',
+              },
+              headerTintColor: '#5B58AD',
+              headerTitleStyle: {
+                fontWeight: '900',
+              },
+            }}
+          />
+        ) : (
+          <Stack.Screen
+            name="Login"
+            component={SignIn}
+            options={{header: () => null}}
           />
         )}
       </Stack.Navigator>
     </NavigationContainer>
   );
-
-  // return (
-  //   <NavigationContainer>
-  //     <Stack.Navigator
-  //       screenOptions={{
-  //         header: () => null,
-  //       }}
-  //       initialRouteName="SplashScreen">
-  //       <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
-  //       <Stack.Screen name="Login" component={SignIn} />
-  //       <Stack.Screen name="AppTabs" component={AppTabs} />
-  //     </Stack.Navigator>
-  //     {/* {user ? <AppTabs /> : <SignIn />} */}
-  //   </NavigationContainer>
-  // );
 };
+
+// return (
+//   <NavigationContainer>
+//     <Stack.Navigator
+//       screenOptions={{
+//         header: () => null,
+//       }}
+//       initialRouteName="SplashScreen">
+//       <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
+//       <Stack.Screen name="Login" component={SignIn} />
+//       <Stack.Screen name="AppTabs" component={AppTabs} />
+//     </Stack.Navigator>
+//     {/* {user ? <AppTabs /> : <SignIn />} */}
+//   </NavigationContainer>
+// );
 
 const styles = StyleSheet.create({
   splashscreen: {

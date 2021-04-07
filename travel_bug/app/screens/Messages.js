@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     height: 400,
     flex: 1,
-    backgroundColor: '#ABDA9A',
+    backgroundColor: '#EAF9FF',
   },
   textInput: {
     height: 'auto',
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   viewHeader: {
-    backgroundColor: 'white',
+    backgroundColor: '#EAF9FF',
     height: 90,
     display: 'flex',
     justifyContent: 'center',
