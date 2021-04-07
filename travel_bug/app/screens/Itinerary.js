@@ -25,14 +25,14 @@ const Itinerary = props => {
     <SafeAreaView>
       <View style={styles.calendar}>
         <View style={{alignItems: 'center'}}>
-          <Text style={styles.calendarDisplay}>
+          <Text testID="date" style={styles.calendarDisplay}>
             {date}th {month}, {year}
           </Text>
           <Calendar />
         </View>
 
         <ScrollView style={{height: 500}}>
-          <CardDetails />
+          <CardDetails testID="card" />
           <CardDetails />
           <CardDetails />
           <CardDetails />

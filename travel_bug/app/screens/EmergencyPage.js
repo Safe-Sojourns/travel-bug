@@ -29,8 +29,10 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="Ambulance"
           />
-          <Text style={styles.text}>Emergency:</Text>
-          <Text style={styles.textNum}>911</Text>
+          <Text testID="emergency" style={styles.text}>
+            Emergency:
+          </Text>
+          <Text style={styles.textNum}>112</Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -39,8 +41,10 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="User"
           />
-          <Text style={styles.text}>Staff:</Text>
-          <Text style={styles.textNum}>425-567-8976</Text>
+          <Text testID="staff" style={styles.text}>
+            Staff:
+          </Text>
+          <Text style={styles.textNum}>+ 1 425-567-8976</Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -49,29 +53,34 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="Info"
           />
-          <Text style={styles.text}>Additional Information:</Text>
+          <Text testID="addInfo" style={styles.text}>
+            Additional Information:
+          </Text>
         </View>
         <View style={styles.info}>
           <Text style={styles.infoText}>{emergencyInput}</Text>
         </View>
         <View style={styles.buttonView}>
           <Button
+            testID="editButton"
             color="white"
             title="Edit"
             onPress={() => setModalVisible(true)}
           />
         </View>
         <View>
-          <Modal isVisible={modalVisible}>
+          <Modal testID="modal" isVisible={modalVisible}>
             <View style={styles.modal}>
               <View containerStyle={styles.cardModal} title="title">
                 <TextInput
+                  testID="input"
                   style={styles.input}
                   value={emergencyInput}
                   onChangeText={text => onChangeText(text)}
                 />
-                <View style={styles.buttonView}>
+                <View testID="view" style={styles.buttonView}>
                   <Button
+                    testID="saveButton"
                     color="white"
                     title="Save"
                     onPress={() => setModalVisible(false)}
