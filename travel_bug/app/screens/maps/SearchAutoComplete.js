@@ -11,8 +11,8 @@ function SearchAutoComplete({
   setSearchLat,
   setCenteredLong,
   setCenteredLat,
-  currentLat,
-  currentLong,
+  centeredLat,
+  centeredLong,
   searchTerm,
   setSearchTerm,
   setSearchAddr,
@@ -27,7 +27,6 @@ function SearchAutoComplete({
   return (
     <GooglePlacesAutocomplete
       placeholder="Search"
-      keyboardShouldPersistTaps='never'
       minLength={2} // minimum length of text to search
       autoFocus
       returnKeyType={"search"}// Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytypehtml#keyboardappearance
@@ -46,7 +45,7 @@ function SearchAutoComplete({
         // available options: https://developers.google.com/places/web-service/autocomplete
         key: `${key}`,
         language: 'en', // language of the results
-        location: `${currentLat},${currentLong}`,
+        location: `${centeredLat},${centeredLong}`,
         radius: 2000,
       }}
       styles={{
@@ -82,8 +81,11 @@ function SearchAutoComplete({
       ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
     // eslint-disable-next-line react/jsx-one-expression-per-line
+      keyboardShouldPersistTaps="always"
     />
   );
 }
 
 export default SearchAutoComplete;
+
+// keyboardDismissMode='on-drag'

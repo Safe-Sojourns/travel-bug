@@ -91,11 +91,11 @@ const MapMain = () => {
         ))}
         {searchLat && searchLong ? (
           <Marker
+            onPress={createTwoButtonAlert}
             coordinate={{
               latitude: searchLat,
               longitude: searchLong,
             }}
-            onPress={createTwoButtonAlert}
           />
         ) : null}
       </MapView>
