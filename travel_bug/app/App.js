@@ -1,10 +1,15 @@
 import React from 'react';
 import Routes from './Routes';
-// import Authenticate from './navigation/AuthProvider';
+import {AuthProvider} from './navigation/AuthProvider';
+import {Text} from 'react-native';
 
 const App = () => {
-  return <Routes />;
-  // return <Authenticate />;
+  return (
+    // <Text>Hello</Text>
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
+  );
 };
 
 export default App;

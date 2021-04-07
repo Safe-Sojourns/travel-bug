@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ActivityIndicator,
+  Button,
   ImageBackground,
   AsyncStorage,
   StyleSheet,
@@ -8,11 +9,13 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  SafeAreaView,
   View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Authenticate from './navigation/AuthProvider';
+import auth from '@react-native-firebase/auth';
+import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 import SignIn from './navigation/SignIn';
 
@@ -31,19 +34,79 @@ function SplashScreenPage({navigation}) {
   );
 }
 
-const Routes = ({}) => {
+const Routes = () => {
+  const {user, setUser} = useContext(AuthContext);
+  const [initializing, setInitializing] = useState(true);
+
+  const onAuthStateChanged = (user) => {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  };
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  if (initializing) {
+    return null;
+  }
+
+  // if (!user) {
+  //   return (
+  //     <NavigationContainer>
+  //       <SafeAreaView>
+  //         <View>
+  //           <Text>Login</Text>
+  //         </View>
+  //       </SafeAreaView>
+  //     </NavigationContainer>
+  //   );
+  // }
+
+  // return (
+  //   <NavigationContainer>
+  //     <SafeAreaView>
+  //       <View>
+  //         <AppTabs />
+  //       </View>
+  //     </SafeAreaView>
+  //   </NavigationContainer>
+  // );
+  console.log('user: ', user);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          header: () => null,
-        }}
-        initialRouteName="SplashScreen">
-        <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
-        <Stack.Screen name="Login" component={SignIn} />
+      <Stack.Navigator>
+        {!user ? (
+          <Stack.Screen name="Login" component={SignIn} />
+        ) : (
+          <Stack.Screen
+            name="Travel Bug"
+            component={AppTabs}
+            options={{headerRight: () => <Button title="Logout" />}}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
+
+  // return (
+  //   <NavigationContainer>
+  //     <Stack.Navigator
+  //       screenOptions={{
+  //         header: () => null,
+  //       }}
+  //       initialRouteName="SplashScreen">
+  //       <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
+  //       <Stack.Screen name="Login" component={SignIn} />
+  //       <Stack.Screen name="AppTabs" component={AppTabs} />
+  //     </Stack.Navigator>
+  //     {/* {user ? <AppTabs /> : <SignIn />} */}
+  //   </NavigationContainer>
+  // );
 };
 
 const styles = StyleSheet.create({

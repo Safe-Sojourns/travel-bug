@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   StyleSheet,
   Image,
@@ -7,16 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Authenticate from './AuthProvider';
+import {AuthContext} from './AuthProvider';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    Authenticate(user);
-  }, [user]);
+  const {login} = useContext(AuthContext);
 
   return (
     <View
@@ -55,9 +51,7 @@ const SignIn = () => {
         accessible={true}
         accessibilityLabel="Login button"
         onPress={() => {
-          setUser({email: email, password: password});
-          setEmail('');
-          setPassword('');
+          login(email, password);
         }}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Let's Go Traveling!</Text>
