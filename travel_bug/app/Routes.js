@@ -1,46 +1,100 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
-  ActivityIndicator,
+  Button,
   ImageBackground,
-  AsyncStorage,
   StyleSheet,
-  Image,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Authenticate from './navigation/AuthProvider';
+import auth from '@react-native-firebase/auth';
+import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 import SignIn from './navigation/SignIn';
 
 const Stack = createStackNavigator();
 
-function SplashScreenPage({navigation}) {
-  setTimeout(() => {
-    navigation.navigate('Login');
-  }, 5000);
-  return (
-    <ImageBackground
-      style={{flex: 1}}
-      source={require('./screens/assets/globe.gif')}>
-      <Text style={styles.splashscreen}>Travel Bug</Text>
-    </ImageBackground>
-  );
-}
+// function SplashScreenPage({navigation}) {
+//   setTimeout(() => {
+//     navigation.navigate('Login');
+//   }, 5000);
+//   return (
+//     <ImageBackground
+//       style={{flex: 1}}
+//       source={require('./screens/assets/globe.gif')}>
+//       <Text style={styles.splashscreen}>Travel Bug</Text>
+//     </ImageBackground>
+//   );
+// }
 
-const Routes = ({}) => {
+const Routes = () => {
+  const {user, setUser, logout} = useContext(AuthContext);
+  const [initializing, setInitializing] = useState(true);
+  const [splash, setSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSplash(false);
+    }, 5000);
+  }, []);
+
+  const onAuthStateChanged = (user) => {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  };
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  if (initializing) {
+    return null;
+  }
+
+  if (splash) {
+    return (
+      <ImageBackground
+        style={{flex: 1}}
+        source={require('./screens/assets/globe.gif')}>
+        <Text style={styles.splashscreen}>Travel Bug</Text>
+      </ImageBackground>
+    );
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          header: () => null,
-        }}
-        initialRouteName="SplashScreen">
-        <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
-        <Stack.Screen name="Login" component={SignIn} />
+      <Stack.Navigator initialRouteName="SplashScreen">
+        {user ? (
+          <Stack.Screen
+            name="Travel Bug"
+            component={AppTabs}
+            options={{
+              headerRight: () => (
+                <TouchableOpacity accessible={true} accessibilityLabel="logout">
+                  <Button title="Logout" onPress={() => logout()} />
+                </TouchableOpacity>
+              ),
+              headerStyle: {
+                backgroundColor: '#ABDA9A',
+              },
+              headerTintColor: '#5B58AD',
+              headerTitleStyle: {
+                fontWeight: '900',
+              },
+            }}
+          />
+        ) : (
+          <Stack.Screen
+            name="Login"
+            component={SignIn}
+            options={{header: () => null}}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
