@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, StyleSheet, View, ScrollView, SafeAreaView} from 'react-native';
 import Calendar from './components/Calendar';
 import CardDetails from './components/Cards';
+import AddEvent from './components/AddEvent';
 
 const Itinerary = props => {
   var months = [
@@ -28,6 +29,7 @@ const Itinerary = props => {
           {date}th {month}, {year}
         </Text>
         <Calendar />
+        <AddEvent />
       </View>
       <ScrollView style={{height: 500}}>
         <CardDetails />
