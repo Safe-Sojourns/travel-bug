@@ -1,6 +1,6 @@
-/**
- * @format
- */
+// /**
+//  * @format
+//  */
 
 // import 'react-native';
 // import React from 'react';
@@ -13,10 +13,11 @@
 //   renderer.create(<App />);
 // });
 
-import 'react-native';
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 import App from '../app/App.js';
+
 test('renders correctly', () => {
   const tree = renderer.create(<App />);
   expect(tree).toMatchSnapshot();
