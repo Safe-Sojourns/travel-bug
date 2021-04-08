@@ -22,6 +22,7 @@ const AppTabs = ({user}) => {
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState();
   const [email, setEmail] = useState();
+  const [pastMessages, setPastMessages] = useState([]);
 
   const date = new Date();
   const formattedDate = format(date, 'yyyy-MM-dd');
@@ -36,6 +37,22 @@ const AppTabs = ({user}) => {
   useEffect(() => {
     getEvents(1, currentDay);
   }, [currentDay]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/logallmessages/1')
+      .then(({data}) => {
+        setPastMessages(data.messages);
+        data.criticalInfo.map(criticalMessage => {
+          if (criticalMessage.seen_by_user_email.indexOf(email) < 0) {
+            setUrgentMessage(true);
+          } else {
+            return;
+          }
+        });
+      })
+      .catch(err => console.log(err));
+  }, [urgentMessage, email]);
 
   const getEvents = (tripId, date) => {
     axios
