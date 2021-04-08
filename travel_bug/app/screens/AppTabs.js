@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
@@ -11,6 +11,7 @@ import Itinerary from './Itinerary.js';
 import mapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
+import axios from 'axios';
 
 const Tabs = createBottomTabNavigator();
 
@@ -18,6 +19,27 @@ const Tabs = createBottomTabNavigator();
 
 const AppTabs = ({user}) => {
   const [urgentMessage, setUrgentMessage] = useState(false);
+  const [pastMessages, setPastMessages] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/logallmessages')
+      .then(({data}) => {
+        setPastMessages(data.messages);
+        data.criticalInfo.map(criticalMessage => {
+          if (
+            criticalMessage.seen_by_user_email.indexOf('lucipak@tempmail.com') <
+            0
+          ) {
+            setUrgentMessage(true);
+          } else {
+            return;
+          }
+        });
+      })
+      .catch(err => console.log(err));
+  }, [urgentMessage]);
+
   return (
     <Tabs.Navigator
       tabBarOptions={{style: {backgroundColor: '#ABDA9A', paddingTop: 5}}}
@@ -71,10 +93,11 @@ const AppTabs = ({user}) => {
         {props => (
           <Messages
             {...props}
-            user={user}
+            user={'lucipak@tempmail.com'}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
             admin={'true'}
+            pastMessages={pastMessages}
           />
         )}
       </Tabs.Screen>
