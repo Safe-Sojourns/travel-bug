@@ -9,16 +9,15 @@ function SearchAutoComplete({
   searchLat,
   setSearchLong,
   setSearchLat,
-  setCurrentLong,
-  currentLat,
-  currentLong,
-  setCurrentLat,
+  setCenteredLong,
+  setCenteredLat,
+  centeredLat,
+  centeredLong,
   searchTerm,
   setSearchTerm,
+  setSearchAddr,
 }) {
-  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${key}&input=p=${currentLat}, ${currentLong}&radius=2000`;
 
-  const home = 'Pantheon';
   const homePlace = { description: 'Dreaming Rome Hostel', geometry: { location: { lat: 41.88194, lng: 12.50947 } } };
   const workPlace = { description: 'Embassy', geometry: { location: { lat: 41.907188, lng: 12.490300 } } };
   const hospital = { description: 'Hospital', geometry: { location: { lat: 41.885970, lng: 12.503200 } } };
@@ -37,13 +36,16 @@ function SearchAutoComplete({
       onPress={(data, details) => {
         setSearchLat(details.geometry.location.lat);
         setSearchLong(details.geometry.location.lng);
+        setCenteredLat(details.geometry.location.lat);
+        setCenteredLong(details.geometry.location.lng);
+        setSearchAddr(details.formatted_address);
       }}
       getDefaultValue={() => ''}
       query={{
         // available options: https://developers.google.com/places/web-service/autocomplete
         key: `${key}`,
         language: 'en', // language of the results
-        location: `${currentLat},${currentLong}`,
+        location: `${centeredLat},${centeredLong}`,
         radius: 2000,
       }}
       styles={{
@@ -79,8 +81,11 @@ function SearchAutoComplete({
       ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
     // eslint-disable-next-line react/jsx-one-expression-per-line
+      keyboardShouldPersistTaps="always"
     />
   );
 }
 
 export default SearchAutoComplete;
+
+// keyboardDismissMode='on-drag'

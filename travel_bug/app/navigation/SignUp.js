@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {
+  Alert,
   Button,
   Image,
   StyleSheet,
@@ -10,23 +11,31 @@ import {
 } from 'react-native';
 import {AuthContext} from './AuthProvider';
 
-const SignIn = ({navigation}) => {
+const SignUp = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isValidPassword, setIsValidPassword] = useState(false);
 
-  const {login} = useContext(AuthContext);
+  const {register} = useContext(AuthContext);
+
+  const handleValidPassword = () => {
+    if (password === confirmPassword) {
+      setIsValidPassword(true);
+    }
+  };
 
   return (
     <View
-      style={styles.loginScreen}
+      style={styles.registerScreen}
       accessible={true}
-      accessibilityLabel="Login screen"
+      accessibilityLabel="Register screen"
       autoCapitalize="none">
       <Text
         style={styles.introText}
-        accessibilityLabel="Welcome to travel bug"
+        accessibilityLabel="Create an account"
         accessibilityRole="text">
-        Weclome to Travel Bug
+        Create an account
       </Text>
       <Image
         accessibilityRole="image"
@@ -49,11 +58,26 @@ const SignIn = ({navigation}) => {
         placeholder="Password"
         secureTextEntry={true}
       />
+      <TextInput
+        style={styles.inputField}
+        autoCapitalize="none"
+        onChangeText={text => setConfirmPassword(text)}
+        onEndEditing={() => handleValidPassword()}
+        defaultValue={confirmPassword}
+        placeholder="Confirm Password"
+        secureTextEntry={true}
+      />
       <TouchableOpacity
         accessible={true}
-        accessibilityLabel="Login button"
+        accessibilityLabel="Register button"
         onPress={() => {
-          login(email, password);
+          if (isValidPassword === true) {
+            register(email, password);
+          } else {
+            Alert.alert('Invalid Password!', 'Password does not match', [
+              {text: 'Okay'},
+            ]);
+          }
         }}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Let's Go Traveling!</Text>
@@ -61,9 +85,9 @@ const SignIn = ({navigation}) => {
       </TouchableOpacity>
       <TouchableOpacity>
         <Button
-          title="I need to register first!"
+          title="Take me to the login page"
           onPress={() => {
-            navigation.navigate('Register');
+            navigation.navigate('Login');
           }}
         />
       </TouchableOpacity>
@@ -72,7 +96,7 @@ const SignIn = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  loginScreen: {
+  registerScreen: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -109,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default SignUp;

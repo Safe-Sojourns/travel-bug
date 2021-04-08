@@ -23,7 +23,7 @@ function EmergencyPage(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-       {/* <View>
+      {/* <View>
         <Image
           style={{
             height: 800,
@@ -47,6 +47,7 @@ function EmergencyPage(props) {
               accessibilityLabel="Ambulance"
             />
             <Text style={styles.text}>Emergency:</Text>
+            <Text style={styles.textNum}>112</Text>
           </View>
           <View style={styles.iconText}>
             <FontAwesomeIcon
@@ -166,25 +167,25 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 10,
-    color: '#013220',
+    color: '#007AFF',
     fontSize: 20,
     fontWeight: 'bold',
   },
   titleText: {
-    color: '#013220',
+    color: '#007AFF',
     fontSize: 20,
   },
   textNum: {
     paddingLeft: 5,
-    color: '#013220',
+    color: '#007AFF',
     fontSize: 20,
   },
   infoText: {
     fontSize: 16,
-    color: '#013220',
+    color: '#007AFF',
   },
   icon: {
-    color: '#013220',
+    color: '#007AFF',
   },
 });
 
