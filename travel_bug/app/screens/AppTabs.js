@@ -18,18 +18,28 @@ const Tabs = createBottomTabNavigator();
 
 const AppTabs = ({user}) => {
   const [urgentMessage, setUrgentMessage] = useState(false);
-  const [allEvents, setAllEvents] = useState();
+  const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
-  const [currentDay, setCurrentDay] = useState();
+  const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
   const [email, setEmail] = useState();
 
-  const date = new Date();
-  const formattedDate = format(date, 'yyyy-MM-dd');
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + (d.getDate() + 1),
+      year = d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+    return [year, month, day].join('-');
+  }
 
   useEffect(() => {
-    getEvents(1, currentDay);
     getImportantInfo(1);
-    setCurrentDay(formattedDate);
     setEmail('aaronfink@tempmail.com');
   }, []);
 
@@ -38,8 +48,9 @@ const AppTabs = ({user}) => {
   }, [currentDay]);
 
   const getEvents = (tripId, date) => {
+    const selectedDate = formatDate(date);
     axios
-      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+      .get(`http://localhost:3001/api/events/${tripId}/${selectedDate}`)
       .then(results => setAllEvents(results.data))
       .catch(err => console.log(err));
   };
@@ -95,7 +106,15 @@ const AppTabs = ({user}) => {
           }
         },
       })}>
-      <Tabs.Screen name="Itinerary" component={Itinerary} />
+      <Tabs.Screen name="Itinerary">
+        {props => (
+          <Itinerary
+            {...props}
+            allEvents={allEvents}
+            setCurrentDay={setCurrentDay}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen name="Map">
         {props => (
           <MapMain

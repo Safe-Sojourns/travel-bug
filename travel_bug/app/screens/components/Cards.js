@@ -1,40 +1,43 @@
 import React from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
-// import CollapsibleCard from './CollapsibleCard';
 import CollapsibleView from '@eliav2/react-native-collapsible-view';
-import axios from 'axios';
 
-export default function CardDetails() {
+export default function CardDetails(event) {
   return (
     <View>
-      <CollapsibleView title={<Card />} style={styles.app}>
+      <CollapsibleView title={<Card event={event} />} style={styles.app}>
         <ImageBackground
-          source={require('../assets/rome.jpg')}
-          style={{width: 320, height: 200}}
+          source={{uri: `${event.event.photos[0]}`}}
+          style={{width: 320, height: 170}}
         />
         <Text />
-        <Text>
-          Come see the beautiful architecture. Our tour begins at the Trevi
-          Fountain!
-        </Text>
+        <Text>{event.event.description}</Text>
         <Text />
-        <Text>Location</Text>
-        <Text>Cost: </Text>
-        <Text>Transport: </Text>
+        <Text>{event.event.location}</Text>
+        <Text>
+          {event.event.cost > 0 ? `Cost: ${event.event.cost} euros` : null}
+        </Text>
+        <Text>
+          {event.event.transportation
+            ? `Transport: ${event.event.transportation}`
+            : null}
+        </Text>
       </CollapsibleView>
     </View>
   );
 }
 
-const Card = () => {
+const Card = event => {
   return (
     <View style={styles.container}>
       <Text testID="activity" style={styles.title}>
-        Flight to Rome
+        {event.event.event.event_name}
       </Text>
       <Text style={styles.inline}>
         <Text testID="time" style={styles.time}>
-          9.00am
+          {event.event.event.start_time.slice(0, 2) >= 12
+            ? `${event.event.event.start_time}pm`
+            : `${event.event.event.start_time}am`}
         </Text>
         <Text>{'        '}</Text>
         <Text>{'        '}</Text>
@@ -42,7 +45,9 @@ const Card = () => {
         <Text>{'     '}</Text>
         <Text>{'     '}</Text>
         <Text>{'     '}</Text>
-        <Text style={styles.optional}>[OPTIONAL]</Text>
+        <Text style={styles.optional}>
+          {!event.event.event.mandatory ? '[OPTIONAL]' : null}
+        </Text>
       </Text>
     </View>
   );
@@ -54,11 +59,7 @@ const styles = StyleSheet.create({
     width: 320,
     display: 'flex',
     left: 20,
-    backgroundColor: "white",
-  },
-  paragraph: {
-    fontSize: 14,
-    lineHeight: 19,
+    backgroundColor: 'white',
   },
   container: {
     alignItems: 'stretch',

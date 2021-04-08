@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,11 +8,10 @@ import {
   Image,
 } from 'react-native';
 import Calendar from './components/Calendar';
-import CardDetails from './components/Cards';
+import CardListInfo from './components/CardList';
 import AddEvent from './components/AddEvent';
-import axios from 'axios';
 
-const Itinerary = props => {
+const Itinerary = ({setCurrentDay, allEvents}) => {
   var months = [
     'January',
     'February',
@@ -43,14 +42,11 @@ const Itinerary = props => {
         <Text style={styles.calendarDisplay}>
           {date}th {month}, {year}
         </Text>
-        <Calendar />
+        <Calendar setCurrentDay={setCurrentDay} />
         <AddEvent />
       </View>
       <ScrollView style={{height: 500}}>
-        <CardDetails />
-        <CardDetails />
-        <CardDetails />
-        <CardDetails />
+        <CardListInfo allEvents={allEvents} />
       </ScrollView>
     </SafeAreaView>
   );
