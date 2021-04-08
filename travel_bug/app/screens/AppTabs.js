@@ -57,6 +57,7 @@ const AppTabs = ({user}) => {
                 size={30}
                 color={'#5B58AD'}
                 accessibilityLabel="Messages"
+                onPress={() => setUrgentMessage(false)}
               />
             );
           }
@@ -74,7 +75,7 @@ const AppTabs = ({user}) => {
             user={user}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={'true'}
+            admin={true}
           />
         )}
       </Tabs.Screen>
