@@ -14,7 +14,6 @@ import SearchAutoComplete from './SearchAutoComplete.js';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHouseUser, faBuilding, faAmbulance, faFlagUsa} from '@fortawesome/free-solid-svg-icons';
 import key from './keyConfig.js';
-import Geocoder from 'react-native-geocoding';
 
 const styles = StyleSheet.create({
   searchView: {
