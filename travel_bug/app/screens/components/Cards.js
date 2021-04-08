@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 // import CollapsibleCard from './CollapsibleCard';
 import CollapsibleView from '@eliav2/react-native-collapsible-view';
+import axios from 'axios';
 
 export default function CardDetails() {
   return (

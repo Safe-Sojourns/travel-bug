@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   Text,
-  Button,
+  Image,
   TextInput,
 } from 'react-native';
 import FlatButton from './button';
@@ -67,6 +67,12 @@ const AddEvent = () => {
         </View>
       </TouchableHighlight>
       <Modal isVisible={isModalVisible} style={styles.modal}>
+        <View>
+          <Image
+            style={styles.image}
+            source={require('../assets/travelbackground.jpeg')}
+          />
+        </View>
         <View>
           <Formik
             initialValues={{
@@ -226,6 +232,14 @@ const styles = StyleSheet.create({
     color: 'maroon',
     margin: 1,
     textAlign: 'center',
+  },
+  image: {
+    height: 700,
+    width: 400,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    opacity: 0.06,
   },
 });
 
