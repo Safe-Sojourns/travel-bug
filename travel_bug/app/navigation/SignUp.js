@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Alert,
   Button,
@@ -17,15 +17,42 @@ const SignUp = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [tripIdNumber, setTripIdNumber] = useState(0);
-  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(null);
 
   const {register} = useContext(AuthContext);
 
   const handleValidPassword = () => {
     if (password === confirmPassword) {
       setIsValidPassword(true);
+    } else {
+      setIsValidPassword(false);
     }
   };
+
+  console.log('password: ', password);
+  console.log('confirmPassword: ', confirmPassword);
+
+  useEffect(() => {
+    if (isValidPassword === true) {
+      register(email, password);
+      axios
+        .post('http://localhost:3001/api/createuser', {
+          email,
+          tripIdNumber,
+        })
+        .then(() => {
+          console.log('Successfully posted to database!');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else if (isValidPassword === false) {
+      console.log('isValid: ', isValidPassword);
+      Alert.alert('Invalid Password!', 'Password does not match', [
+        {text: 'Okay'},
+      ]);
+    }
+  }, [isValidPassword]);
 
   return (
     <View
@@ -56,7 +83,6 @@ const SignUp = ({navigation}) => {
         style={styles.inputField}
         autoCapitalize="none"
         keyboardType="numeric"
-        defaultValue={tripIdNumber}
         placeholder="Your Trip ID Number"
         onChangeText={text => setTripIdNumber(text)}
       />
@@ -72,7 +98,6 @@ const SignUp = ({navigation}) => {
         style={styles.inputField}
         autoCapitalize="none"
         onChangeText={text => setConfirmPassword(text)}
-        onEndEditing={() => handleValidPassword()}
         defaultValue={confirmPassword}
         placeholder="Confirm Password"
         secureTextEntry={true}
@@ -81,21 +106,7 @@ const SignUp = ({navigation}) => {
         accessible={true}
         accessibilityLabel="Register button"
         onPress={() => {
-          if (isValidPassword === true) {
-            register(email, tripIdNumber, password);
-            axios
-              .post('/api/createuser', {email, tripIdNumber})
-              .then((status) => {
-                console.log('Status: ', status);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          } else {
-            Alert.alert('Invalid Password!', 'Password does not match', [
-              {text: 'Okay'},
-            ]);
-          }
+          handleValidPassword();
         }}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Let's Go Traveling!</Text>
