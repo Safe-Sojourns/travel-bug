@@ -12,7 +12,9 @@ import {
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHouseUser, faBuilding} from '@fortawesome/free-solid-svg-icons';
+import {faHouseUser, faBuilding, faAmbulance, faFlagUsa} from '@fortawesome/free-solid-svg-icons';
+import key from './keyConfig.js';
+import Geocoder from 'react-native-geocoding';
 
 const styles = StyleSheet.create({
   searchView: {
@@ -24,11 +26,16 @@ const styles = StyleSheet.create({
     top: 720,
   },
 });
-const MapMain = ({allEvents, importantInfo}) => {
+const MapMain = ({
+  allEvents,
+  importantInfo,
+  centeredLat,
+  centeredLong,
+  setCenteredLat,
+  setCenteredLong,
+}) => {
   const [pinView, setPinView] = useState(false);
   const [searchAddr, setSearchAddr] = useState();
-  const [centeredLat, setCenteredLat] = useState(41.8933);
-  const [centeredLong, setCenteredLong] = useState(12.4889);
   const [searchLat, setSearchLat] = useState();
   const [searchLong, setSearchLong] = useState();
   const [currentModal, setCurrentModal] = useState({});
@@ -38,7 +45,7 @@ const MapMain = ({allEvents, importantInfo}) => {
     setPinView(!pinView);
   };
 
-  const createTwoButtonAlert = (pinTitle) =>
+  const createTwoButtonAlert = pinTitle =>
     Alert.alert(`Get Directions to ${pinTitle}?`, 'This will open maps', [
       {
         text: 'Cancel',
@@ -55,92 +62,150 @@ const MapMain = ({allEvents, importantInfo}) => {
     ]);
 
   if (importantInfo) {
-  return (
-    <SafeAreaView>
-      <MapView
-        style={{height: '100%', width: '100%'}}
-        provider={PROVIDER_GOOGLE}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        region={{
-          latitude: centeredLat,
-          longitude: centeredLong,
-          latitudeDelta: 0.06,
-          longitudeDelta: 0.06,
-        }}>
-        <SearchAutoComplete
-          searchLat={searchLat}
-          searchLong={searchLong}
-          setSearchLat={setSearchLat}
-          setSearchLong={setSearchLong}
-          centeredLong={centeredLong}
-          centeredLat={centeredLat}
-          setCenteredLong={setCenteredLong}
-          setCenteredLat={setCenteredLat}
-          setSearchAddr={setSearchAddr}
-          setPinTitle={setPinTitle}
-          importantInfo={importantInfo}
-        />
-        {allEvents.map((event, index) => (
+    return (
+      <SafeAreaView>
+        <MapView
+          style={{height: '100%', width: '100%'}}
+          provider={PROVIDER_GOOGLE}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          region={{
+            latitude: centeredLat,
+            longitude: centeredLong,
+            latitudeDelta: 0.075,
+            longitudeDelta: 0.075,
+          }}>
+          <SearchAutoComplete
+            searchLat={searchLat}
+            searchLong={searchLong}
+            setSearchLat={setSearchLat}
+            setSearchLong={setSearchLong}
+            centeredLong={centeredLong}
+            centeredLat={centeredLat}
+            setCenteredLong={setCenteredLong}
+            setCenteredLat={setCenteredLat}
+            setSearchAddr={setSearchAddr}
+            setPinTitle={setPinTitle}
+            importantInfo={importantInfo}
+          />
+          {allEvents.map((event, index) => (
+            <Marker
+              onPress={() => {
+                setCurrentModal(event);
+                setCenteredLat(event.latitude);
+                setCenteredLong(event.longitude);
+                setPinView(!pinView);
+              }}
+              key={event._id}
+              title={event.event_name}
+              coordinate={{
+                latitude: event.latitude,
+                longitude: event.longitude,
+              }}>
+              <Image
+                source={require('./bug.png')}
+                style={{height: 40, width: 40}}
+                resizeMode="contain"
+              />
+              <PopUpFromMap
+                changePinView={changePinView}
+                pinView={pinView}
+                currentModal={currentModal}
+                centeredLat={centeredLat}
+                centeredLong={centeredLong}
+              />
+            </Marker>
+          ))}
+          {searchLat && searchLong ? (
+            <Marker
+              onPress={() => createTwoButtonAlert(pinTitle)}
+              description={pinTitle}
+              isPreselected={true}
+              coordinate={{
+                latitude: searchLat,
+                longitude: searchLong,
+              }}
+            />
+          ) : null}
           <Marker
+            description={'Home Base'}
             onPress={() => {
-              setCurrentModal(event);
-              setCenteredLat(event.latitude);
-              setCenteredLong(event.longitude);
-              setPinView(!pinView);
+              setCenteredLat(importantInfo[0].homebase_lat);
+              setCenteredLong(importantInfo[0].homebase_long);
+              createTwoButtonAlert('Home Base');
             }}
-            key={event._id}
-            title={event.event_name}
-            coordinate={{
-              latitude: event.latitude,
-              longitude: event.longitude,
-            }}>
-            <Image
-              source={require('./bug.png')}
-              style={{height: 40, width: 40}}
-              resizeMode="contain"
-            />
-            <PopUpFromMap
-              changePinView={changePinView}
-              pinView={pinView}
-              currentModal={currentModal}
-              centeredLat={centeredLat}
-              centeredLong={centeredLong}
-            />
-          </Marker>
-        ))}
-        {searchLat && searchLong ? (
-          <Marker
-            onPress={() => createTwoButtonAlert(pinTitle)}
-            description={pinTitle}
             isPreselected={true}
             coordinate={{
-              latitude: searchLat,
-              longitude: searchLong,
+              latitude: importantInfo[0].homebase_lat,
+              longitude: importantInfo[0].homebase_long,
+            }}>
+            <FontAwesomeIcon
+              icon={faHouseUser}
+              size={25}
+              accessibilityLabel="Info"
+            />
+          </Marker>
+          <Marker
+            description={'Embassy'}
+            onPress={() => {
+              setCenteredLat(importantInfo[0].us_embassy_latitude);
+              setCenteredLong(importantInfo[0].us_embassy_longitude);
+              createTwoButtonAlert('The Embassy');
             }}
-          />
-        ) : null}
-        {/* <Marker
-          description={'Home Base'}
-          coordinate={{
-            latitude: userData[0].homebase_long,
-            longitude: userData[0].homebase_lat,
-          }}> */}
-          {/* <FontAwesomeIcon icon={faHouseUser} size={25} accessibilityLabel="Info" /> */}
-        {/* </Marker> */}
-        <Marker
-          description={'Embassy'}
-          coordinate={{
-            latitude: importantInfo[0].us_embassy_latitude,
-            longitude: importantInfo[0].us_embassy_longitude,
-          }}>
-          <FontAwesomeIcon icon={faBuilding} size={25} accessibilityLabel="Info" />
-        </Marker>
-      </MapView>
-    </SafeAreaView>
-  );
-        }
-        return null;
+            isPreselected={true}
+            coordinate={{
+              latitude: importantInfo[0].us_embassy_latitude,
+              longitude: importantInfo[0].us_embassy_longitude,
+            }}>
+            <FontAwesomeIcon
+              icon={faFlagUsa}
+              size={25}
+              accessibilityLabel="Info"
+            />
+          </Marker>
+          <Marker
+            description={'Police Station'}
+            onPress={() => {
+              setCenteredLat(importantInfo[0].us_embassy_latitude);
+              setCenteredLong(importantInfo[0].us_embassy_longitude);
+              createTwoButtonAlert('Police Station');
+            }}
+            isPreselected={true}
+            coordinate={{
+              latitude: 41.88815,
+              longitude: 12.49534,
+            }}>
+            <Image
+                source={{
+                  uri: 'https://www.clipartmax.com/png/small/449-4494182_complain-of-the-post-complain-criticize-icon-police-icon-png-blue.png',
+                }}
+                style={{height: 25, width: 25}}
+                resizeMode="contain"
+              />
+            </Marker>
+            <Marker
+            description={'Hospital'}
+            onPress={() => {
+              setCenteredLat(importantInfo[0].us_embassy_latitude);
+              setCenteredLong(importantInfo[0].us_embassy_longitude);
+              createTwoButtonAlert('Hospital');
+            }}
+            isPreselected={true}
+            coordinate={{
+              latitude: 41.88597,
+              longitude: 12.5032,
+            }}>
+            <FontAwesomeIcon
+              icon={faAmbulance}
+              size={25}
+              accessibilityLabel="Info"
+            />
+          </Marker>
+        </MapView>
+      </SafeAreaView>
+    );
+  }
+  return null;
 };
 
 export default MapMain;
