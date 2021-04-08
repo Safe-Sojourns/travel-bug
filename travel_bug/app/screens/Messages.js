@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   Switch,
 } from 'react-native';
+import axios from 'axios';
 
 const socket = io('http://localhost:4000');
 
@@ -20,6 +21,7 @@ export default function Messages({
   urgentMessage,
   setUrgentMessage,
   admin,
+  pastMessages,
 }) {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
@@ -31,6 +33,10 @@ export default function Messages({
     setUrgent(previousState => !previousState);
     setUrgentMessage(true);
   };
+
+  useEffect(() => {
+    setChatMessages(pastMessages);
+  }, [pastMessages]);
 
   useEffect(() => {
     socket.on('new messages', msg => {
@@ -46,11 +52,21 @@ export default function Messages({
     const date = new Date();
     const formattedDate = date.toString().split(' ').slice(0, 5).join(' ');
     socket.emit('chat message', {
-      user: 'Luci2',
+      user_email: currentUser,
       message: chatMessage,
       date: formattedDate,
-      isUrgent: urgent,
+      critical: urgent,
     });
+    axios
+      .post('http://localhost:3001/api/postmessage', {
+        tripid: 1,
+        message: chatMessage,
+        userEmail: currentUser,
+        critical: urgent,
+        date: formattedDate,
+      })
+      .then(() => console.log('posted message'))
+      .catch(err => console.log(err));
     setUrgent(false);
     setChatMessage('');
     scroll.current.scrollToEnd();
@@ -63,17 +79,19 @@ export default function Messages({
           onTouchStart={() => setIsExpanded(false)}
           style={isExpanded ? styles.expandedContainer : styles.messageList}
           ref={scroll}>
-          {chatMessages.map((message, index) => (
-            <MessageListEntry
-              key={index}
-              message={message.message}
-              currentUser={currentUser}
-              user={message.user}
-              date={message.date}
-              admin={admin}
-              urgent={message.isUrgent}
-            />
-          ))}
+          {chatMessages.map((message, index) => {
+            return (
+              <MessageListEntry
+                key={index}
+                message={message.message}
+                currentUser={currentUser}
+                user={message.user_email}
+                date={message.date}
+                admin={admin}
+                urgent={message.critical}
+              />
+            );
+          })}
         </ScrollView>
       </SafeAreaView>
       <KeyboardAvoidingView
@@ -115,6 +133,16 @@ export default function Messages({
     </View>
   );
 }
+
+const MessageListEntry = ({currentUser, user, message, date, urgent}) => (
+  <View style={user === currentUser ? styles.currentUser : styles.otherUsers}>
+    <Text style={{fontWeight: '700', paddingBottom: 5}}>{user}</Text>
+    <Text style={urgent ? {color: 'red'} : {paddingBottom: 5}}>{message}</Text>
+    <Text style={{fontStyle: 'italic', fontSize: 9, alignSelf: 'flex-end'}}>
+      {date}
+    </Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -205,26 +233,4 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 10,
   },
-  // headerText: {
-  //   fontSize: 20,
-  //   display: 'flex',
-  //   alignSelf: 'center',
-  //   paddingTop: 30,
-  // },
-  // viewHeader: {
-  //   backgroundColor: 'white',
-  //   height: 90,
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  // },
 });
-
-const MessageListEntry = ({currentUser, user, message, date, urgent}) => (
-  <View style={user === currentUser ? styles.currentUser : styles.otherUsers}>
-    <Text style={{fontWeight: '700', paddingBottom: 5}}>{user}</Text>
-    <Text style={urgent ? {color: 'red'} : {paddingBottom: 5}}>{message}</Text>
-    <Text style={{fontStyle: 'italic', fontSize: 9, alignSelf: 'flex-end'}}>
-      {date}
-    </Text>
-  </View>
-);
