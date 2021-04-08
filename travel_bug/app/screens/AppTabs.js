@@ -90,6 +90,7 @@ const AppTabs = ({user}) => {
                 size={30}
                 color={'#007AFF'}
                 accessibilityLabel="Messages"
+                onPress={() => setUrgentMessage(false)}
               />
             );
           }
@@ -115,7 +116,7 @@ const AppTabs = ({user}) => {
             user={'lucipak@tempmail.com'}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={'true'}
+            admin={true}
             pastMessages={pastMessages}
           />
         )}
