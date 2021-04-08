@@ -12,7 +12,7 @@ import {
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHouseUser} from '@fortawesome/free-solid-svg-icons';
+import {faHouseUser, faBuilding} from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   searchView: {
@@ -38,8 +38,8 @@ const MapMain = ({allEvents, importantInfo}) => {
     setPinView(!pinView);
   };
 
-  const createTwoButtonAlert = () =>
-    Alert.alert('Get Directions?', 'This will open maps', [
+  const createTwoButtonAlert = (pinTitle) =>
+    Alert.alert(`Get Directions to ${pinTitle}?`, 'This will open maps', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
@@ -54,6 +54,7 @@ const MapMain = ({allEvents, importantInfo}) => {
       },
     ]);
 
+  if (importantInfo) {
   return (
     <SafeAreaView>
       <MapView
@@ -64,8 +65,8 @@ const MapMain = ({allEvents, importantInfo}) => {
         region={{
           latitude: centeredLat,
           longitude: centeredLong,
-          latitudeDelta: 0.04,
-          longitudeDelta: 0.04,
+          latitudeDelta: 0.06,
+          longitudeDelta: 0.06,
         }}>
         <SearchAutoComplete
           searchLat={searchLat}
@@ -78,6 +79,7 @@ const MapMain = ({allEvents, importantInfo}) => {
           setCenteredLat={setCenteredLat}
           setSearchAddr={setSearchAddr}
           setPinTitle={setPinTitle}
+          importantInfo={importantInfo}
         />
         {allEvents.map((event, index) => (
           <Marker
@@ -109,7 +111,7 @@ const MapMain = ({allEvents, importantInfo}) => {
         ))}
         {searchLat && searchLong ? (
           <Marker
-            onPress={createTwoButtonAlert}
+            onPress={() => createTwoButtonAlert(pinTitle)}
             description={pinTitle}
             isPreselected={true}
             coordinate={{
@@ -118,17 +120,27 @@ const MapMain = ({allEvents, importantInfo}) => {
             }}
           />
         ) : null}
-        <Marker
+        {/* <Marker
           description={'Home Base'}
           coordinate={{
-            latitude: 41.8933,
-            longitude: 12.4889,
+            latitude: userData[0].homebase_long,
+            longitude: userData[0].homebase_lat,
+          }}> */}
+          {/* <FontAwesomeIcon icon={faHouseUser} size={25} accessibilityLabel="Info" /> */}
+        {/* </Marker> */}
+        <Marker
+          description={'Embassy'}
+          coordinate={{
+            latitude: importantInfo[0].us_embassy_latitude,
+            longitude: importantInfo[0].us_embassy_longitude,
           }}>
-          <FontAwesomeIcon icon={faHouseUser} size={25} accessibilityLabel="Info" />
+          <FontAwesomeIcon icon={faBuilding} size={25} accessibilityLabel="Info" />
         </Marker>
       </MapView>
     </SafeAreaView>
   );
+        }
+        return null;
 };
 
 export default MapMain;
