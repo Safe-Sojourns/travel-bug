@@ -1,5 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {io} from 'socket.io-client';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faImages} from '@fortawesome/free-solid-svg-icons';
+import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {
   View,
   Text,
@@ -11,6 +14,7 @@ import {
   Platform,
   SafeAreaView,
   Switch,
+  TouchableOpacity,
   Image,
 } from 'react-native';
 import axios from 'axios';
@@ -32,7 +36,6 @@ export default function Messages({
 
   const toggleSwitch = () => {
     setUrgent(previousState => !previousState);
-    setUrgentMessage(true);
   };
 
   useEffect(() => {
@@ -46,6 +49,13 @@ export default function Messages({
     scroll.current.scrollToEnd();
     setCurrentUser(user);
   }, [chatMessages, user]);
+
+  // function checkPermission() {
+  //   check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+  //     switch()
+  //     console.log(result);
+  //   });
+  // }
 
   const scroll = useRef();
 
@@ -69,6 +79,9 @@ export default function Messages({
       .then(() => console.log('posted message'))
       .catch(err => console.log(err));
     setUrgent(false);
+    if (urgent === true) {
+      setUrgentMessage(true);
+    }
     setChatMessage('');
     scroll.current.scrollToEnd();
   }
@@ -116,12 +129,28 @@ export default function Messages({
             display: 'flex',
             flexDirection: 'column',
           }}>
-          <Text style={{alignSelf: 'center', paddingLeft: 5}}>Urgent</Text>
-          <Switch
-            trackColor={{false: '#767577', true: '#ABDA9A'}}
-            onValueChange={toggleSwitch}
-            value={urgent}
-          />
+          {admin ? (
+            <Text style={{display: 'flex', flexDirection: 'column'}}>
+              <Switch
+                trackColor={{false: '#767577', true: 'red'}}
+                onValueChange={toggleSwitch}
+                value={urgent}
+              />{' '}
+            </Text>
+          ) : null}
+          <TouchableOpacity>
+            <FontAwesomeIcon
+              icon={faImages}
+              size={30}
+              color="blue"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignSelf: 'center',
+              }}
+              // onPress={checkPermission}
+            />
+          </TouchableOpacity>
         </View>
         <TextInput
           multiline
@@ -177,7 +206,7 @@ const styles = StyleSheet.create({
   },
   adminButtonContainer: {
     height: 'auto',
-    width: '17%',
+    width: '16%',
     backgroundColor: 'white',
     borderWidth: 1,
     borderRadius: 10,
