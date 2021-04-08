@@ -50,10 +50,10 @@ export default function Messages({
   }, [chatMessages, user]);
 
   // function checkPermission() {
-  //   check(PERMISSIONS.IOS.PHOTO_LIBRARY)
-  //   .then((result) => {
-
-  //   })
+  //   check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+  //     switch()
+  //     console.log(result);
+  //   });
   // }
 
   const scroll = useRef();
@@ -129,7 +129,11 @@ export default function Messages({
               icon={faImages}
               size={30}
               color="blue"
-              style={{display: 'flex', flexDirection: 'column', alignSelf: 'center'}}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignSelf: 'center',
+              }}
               // onPress={checkPermission}
             />
           </TouchableOpacity>
