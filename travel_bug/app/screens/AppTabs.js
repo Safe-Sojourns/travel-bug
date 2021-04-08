@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
@@ -13,15 +13,19 @@ import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
 import axios from 'axios';
 import {format} from 'date-fns';
+import {AuthContext} from '../navigation/AuthProvider';
 
 const Tabs = createBottomTabNavigator();
 
-const AppTabs = ({user}) => {
+const AppTabs = () => {
+  const {user} = useContext(AuthContext);
   const [urgentMessage, setUrgentMessage] = useState(false);
   const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
+  const [userData, setUserData] = useState();
   const [email, setEmail] = useState();
+  const [pastMessages, setPastMessages] = useState([]);
 
   function formatDate(date) {
     var d = new Date(date),
@@ -40,12 +44,30 @@ const AppTabs = ({user}) => {
 
   useEffect(() => {
     getImportantInfo(1);
-    setEmail('aaronfink@tempmail.com');
-  }, []);
+    getEvents(1, currentDay);
+    // setCurrentDay(formattedDate);
+    setEmail(user.email);
+  }, [email]);
 
   useEffect(() => {
     getEvents(1, currentDay);
   }, [currentDay]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/logallmessages/1')
+      .then(({data}) => {
+        setPastMessages(data.messages);
+        data.criticalInfo.map(criticalMessage => {
+          if (criticalMessage.seen_by_user_email.indexOf(email) < 0) {
+            setUrgentMessage(true);
+          } else {
+            return;
+          }
+        });
+      })
+      .catch(err => console.log(err));
+  }, [urgentMessage, email]);
 
   const getEvents = (tripId, date) => {
     const selectedDate = formatDate(date);
@@ -59,6 +81,12 @@ const AppTabs = ({user}) => {
     axios
       .get(`http://localhost:3001/logallimportantinfo/${id}`)
       .then(results => setImportantInfo(results.data))
+      .catch(err => console.log(err));
+  };
+
+  const getUsersInfo = (email) => {
+    axios.get(`http://localhost:3001/api/users/${email}`)
+      .then((results) => setUserData(results.data))
       .catch(err => console.log(err));
   };
 
@@ -101,6 +129,7 @@ const AppTabs = ({user}) => {
                 size={30}
                 color={'#007AFF'}
                 accessibilityLabel="Messages"
+                onPress={() => setUrgentMessage(false)}
               />
             );
           }
@@ -121,6 +150,7 @@ const AppTabs = ({user}) => {
             {...props}
             allEvents={allEvents}
             importantInfo={importantInfo}
+            userData={userData}
           />
         )}
       </Tabs.Screen>
@@ -134,7 +164,7 @@ const AppTabs = ({user}) => {
             user={'lucipak@tempmail.com'}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={'true'}
+            admin={true}
             pastMessages={pastMessages}
           />
         )}

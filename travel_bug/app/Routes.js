@@ -2,11 +2,11 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {
   Button,
+  Image,
   ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -63,6 +63,10 @@ const Routes = () => {
             name="Travel Bug"
             component={AppTabs}
             options={{
+              headerTitle: () => (
+                <Image source={require('./screens/maps/bug.png')} />
+              ),
+              headerTitleAlign: 'left',
               headerRight: () => (
                 <TouchableOpacity accessible={true} accessibilityLabel="logout">
                   <Button title="Logout" onPress={() => logout()} />
