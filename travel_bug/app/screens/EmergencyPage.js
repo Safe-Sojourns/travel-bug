@@ -8,7 +8,6 @@ import {
   SafeAreaView,
   StatusBar,
   TextInput,
-  Linking,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -36,13 +35,7 @@ function EmergencyPage(props) {
           <Text testID="emergency" style={styles.text}>
             Emergency:
           </Text>
-          <Text
-            onPress={() => {
-              Linking.openURL('telprompt:112');
-            }}
-            style={styles.textNum}>
-            112
-          </Text>
+          <Text style={styles.textNum}>112</Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon

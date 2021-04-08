@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     width: 320,
     display: 'flex',
     left: 20,
+    backgroundColor: "white",
   },
   paragraph: {
     fontSize: 14,
