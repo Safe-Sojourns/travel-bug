@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
@@ -8,9 +8,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Itinerary from './Itinerary.js';
-import mapMain from './maps/mapMain.js';
+import MapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
+import axios from 'axios';
+import {format} from 'date-fns';
 
 const Tabs = createBottomTabNavigator();
 
@@ -18,6 +20,37 @@ const Tabs = createBottomTabNavigator();
 
 const AppTabs = ({user}) => {
   const [urgentMessage, setUrgentMessage] = useState(false);
+  const [allEvents, setAllEvents] = useState();
+  const [importantInfo, setImportantInfo] = useState();
+  const [currentDay, setCurrentDay] = useState();
+
+  const date = new Date();
+  const formattedDate = format(date, 'yyyy-MM-dd');
+
+  useEffect(() => {
+    getEvents(1, currentDay);
+    getImportantInfo(1);
+    setCurrentDay(formattedDate);
+  }, []);
+
+  useEffect(() => {
+    getEvents(1, currentDay);
+  }, [currentDay]);
+
+  const getEvents = (tripId, date) => {
+    axios
+      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+      .then(results => setAllEvents(results.data))
+      .catch(err => console.log(err));
+  };
+
+  const getImportantInfo = id => {
+    axios
+      .get(`http://localhost:3001/logallimportantinfo/${id}`)
+      .then(results => setImportantInfo(results.data))
+      .catch(err => console.log(err));
+  };
+
   return (
     <Tabs.Navigator
       tabBarOptions={{style: {backgroundColor: '#ABDA9A', paddingTop: 5}}}
@@ -63,7 +96,15 @@ const AppTabs = ({user}) => {
         },
       })}>
       <Tabs.Screen name="Itinerary" component={Itinerary} />
-      <Tabs.Screen name="Map" component={mapMain} />
+      <Tabs.Screen name="Map">
+        {props => (
+          <MapMain
+            {...props}
+            allEvents={allEvents}
+            importantInfo={importantInfo}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
       <Tabs.Screen
         name="Messages"

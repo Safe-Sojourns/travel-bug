@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     top: 720,
   },
 });
-const MapMain = () => {
+const MapMain = ({allEvents, importantInfo}) => {
   const [pinView, setPinView] = useState(false);
   const [searchAddr, setSearchAddr] = useState();
   const [centeredLat, setCenteredLat] = useState(41.8933);
@@ -22,6 +22,7 @@ const MapMain = () => {
   const [searchLat, setSearchLat] = useState();
   const [searchLong, setSearchLong] = useState();
   const [currentModal, setCurrentModal] = useState({});
+  const [pinTitle, setPinTitle] = useState();
 
   const changePinView = () => {
     setPinView(!pinView);
@@ -60,8 +61,9 @@ const MapMain = () => {
           setCenteredLong={setCenteredLong}
           setCenteredLat={setCenteredLat}
           setSearchAddr={setSearchAddr}
+          setPinTitle={setPinTitle}
         />
-        {arrayOfEventLocations.map((event, index) => (
+        {allEvents.map((event, index) => (
           <Marker
             onPress={() => {
               setCurrentModal(event);
@@ -69,8 +71,8 @@ const MapMain = () => {
               setCenteredLong(event.longitude);
               setPinView(!pinView);
             }}
-            key={event.eventIdNumber}
-            title={event.name}
+            key={event._id}
+            title={event.event_name}
             coordinate={{
               latitude: event.latitude,
               longitude: event.longitude,
@@ -92,6 +94,8 @@ const MapMain = () => {
         {searchLat && searchLong ? (
           <Marker
             onPress={createTwoButtonAlert}
+            description={pinTitle}
+            isPreselected={true}
             coordinate={{
               latitude: searchLat,
               longitude: searchLong,
