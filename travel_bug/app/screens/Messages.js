@@ -50,12 +50,14 @@ export default function Messages({
     setCurrentUser(user);
   }, [chatMessages, user]);
 
-  // function checkPermission() {
-  //   check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
-  //     switch()
-  //     console.log(result);
-  //   });
-  // }
+  function checkPermission() {
+    check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log('the feature is unavailable on this device', result);
+      }
+    });
+  }
 
   const scroll = useRef();
 
@@ -88,7 +90,7 @@ export default function Messages({
 
   return (
     <View style={styles.container}>
-       <View>
+      <View>
         <Image
           style={{
             height: 800,
@@ -96,7 +98,7 @@ export default function Messages({
             position: 'absolute',
             top: 0,
             left: 0,
-            opacity:0.06,
+            opacity: 0.06,
           }}
           source={require('./assets/travelbackground.jpeg')}
         />
@@ -148,7 +150,7 @@ export default function Messages({
                 flexDirection: 'column',
                 alignSelf: 'center',
               }}
-              // onPress={checkPermission}
+              onPress={checkPermission}
             />
           </TouchableOpacity>
         </View>
