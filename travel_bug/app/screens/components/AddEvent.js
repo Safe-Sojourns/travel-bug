@@ -22,7 +22,7 @@ const EventSchema = yup.object({
     .required()
     .test(
       'is in date format',
-      'Please input in "yyyy/mm/dd" number format only',
+      'Please input in "yyyy-mm-dd" number format only',
       val => {
         return parseInt(val);
       },
@@ -60,7 +60,7 @@ const AddEvent = () => {
     setModalVisible(!isModalVisible);
   };
   return (
-    <View style={{padding: 20}}>
+    <View style={{padding: 10}}>
       <TouchableHighlight onPress={() => {}}>
         <View>
           <FontAwesomeIcon icon={faEdit} size={26} onPress={toggleModal} />
@@ -111,7 +111,7 @@ const AddEvent = () => {
                   {props.touched.description && props.errors.description}
                 </Text>
                 <TextInput
-                  placeholder="Event Date (yyyy/mm/dd)"
+                  placeholder="Event Date (yyyy-mm-dd)"
                   style={styles.input}
                   onChangeText={props.handleChange('date')}
                   value={props.values.date}
