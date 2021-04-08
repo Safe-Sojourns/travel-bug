@@ -42,10 +42,6 @@ const AppTabs = () => {
   }, [currentDay]);
 
   useEffect(() => {
-<<<<<<< HEAD
-    getUsersInfo(email);
-  }, [email]);
-=======
     axios
       .get('http://localhost:3001/logallmessages/1')
       .then(({data}) => {
@@ -60,7 +56,6 @@ const AppTabs = () => {
       })
       .catch(err => console.log(err));
   }, [urgentMessage, email]);
->>>>>>> bf07fa441a3608bda927391d59799ba52749bb40
 
   const getEvents = (tripId, date) => {
     axios
