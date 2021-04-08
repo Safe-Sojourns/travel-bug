@@ -1,8 +1,18 @@
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, Image, SafeAreaView, Alert, Linking} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  SafeAreaView,
+  Alert,
+  Linking,
+} from 'react-native';
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHouseUser} from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   searchView: {
@@ -35,7 +45,13 @@ const MapMain = ({allEvents, importantInfo}) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => Linking.openURL(`http://maps.apple.com/?sll=${centeredLat},${centeredLong}&daddr=${searchAddr}`)}
+      {
+        text: 'OK',
+        onPress: () =>
+          Linking.openURL(
+            `http://maps.apple.com/?sll=${centeredLat},${centeredLong}&daddr=${searchAddr}`,
+          ),
+      },
     ]);
 
   return (
@@ -102,6 +118,14 @@ const MapMain = ({allEvents, importantInfo}) => {
             }}
           />
         ) : null}
+        <Marker
+          description={'Home Base'}
+          coordinate={{
+            latitude: 41.8933,
+            longitude: 12.4889,
+          }}>
+          <FontAwesomeIcon icon={faHouseUser} size={25} accessibilityLabel="Info" />
+        </Marker>
       </MapView>
     </SafeAreaView>
   );

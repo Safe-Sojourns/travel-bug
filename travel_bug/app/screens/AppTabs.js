@@ -21,6 +21,7 @@ const AppTabs = ({user}) => {
   const [allEvents, setAllEvents] = useState();
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState();
+  const [email, setEmail] = useState();
 
   const date = new Date();
   const formattedDate = format(date, 'yyyy-MM-dd');
@@ -29,6 +30,7 @@ const AppTabs = ({user}) => {
     getEvents(1, currentDay);
     getImportantInfo(1);
     setCurrentDay(formattedDate);
+    setEmail('aaronfink@tempmail.com');
   }, []);
 
   useEffect(() => {
