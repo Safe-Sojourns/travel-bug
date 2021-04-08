@@ -8,35 +8,48 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Itinerary from './Itinerary.js';
-import mapMain from './maps/mapMain.js';
+import MapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
 import axios from 'axios';
+import {format} from 'date-fns';
 
 const Tabs = createBottomTabNavigator();
 
 const AppTabs = ({user}) => {
   const [urgentMessage, setUrgentMessage] = useState(false);
-  const [pastMessages, setPastMessages] = useState([]);
+  const [allEvents, setAllEvents] = useState();
+  const [importantInfo, setImportantInfo] = useState();
+  const [currentDay, setCurrentDay] = useState();
+  const [email, setEmail] = useState();
+
+  const date = new Date();
+  const formattedDate = format(date, 'yyyy-MM-dd');
 
   useEffect(() => {
+    getEvents(1, currentDay);
+    getImportantInfo(1);
+    setCurrentDay(formattedDate);
+    setEmail('aaronfink@tempmail.com');
+  }, []);
+
+  useEffect(() => {
+    getEvents(1, currentDay);
+  }, [currentDay]);
+
+  const getEvents = (tripId, date) => {
     axios
-      .get('http://localhost:3001/logallmessages')
-      .then(({data}) => {
-        setPastMessages(data.messages);
-        data.criticalInfo.map(criticalMessage => {
-          if (
-            criticalMessage.seen_by_user_email.indexOf('lucipak@tempmail.com') <
-            0
-          ) {
-            setUrgentMessage(true);
-          } else {
-            return;
-          }
-        });
-      })
+      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+      .then(results => setAllEvents(results.data))
       .catch(err => console.log(err));
-  }, [urgentMessage]);
+  };
+
+  const getImportantInfo = id => {
+    axios
+      .get(`http://localhost:3001/logallimportantinfo/${id}`)
+      .then(results => setImportantInfo(results.data))
+      .catch(err => console.log(err));
+  };
 
   return (
     <Tabs.Navigator
@@ -83,7 +96,15 @@ const AppTabs = ({user}) => {
         },
       })}>
       <Tabs.Screen name="Itinerary" component={Itinerary} />
-      <Tabs.Screen name="Map" component={mapMain} />
+      <Tabs.Screen name="Map">
+        {props => (
+          <MapMain
+            {...props}
+            allEvents={allEvents}
+            importantInfo={importantInfo}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
       <Tabs.Screen
         name="Messages"

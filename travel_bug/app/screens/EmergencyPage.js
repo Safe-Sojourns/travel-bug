@@ -2,15 +2,18 @@ import React from 'react';
 import {
   Button,
   View,
+  ScrollView,
   Text,
   StyleSheet,
   SafeAreaView,
+  StatusBar,
   TextInput,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faAmbulance,
   faUser,
+  faPhone,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
@@ -29,7 +32,9 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="Ambulance"
           />
-          <Text style={styles.text}>Emergency:</Text>
+          <Text testID="emergency" style={styles.text}>
+            Emergency:
+          </Text>
           <Text style={styles.textNum}>112</Text>
         </View>
         <View style={styles.iconText}>
@@ -39,8 +44,27 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="User"
           />
-          <Text style={styles.text}>Staff:</Text>
-          <Text style={styles.textNum}>+1 425-567-8976</Text>
+          <Text testID="staff" style={styles.text}>
+            Staff Contact Info:
+          </Text>
+        </View>
+        <View style={styles.numberView}>
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faPhone}
+            size={20}
+            accessibilityLabel="Phone"
+          />
+          <Text style={styles.textNum}>+ 1 425-567-8976</Text>
+        </View>
+        <View style={styles.numberView}>
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faPhone}
+            size={20}
+            accessibilityLabel="Phone"
+          />
+          <Text style={styles.textNum}>+ 1 425-563-2566</Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -49,29 +73,37 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="Info"
           />
-          <Text style={styles.text}>Additional Information:</Text>
+          <Text testID="addInfo" style={styles.text}>
+            Additional Information:
+          </Text>
         </View>
-        <View style={styles.info}>
-          <Text style={styles.infoText}>{emergencyInput}</Text>
-        </View>
+        <SafeAreaView style={styles.view}>
+          <ScrollView style={styles.info}>
+            <Text style={styles.infoText}>{emergencyInput}</Text>
+          </ScrollView>
+        </SafeAreaView>
         <View style={styles.buttonView}>
           <Button
+            testID="editButton"
             color="white"
             title="Edit"
             onPress={() => setModalVisible(true)}
           />
         </View>
         <View>
-          <Modal isVisible={modalVisible}>
+          <Modal testID="modal" isVisible={modalVisible}>
             <View style={styles.modal}>
               <View containerStyle={styles.cardModal} title="title">
                 <TextInput
+                  multiline
+                  testID="input"
                   style={styles.input}
                   value={emergencyInput}
                   onChangeText={text => onChangeText(text)}
                 />
-                <View style={styles.buttonView}>
+                <View testID="view" style={styles.buttonView}>
                   <Button
+                    testID="saveButton"
                     color="white"
                     title="Save"
                     onPress={() => setModalVisible(false)}
@@ -93,6 +125,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  view: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+  },
   modal: {
     flex: 1,
     alignItems: 'center',
@@ -111,7 +147,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#ABDA9A',
     width: 300,
-    height: 350,
+    height: 450,
     padding: 20,
     borderRadius: 15,
   },
@@ -125,6 +161,11 @@ const styles = StyleSheet.create({
   iconText: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  numberView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 40,
   },
   input: {
     height: 120,
@@ -145,17 +186,17 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 10,
-    color: '#007AFF',
+    color: '#013220',
     fontSize: 20,
     fontWeight: 'bold',
   },
   titleText: {
-    color: '#007AFF',
+    color: '#013220',
     fontSize: 20,
   },
   textNum: {
     paddingLeft: 5,
-    color: '#007AFF',
+    color: '#013220',
     fontSize: 20,
   },
   infoText: {
@@ -163,7 +204,7 @@ const styles = StyleSheet.create({
     color: '#007AFF',
   },
   icon: {
-    color: '#007AFF',
+    color: '#013220',
   },
 });
 

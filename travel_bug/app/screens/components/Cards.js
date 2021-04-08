@@ -28,9 +28,13 @@ export default function CardDetails() {
 const Card = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Flight to Rome</Text>
+      <Text testID="activity" style={styles.title}>
+        Flight to Rome
+      </Text>
       <Text style={styles.inline}>
-        <Text style={styles.time}>9.00am</Text>
+        <Text testID="time" style={styles.time}>
+          9.00am
+        </Text>
         <Text>{'        '}</Text>
         <Text>{'        '}</Text>
         <Text>{'        '}</Text>
@@ -49,6 +53,7 @@ const styles = StyleSheet.create({
     width: 320,
     display: 'flex',
     left: 20,
+    backgroundColor: "white",
   },
   paragraph: {
     fontSize: 14,
