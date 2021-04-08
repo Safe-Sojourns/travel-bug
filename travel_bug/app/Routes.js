@@ -14,21 +14,9 @@ import auth from '@react-native-firebase/auth';
 import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 import SignIn from './navigation/SignIn';
+import SignUp from './navigation/SignUp';
 
 const Stack = createStackNavigator();
-
-// function SplashScreenPage({navigation}) {
-//   setTimeout(() => {
-//     navigation.navigate('Login');
-//   }, 5000);
-//   return (
-//     <ImageBackground
-//       style={{flex: 1}}
-//       source={require('./screens/assets/globe.gif')}>
-//       <Text style={styles.splashscreen}>Travel Bug</Text>
-//     </ImageBackground>
-//   );
-// }
 
 const Routes = () => {
   const {user, setUser, logout} = useContext(AuthContext);
@@ -69,8 +57,8 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
-        {user ? (
+      {user ? (
+        <Stack.Navigator>
           <Stack.Screen
             name="Travel Bug"
             component={AppTabs}
@@ -83,20 +71,27 @@ const Routes = () => {
               headerStyle: {
                 backgroundColor: '#ABDA9A',
               },
-              headerTintColor: '#5B58AD',
+              headerTintColor: '#007AFF',
               headerTitleStyle: {
                 fontWeight: '900',
               },
             }}
-          />
-        ) : (
+        />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator initialRoutName="Login">
           <Stack.Screen
             name="Login"
             component={SignIn}
             options={{header: () => null}}
           />
-        )}
-      </Stack.Navigator>
+          <Stack.Screen
+            name="Register"
+            component={SignUp}
+            options={{header: () => null}}
+          />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 };
@@ -129,7 +124,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderWidth: 1,
     backgroundColor: 'white',
-    color: '#5B58AD',
+    color: '#007AFF',
   },
   loadingIcon: {
     flex: 1,
@@ -144,7 +139,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   buttonText: {
-    color: '#5B58AD',
+    color: '#007AFF',
   },
 });
 
