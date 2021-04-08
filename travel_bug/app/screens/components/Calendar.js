@@ -12,7 +12,7 @@ export default function Calendar() {
     setModalVisible(!isModalVisible);
   };
   return (
-    <View style={{padding: 20}}>
+    <View style={{padding: 10}}>
       <TouchableHighlight onPress={() => {}}>
         <View>
           <FontAwesomeIcon
