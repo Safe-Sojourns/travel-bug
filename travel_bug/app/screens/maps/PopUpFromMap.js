@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Linking, View, StyleSheet, Text, SafeAreaView } from 'react-native';
+import {Button, View, StyleSheet, Text, SafeAreaView, Linking, TouchableWithoutFeedback} from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import Modal from 'react-native-modal';
 
@@ -28,22 +28,40 @@ const styles = StyleSheet.create({
   textBox: {
     backgroundColor: '#ABDA9A',
     borderRadius: 15,
-    borderWidth: 2,
-    borderColor: '#5B58AD',
+    borderColor: '#007AFF',
     padding: 5,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    top: 15,
+    top: 25,
+  },
+  h1: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    paddingBottom: 5,
+    paddingTop: 15
   },
   h2: {
-    fontSize: 8
+    fontSize: 10,
+    paddingLeft: 20,
+    paddingBottom: 4
+  },
+  tab: {
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 30,
+    height: 2,
+    borderColor: 'grey',
+    left: '42%',
+    top: 4
   }
 });
 
-function PopUpFromMap({ changePinView, pinView, currentModal }) {
+function PopUpFromMap({ changePinView, pinView, currentModal, centeredLat, centeredLong }) {
+
   return (
     <SafeAreaView>
       <GestureRecognizer onSwipeDown={() => changePinView()}>
@@ -51,28 +69,27 @@ function PopUpFromMap({ changePinView, pinView, currentModal }) {
           hasBackdrop={false}
           isVisible={pinView}
           style={styles.modal}
+          onBackdropPress={() => {
+            console.log('modal pressed')
+          }}
+          config={{velocityThreshold: 0.00000001}}
           animationType="bottom-half">
-          <View style={styles.centeredView}>
-            <Text style={{ textAlign: 'center' }}>⬇</Text>
-            <Text style={styles.h2}>Name </Text>
-            <Text>{currentModal.name}</Text>
-            <Text style={styles.h2}>Address </Text>
-            <Text>{currentModal.description}</Text>
-            <Text style={styles.h2}>Date </Text>
-            <Text>{currentModal.date}</Text>
-            <Text style={styles.h2}>Time </Text>
-            <Text>{currentModal.time}</Text>
+          <TouchableWithoutFeedback onPress={() => changePinView()}>
+            <View style={styles.centeredView}>
+            <View style={styles.tab}>
+              <Text style={{ textAlign: 'center' }}> </Text>
+            </View>
+            <Text style={styles.h1}>{currentModal.name}</Text>
+            <Text style={styles.h2}>{currentModal.description}</Text>
+            <Text style={styles.h2}>{currentModal.date}</Text>
+            <Text style={styles.h2}>{currentModal.time}</Text>
             <View style={styles.buttonContainer}>
               <View style={styles.textBox}>
                 <Button
                   color="#013220"
-                  title="Google me"
-                  accesibilityLabel="Google me"
-                  onPress={() =>
-                    Linking.openURL(
-                      `https://www.google.com/search?q=${currentModal.name}`,
-                    )
-                  }
+                  title="Get Directions"
+                  accesibilityLabel="Get Directions"
+                  onPress={() => Linking.openURL(`http://maps.apple.com/?sll=${centeredLat},${centeredLong}&daddr=${currentModal.description}`)}
                 />
               </View>
               <View style={styles.textBox}>
@@ -84,7 +101,8 @@ function PopUpFromMap({ changePinView, pinView, currentModal }) {
                 />
               </View>
             </View>
-          </View>
+            </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </GestureRecognizer>
     </SafeAreaView>
