@@ -25,6 +25,7 @@ const AppTabs = () => {
   const [currentDay, setCurrentDay] = useState();
   const [userData, setUserData] = useState();
   const [email, setEmail] = useState();
+  const [pastMessages, setPastMessages] = useState([]);
 
   const date = new Date();
   const formattedDate = format(date, 'yyyy-MM-dd');
@@ -41,8 +42,25 @@ const AppTabs = () => {
   }, [currentDay]);
 
   useEffect(() => {
+<<<<<<< HEAD
     getUsersInfo(email);
   }, [email]);
+=======
+    axios
+      .get('http://localhost:3001/logallmessages/1')
+      .then(({data}) => {
+        setPastMessages(data.messages);
+        data.criticalInfo.map(criticalMessage => {
+          if (criticalMessage.seen_by_user_email.indexOf(email) < 0) {
+            setUrgentMessage(true);
+          } else {
+            return;
+          }
+        });
+      })
+      .catch(err => console.log(err));
+  }, [urgentMessage, email]);
+>>>>>>> bf07fa441a3608bda927391d59799ba52749bb40
 
   const getEvents = (tripId, date) => {
     axios
@@ -103,6 +121,7 @@ const AppTabs = () => {
                 size={30}
                 color={'#007AFF'}
                 accessibilityLabel="Messages"
+                onPress={() => setUrgentMessage(false)}
               />
             );
           }
@@ -129,7 +148,7 @@ const AppTabs = () => {
             user={'lucipak@tempmail.com'}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={'true'}
+            admin={true}
             pastMessages={pastMessages}
           />
         )}

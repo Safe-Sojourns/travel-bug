@@ -23,10 +23,15 @@ CATCHY HEADLINE HERE
 [Adam Whitman](https://github.com/emagdaeh "Adam Whitman")
 
 # Introduction
-This project was a 1-week sprint where our team created a mobile-compatible app for a client
-  -Focus was on creating a map, itinerary, and messaging system for a company that handles student who study abroad
+Travel Bug is a mobile app designed around a client that coordinates study-abroad opportunities for students and instructors.
 
-WHAT DOES THE APP DO HERE
+This app provides students and admin with a central source of truth for their entire study-abroad experience.  The app provides the user with each day's itinerary and the ability to see future dates' events. Admins and staff will also be able to add or edit itinerary events as well.
+
+Map functionality is also included that pins all itinerary events with a unique icon, has pregenerated important locations (i.e. hospital, embassy, etc.), allows the user to see Google search information for each pinned location on the itinerary, provides a "Get Directions" option based on the user's current location, and also allows the user to search the map for locations (i.e. cafe, pizza, etc.).
+
+There is also a specific page set for important contact information that isn't changeable by the students to improve safety (i.e. local emergency telephone number, the staff member's phone number) with an additional editable text box for the student to add in their own notes or contacts.
+
+Finally, there is a messaging system that allows users to have two-way communication and a special toggle for admin/staff to be able to send urgent messages with a notification icon to allow the user to know an urgent message has been created.
 
 # Tech stack
 -React Native
@@ -39,6 +44,7 @@ WHAT DOES THE APP DO HERE
 -PostgreSQL
 
 # Technical Challenges
+
 
 # Unexpected Challenges
 
