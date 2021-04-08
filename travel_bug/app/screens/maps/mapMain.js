@@ -83,18 +83,18 @@ const MapMain = ({allEvents, importantInfo}) => {
         />
         {allEvents.map((event, index) => (
           <Marker
-            onPress={() => {
-              setCurrentModal(event);
-              setCenteredLat(event.latitude);
-              setCenteredLong(event.longitude);
-              setPinView(!pinView);
-            }}
-            key={event._id}
-            title={event.event_name}
-            coordinate={{
-              latitude: event.latitude,
-              longitude: event.longitude,
-            }}>
+          onPress={() => {
+            setCurrentModal(event);
+            setCenteredLat(event.latitude);
+            setCenteredLong(event.longitude);
+            setPinView(!pinView);
+          }}
+          key={event._id}
+          title={event.event_name}
+          coordinate={{
+            latitude: event.latitude,
+            longitude: event.longitude,
+          }}>
             <Image
               source={require('./bug.png')}
               style={{height: 40, width: 40}}

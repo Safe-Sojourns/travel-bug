@@ -30,16 +30,62 @@ const AppTabs = () => {
   const date = new Date();
   const formattedDate = format(date, 'yyyy-MM-dd');
 
+  // useEffect(() => {
+  //   getImportantInfo(1);
+  //   getEvents(1, currentDay);
+  //   setCurrentDay(formattedDate);
+  //   setEmail(user.email);
+  // }, [email]);
+
+  // useEffect(() => {
+  //   getEvents(1, currentDay);
+  // }, [currentDay]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:3001/logallmessages/1')
+  //     .then(({data}) => {
+  //       setPastMessages(data.messages);
+  //       data.criticalInfo.map(criticalMessage => {
+  //         if (criticalMessage.seen_by_user_email.indexOf(email) < 0) {
+  //           setUrgentMessage(true);
+  //         } else {
+  //           return;
+  //         }
+  //       });
+  //     })
+  //     .catch(err => console.log(err));
+  // }, [urgentMessage, email]);
+
+  // const getEvents = (tripId, date) => {
+  //   axios
+  //     .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+  //     .then(results => setAllEvents(results.data))
+  //     .catch(err => console.log(err));
+  // };
+
+  // const getImportantInfo = id => {
+  //   axios
+  //     .get(`http://localhost:3001/logallimportantinfo/${id}`)
+  //     .then(results => setImportantInfo(results.data))
+  //     .catch(err => console.log(err));
+  // };
+
+  // const getUsersInfo = (email) => {
+  //   axios.get(`http://localhost:3001/api/users/${email}`)
+  //     .then((results) => setUserData(results.data))
+  //     .catch(err => console.log(err));
+  // };
+
+  useEffect(() => {
+    setEmail(user.email);
+  }, []);
+
   useEffect(() => {
     getImportantInfo(1);
     getEvents(1, currentDay);
     setCurrentDay(formattedDate);
-    setEmail(user.email);
-  }, [email]);
-
-  useEffect(() => {
-    getEvents(1, currentDay);
-  }, [currentDay]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -55,27 +101,40 @@ const AppTabs = () => {
         });
       })
       .catch(err => console.log(err));
-  }, [urgentMessage, email]);
+  }, []);
 
-  const getEvents = (tripId, date) => {
+  const getEvents = () => {
     axios
-      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+      .get(`http://localhost:3001/api/events/${importantInfo[0].trip_id}/${'2021-04-12'}`)
+      // .get(`http://localhost:3001/api/events/${importantInfo[0].trip_id}/${currentDay}`)
       .then(results => setAllEvents(results.data))
       .catch(err => console.log(err));
   };
 
-  const getImportantInfo = id => {
+  const getImportantInfo = () => {
     axios
-      .get(`http://localhost:3001/logallimportantinfo/${id}`)
+      .get(
+        `http://localhost:3001/logallimportantinfo/${importantInfo[0].trip_id}`
+      )
       .then(results => setImportantInfo(results.data))
       .catch(err => console.log(err));
   };
 
-  const getUsersInfo = (email) => {
+  const getUsersInfo = () => {
     axios.get(`http://localhost:3001/api/users/${email}`)
-      .then((results) => setUserData(results.data))
+      .then(results => setUserData(results.data))
       .catch(err => console.log(err));
   };
+
+  // getUsersInfo();
+
+  const getUserData = () => {
+    // console.log(user);
+    console.log(userData);
+    // console.log(email);
+  };
+
+  getUserData();
 
   return (
     <Tabs.Navigator
@@ -140,10 +199,11 @@ const AppTabs = () => {
         {props => (
           <Messages
             {...props}
-            user={'lucipak@tempmail.com'}
+            user={email}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={true}
+            // admin={true}
+            admin={userData[0].admin}
             pastMessages={pastMessages}
           />
         )}
