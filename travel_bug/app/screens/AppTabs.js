@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
   faMapMarkedAlt,
   faExclamationTriangle,
-  faCommentDots} from '@fortawesome/free-solid-svg-icons';
+  faCommentDots,
+} from '@fortawesome/free-solid-svg-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Itinerary from './Itinerary.js';
 import mapMain from './maps/mapMain.js';
@@ -13,7 +14,8 @@ import Messages from './Messages.js';
 
 const Tabs = createBottomTabNavigator();
 
-const AppTabs = ({navigation}) => {
+const AppTabs = ({user}) => {
+  const [urgentMessage, setUrgentMessage] = useState(false);
   return (
     <Tabs.Navigator
       tabBarOptions={{style: {backgroundColor: '#ABDA9A', paddingTop: 5}}}
@@ -24,7 +26,7 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faClipboardList}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Itinerary"
               />
             );
@@ -33,7 +35,7 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faMapMarkedAlt}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Map"
               />
             );
@@ -42,7 +44,7 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faExclamationTriangle}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Important Contacts"
               />
             );
@@ -51,7 +53,7 @@ const AppTabs = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faCommentDots}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Messages"
               />
             );
@@ -61,7 +63,19 @@ const AppTabs = ({navigation}) => {
       <Tabs.Screen name="Itinerary" component={Itinerary} />
       <Tabs.Screen name="Map" component={mapMain} />
       <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
-      <Tabs.Screen name="Messages" component={Messages} />
+      <Tabs.Screen
+        name="Messages"
+        options={!urgentMessage ? null : {tabBarBadge: '!'}}>
+        {props => (
+          <Messages
+            {...props}
+            user={user}
+            urgentMessage={urgentMessage}
+            setUrgentMessage={setUrgentMessage}
+            admin={'true'}
+          />
+        )}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };

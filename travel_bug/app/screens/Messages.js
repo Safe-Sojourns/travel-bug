@@ -10,23 +10,35 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  Switch,
 } from 'react-native';
 
 const socket = io('http://localhost:4000');
 
-export default function Messages() {
+export default function Messages({
+  user,
+  urgentMessage,
+  setUrgentMessage,
+  admin,
+}) {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
   const [isExpanded, setIsExpanded] = useState(true);
-  const [currentUser, setCurrentUser] = useState('student1');
-  //eventually change user to what is passed down in props
+  const [currentUser, setCurrentUser] = useState('');
+  const [urgent, setUrgent] = useState(false);
+
+  const toggleSwitch = () => {
+    setUrgent(previousState => !previousState);
+    setUrgentMessage(true);
+  };
 
   useEffect(() => {
     socket.on('new messages', msg => {
       setChatMessages([...chatMessages, msg]);
     });
     scroll.current.scrollToEnd();
-  }, [chatMessages]);
+    setCurrentUser(user);
+  }, [chatMessages, user]);
 
   const scroll = useRef();
 
@@ -34,19 +46,18 @@ export default function Messages() {
     const date = new Date();
     const formattedDate = date.toString().split(' ').slice(0, 5).join(' ');
     socket.emit('chat message', {
-      user: currentUser,
+      user: 'Luci2',
       message: chatMessage,
       date: formattedDate,
+      isUrgent: urgent,
     });
+    setUrgent(false);
     setChatMessage('');
     scroll.current.scrollToEnd();
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.viewHeader}>
-        <Text style={styles.headerText}>Messages</Text>
-      </View>
       <SafeAreaView>
         <ScrollView
           onTouchStart={() => setIsExpanded(false)}
@@ -59,6 +70,8 @@ export default function Messages() {
               currentUser={currentUser}
               user={message.user}
               date={message.date}
+              admin={admin}
+              urgent={message.isUrgent}
             />
           ))}
         </ScrollView>
@@ -66,11 +79,23 @@ export default function Messages() {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.footer}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+          <Text style={{alignSelf: 'center', paddingLeft: 5}}>Urgent</Text>
+          <Switch
+            trackColor={{false: '#767577', true: '#ABDA9A'}}
+            onValueChange={toggleSwitch}
+            value={urgent}
+          />
+        </View>
         <TextInput
           multiline
           value={chatMessage}
           onChangeText={message => setChatMessage(message)}
-          style={styles.textInput}
+          style={styles.adminTextInput}
           onSubmitEditing={submitMessage}
           keyboardType="default"
           onFocus={() => {
@@ -78,7 +103,7 @@ export default function Messages() {
             scroll.current.scrollToEnd();
           }}
         />
-        <View style={styles.buttonContainer}>
+        <View style={styles.adminButtonContainer}>
           <Button
             onPress={submitMessage}
             title="Send"
@@ -96,6 +121,26 @@ const styles = StyleSheet.create({
     height: 400,
     flex: 1,
     backgroundColor: '#EAF9FF',
+  },
+  adminTextInput: {
+    height: 'auto',
+    width: '70%',
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 10,
+    padding: 10,
+    justifyContent: 'center',
+    fontSize: 20,
+  },
+  adminButtonContainer: {
+    height: 'auto',
+    width: '17%',
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderStyle: 'solid',
+    justifyContent: 'center',
   },
   textInput: {
     height: 'auto',
@@ -122,7 +167,7 @@ const styles = StyleSheet.create({
     alignContent: 'space-between',
     flexDirection: 'row',
     display: 'flex',
-    bottom: 8,
+    bottom: 3,
   },
   messageList: {
     overflow: 'hidden',
@@ -136,7 +181,7 @@ const styles = StyleSheet.create({
   },
   currentUser: {
     height: 'auto',
-    backgroundColor: '#EAF9FF',
+    backgroundColor: 'white',
     borderWidth: 1,
     borderStyle: 'solid',
     borderRadius: 10,
@@ -149,7 +194,7 @@ const styles = StyleSheet.create({
   },
   otherUsers: {
     height: 'auto',
-    backgroundColor: 'white',
+    backgroundColor: '#ABDA9A',
     borderWidth: 1,
     borderStyle: 'solid',
     borderRadius: 10,
@@ -160,24 +205,24 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 10,
   },
-  headerText: {
-    fontSize: 20,
-    display: 'flex',
-    alignSelf: 'center',
-    paddingTop: 30,
-  },
-  viewHeader: {
-    backgroundColor: '#EAF9FF',
-    height: 90,
-    display: 'flex',
-    justifyContent: 'center',
-  },
+  // headerText: {
+  //   fontSize: 20,
+  //   display: 'flex',
+  //   alignSelf: 'center',
+  //   paddingTop: 30,
+  // },
+  // viewHeader: {
+  //   backgroundColor: 'white',
+  //   height: 90,
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  // },
 });
 
-const MessageListEntry = ({currentUser, user, message, date}) => (
+const MessageListEntry = ({currentUser, user, message, date, urgent}) => (
   <View style={user === currentUser ? styles.currentUser : styles.otherUsers}>
     <Text style={{fontWeight: '700', paddingBottom: 5}}>{user}</Text>
-    <Text style={{paddingBottom: 5}}>{message}</Text>
+    <Text style={urgent ? {color: 'red'} : {paddingBottom: 5}}>{message}</Text>
     <Text style={{fontStyle: 'italic', fontSize: 9, alignSelf: 'flex-end'}}>
       {date}
     </Text>
