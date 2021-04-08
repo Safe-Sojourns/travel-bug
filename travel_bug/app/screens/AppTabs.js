@@ -15,8 +15,6 @@ import axios from 'axios';
 
 const Tabs = createBottomTabNavigator();
 
-// TouchableOpacity required??
-
 const AppTabs = ({user}) => {
   const [urgentMessage, setUrgentMessage] = useState(false);
   const [pastMessages, setPastMessages] = useState([]);
@@ -50,7 +48,7 @@ const AppTabs = ({user}) => {
               <FontAwesomeIcon
                 icon={faClipboardList}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Itinerary"
               />
             );
@@ -59,7 +57,7 @@ const AppTabs = ({user}) => {
               <FontAwesomeIcon
                 icon={faMapMarkedAlt}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Map"
               />
             );
@@ -68,7 +66,7 @@ const AppTabs = ({user}) => {
               <FontAwesomeIcon
                 icon={faExclamationTriangle}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Important Contacts"
               />
             );
@@ -77,7 +75,7 @@ const AppTabs = ({user}) => {
               <FontAwesomeIcon
                 icon={faCommentDots}
                 size={30}
-                color={'#5B58AD'}
+                color={'#007AFF'}
                 accessibilityLabel="Messages"
               />
             );
