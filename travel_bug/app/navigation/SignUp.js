@@ -10,11 +10,13 @@ import {
   View,
 } from 'react-native';
 import {AuthContext} from './AuthProvider';
+import axios from 'axios';
 
 const SignUp = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [tripIdNumber, setTripIdNumber] = useState(0);
   const [isValidPassword, setIsValidPassword] = useState(false);
 
   const {register} = useContext(AuthContext);
@@ -53,6 +55,14 @@ const SignUp = ({navigation}) => {
       <TextInput
         style={styles.inputField}
         autoCapitalize="none"
+        keyboardType="numeric"
+        defaultValue={tripIdNumber}
+        placeholder="Your Trip ID Number"
+        onChangeText={text => setTripIdNumber(text)}
+      />
+      <TextInput
+        style={styles.inputField}
+        autoCapitalize="none"
         onChangeText={text => setPassword(text)}
         defaultValue={password}
         placeholder="Password"
@@ -72,7 +82,15 @@ const SignUp = ({navigation}) => {
         accessibilityLabel="Register button"
         onPress={() => {
           if (isValidPassword === true) {
-            register(email, password);
+            register(email, tripIdNumber, password);
+            axios
+              .post('/api/createuser', {email, tripIdNumber})
+              .then((status) => {
+                console.log('Status: ', status);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           } else {
             Alert.alert('Invalid Password!', 'Password does not match', [
               {text: 'Okay'},
