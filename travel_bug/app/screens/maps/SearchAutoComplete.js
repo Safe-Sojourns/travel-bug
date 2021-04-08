@@ -16,6 +16,7 @@ function SearchAutoComplete({
   searchTerm,
   setSearchTerm,
   setSearchAddr,
+  setPinTitle,
 }) {
 
   const homePlace = { description: 'Dreaming Rome Hostel', geometry: { location: { lat: 41.88194, lng: 12.50947 } } };
@@ -39,6 +40,7 @@ function SearchAutoComplete({
         setCenteredLat(details.geometry.location.lat);
         setCenteredLong(details.geometry.location.lng);
         setSearchAddr(details.formatted_address);
+        setPinTitle(data.description)
       }}
       getDefaultValue={() => ''}
       query={{

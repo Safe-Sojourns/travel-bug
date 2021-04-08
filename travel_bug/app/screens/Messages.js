@@ -15,6 +15,7 @@ import {
   SafeAreaView,
   Switch,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import axios from 'axios';
 
@@ -87,6 +88,19 @@ export default function Messages({
 
   return (
     <View style={styles.container}>
+       <View>
+        <Image
+          style={{
+            height: 800,
+            width: 400,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            opacity:0.06,
+          }}
+          source={require('./assets/travelbackground.jpeg')}
+        />
+      </View>
       <SafeAreaView>
         <ScrollView
           onTouchStart={() => setIsExpanded(false)}
@@ -177,7 +191,7 @@ const styles = StyleSheet.create({
   container: {
     height: 400,
     flex: 1,
-    backgroundColor: '#EAF9FF',
+    // backgroundColor: '#EAF9FF',
   },
   adminTextInput: {
     height: 'auto',
