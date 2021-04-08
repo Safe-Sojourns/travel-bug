@@ -43,6 +43,13 @@ export default function Messages({
     setCurrentUser(user);
   }, [chatMessages, user]);
 
+  // function checkPermission() {
+  //   check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+  //   .then((result) => {
+
+  //   })
+  // }
+
   const scroll = useRef();
 
   function submitMessage() {
@@ -105,6 +112,7 @@ export default function Messages({
               size={30}
               color="blue"
               style={{display: 'flex', flexDirection: 'column', alignSelf: 'center'}}
+              // onPress={checkPermission}
             />
           </TouchableOpacity>
         </View>
