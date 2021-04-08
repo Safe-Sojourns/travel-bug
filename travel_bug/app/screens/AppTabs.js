@@ -20,20 +20,32 @@ const Tabs = createBottomTabNavigator();
 const AppTabs = () => {
   const {user} = useContext(AuthContext);
   const [urgentMessage, setUrgentMessage] = useState(false);
-  const [allEvents, setAllEvents] = useState();
+  const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
-  const [currentDay, setCurrentDay] = useState();
+  const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
   const [userData, setUserData] = useState();
   const [email, setEmail] = useState();
   const [pastMessages, setPastMessages] = useState([]);
 
-  const date = new Date();
-  const formattedDate = format(date, 'yyyy-MM-dd');
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + (d.getDate() + 1),
+      year = d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+    return [year, month, day].join('-');
+  }
 
   useEffect(() => {
     getImportantInfo(1);
     getEvents(1, currentDay);
-    setCurrentDay(formattedDate);
+    // setCurrentDay(formattedDate);
     setEmail(user.email);
   }, [email]);
 
@@ -58,8 +70,9 @@ const AppTabs = () => {
   }, [urgentMessage, email]);
 
   const getEvents = (tripId, date) => {
+    const selectedDate = formatDate(date);
     axios
-      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+      .get(`http://localhost:3001/api/events/${tripId}/${selectedDate}`)
       .then(results => setAllEvents(results.data))
       .catch(err => console.log(err));
   };
@@ -122,7 +135,15 @@ const AppTabs = () => {
           }
         },
       })}>
-      <Tabs.Screen name="Itinerary" component={Itinerary} />
+      <Tabs.Screen name="Itinerary">
+        {props => (
+          <Itinerary
+            {...props}
+            allEvents={allEvents}
+            setCurrentDay={setCurrentDay}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen name="Map">
         {props => (
           <MapMain
