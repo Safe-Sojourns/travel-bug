@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
@@ -13,29 +13,36 @@ import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
 import axios from 'axios';
 import {format} from 'date-fns';
+import {AuthContext} from '../navigation/AuthProvider';
 
 const Tabs = createBottomTabNavigator();
 
-const AppTabs = ({user}) => {
+const AppTabs = () => {
+  const {user} = useContext(AuthContext);
   const [urgentMessage, setUrgentMessage] = useState(false);
   const [allEvents, setAllEvents] = useState();
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState();
+  const [userData, setUserData] = useState();
   const [email, setEmail] = useState();
 
   const date = new Date();
   const formattedDate = format(date, 'yyyy-MM-dd');
 
   useEffect(() => {
-    getEvents(1, currentDay);
     getImportantInfo(1);
+    getEvents(1, currentDay);
     setCurrentDay(formattedDate);
-    setEmail('aaronfink@tempmail.com');
-  }, []);
+    setEmail(user.email);
+  }, [email]);
 
   useEffect(() => {
     getEvents(1, currentDay);
   }, [currentDay]);
+
+  useEffect(() => {
+    getUsersInfo(email);
+  }, [email]);
 
   const getEvents = (tripId, date) => {
     axios
@@ -48,6 +55,12 @@ const AppTabs = ({user}) => {
     axios
       .get(`http://localhost:3001/logallimportantinfo/${id}`)
       .then(results => setImportantInfo(results.data))
+      .catch(err => console.log(err));
+  };
+
+  const getUsersInfo = (email) => {
+    axios.get(`http://localhost:3001/api/users/${email}`)
+      .then((results) => setUserData(results.data))
       .catch(err => console.log(err));
   };
 
@@ -102,6 +115,7 @@ const AppTabs = ({user}) => {
             {...props}
             allEvents={allEvents}
             importantInfo={importantInfo}
+            userData={userData}
           />
         )}
       </Tabs.Screen>
