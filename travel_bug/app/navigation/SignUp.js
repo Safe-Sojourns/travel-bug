@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {
   Alert,
+  Button,
   Image,
   StyleSheet,
   Text,
@@ -60,9 +61,9 @@ const SignUp = ({navigation}) => {
       <TextInput
         style={styles.inputField}
         autoCapitalize="none"
-        onChangeText={text => setPassword(text)}
+        onChangeText={text => setConfirmPassword(text)}
         onEndEditing={() => handleValidPassword()}
-        defaultValue={password}
+        defaultValue={confirmPassword}
         placeholder="Confirm Password"
         secureTextEntry={true}
       />
@@ -81,6 +82,14 @@ const SignUp = ({navigation}) => {
         <View style={styles.button}>
           <Text style={styles.buttonText}>Let's Go Traveling!</Text>
         </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Button
+          title="Take me to the login page"
+          onPress={() => {
+            navigation.navigate('Login');
+          }}
+        />
       </TouchableOpacity>
     </View>
   );

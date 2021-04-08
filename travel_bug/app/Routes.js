@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,6 +13,7 @@ import auth from '@react-native-firebase/auth';
 import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 import SignIn from './navigation/SignIn';
+import SignUp from './navigation/SignUp';
 
 const Stack = createStackNavigator();
 
@@ -54,8 +56,8 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
-        {user ? (
+      {user ? (
+        <Stack.Navigator>
           <Stack.Screen
             name="Travel Bug"
             component={AppTabs}
@@ -73,15 +75,22 @@ const Routes = () => {
                 fontWeight: '900',
               },
             }}
-          />
-        ) : (
+        />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator initialRoutName="Login">
           <Stack.Screen
             name="Login"
             component={SignIn}
             options={{header: () => null}}
           />
-        )}
-      </Stack.Navigator>
+          <Stack.Screen
+            name="Register"
+            component={SignUp}
+            options={{header: () => null}}
+          />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 };

@@ -1,7 +1,8 @@
 import React, {useState, useContext} from 'react';
 import {
-  StyleSheet,
+  Button,
   Image,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -9,9 +10,10 @@ import {
 } from 'react-native';
 import {AuthContext} from './AuthProvider';
 
-const SignIn = () => {
+const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const {login} = useContext(AuthContext);
 
   return (
@@ -56,6 +58,14 @@ const SignIn = () => {
         <View style={styles.button}>
           <Text style={styles.buttonText}>Let's Go Traveling!</Text>
         </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Button
+          title="I need to register first!"
+          onPress={() => {
+            navigation.navigate('Register');
+          }}
+        />
       </TouchableOpacity>
     </View>
   );

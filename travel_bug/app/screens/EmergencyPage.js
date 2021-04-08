@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   buttonView: {
     width: 70,
     height: 40,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#013220',
     alignSelf: 'flex-end',
     marginTop: 10,
     marginBottom: 5,
