@@ -19,10 +19,6 @@ function SearchAutoComplete({
   setPinTitle,
   importantInfo,
 }) {
-  const workPlace = {
-    description: 'Embassy',
-    geometry: {location: {lat: 41.907188, lng: 12.4903}},
-  };
   const hospital = {
     description: 'Hospital',
     geometry: {location: {lat: 41.88597, lng: 12.5032}},
@@ -47,7 +43,7 @@ function SearchAutoComplete({
         setCenteredLat(details.geometry.location.lat);
         setCenteredLong(details.geometry.location.lng);
         setSearchAddr(details.formatted_address);
-        setPinTitle(data.description);
+        setPinTitle(data.structured_formatting.main_text);
       }}
       getDefaultValue={() => ''}
       query={{
@@ -68,7 +64,6 @@ function SearchAutoComplete({
           color: '#1faadb',
         },
       }}
-      predefinedPlaces={[workPlace, hospital, popo]}
       nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
       GoogleReverseGeocodingQuery={
         {
@@ -90,7 +85,6 @@ function SearchAutoComplete({
       ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
       // eslint-disable-next-line react/jsx-one-expression-per-line
-      keyboardShouldPersistTaps="always"
     />
   );
 }
