@@ -2,15 +2,18 @@ import React from 'react';
 import {
   Button,
   View,
+  ScrollView,
   Text,
   StyleSheet,
   SafeAreaView,
+  StatusBar,
   TextInput,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faAmbulance,
   faUser,
+  faPhone,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
@@ -42,9 +45,26 @@ function EmergencyPage(props) {
             accessibilityLabel="User"
           />
           <Text testID="staff" style={styles.text}>
-            Staff:
+            Staff Contact Info:
           </Text>
+        </View>
+        <View style={styles.numberView}>
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faPhone}
+            size={20}
+            accessibilityLabel="Phone"
+          />
           <Text style={styles.textNum}>+ 1 425-567-8976</Text>
+        </View>
+        <View style={styles.numberView}>
+          <FontAwesomeIcon
+            style={styles.icon}
+            icon={faPhone}
+            size={20}
+            accessibilityLabel="Phone"
+          />
+          <Text style={styles.textNum}>+ 1 425-563-2566</Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -57,9 +77,11 @@ function EmergencyPage(props) {
             Additional Information:
           </Text>
         </View>
-        <View style={styles.info}>
-          <Text style={styles.infoText}>{emergencyInput}</Text>
-        </View>
+        <SafeAreaView style={styles.view}>
+          <ScrollView style={styles.info}>
+            <Text style={styles.infoText}>{emergencyInput}</Text>
+          </ScrollView>
+        </SafeAreaView>
         <View style={styles.buttonView}>
           <Button
             testID="editButton"
@@ -102,6 +124,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  view: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+  },
   modal: {
     flex: 1,
     alignItems: 'center',
@@ -120,7 +146,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#ABDA9A',
     width: 300,
-    height: 350,
+    height: 450,
     padding: 20,
     borderRadius: 15,
   },
@@ -134,6 +160,11 @@ const styles = StyleSheet.create({
   iconText: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  numberView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 40,
   },
   input: {
     height: 120,
