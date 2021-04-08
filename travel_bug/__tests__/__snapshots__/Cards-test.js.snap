@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cards renders correctly 1`] = `
+<View>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "borderColor": "grey",
+        "borderRadius": 10,
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "display": "flex",
+        "marginHorizontal": 10,
+        "marginVertical": 5,
+        "opacity": 1,
+        "padding": 5,
+        "width": 320,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "transform": Array [
+              Object {
+                "rotate": "0deg",
+              },
+            ],
+          }
+        }
+      >
+        <RNSVGSvgView
+          bbHeight={24}
+          bbWidth={24}
+          focusable={false}
+          height={24}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderWidth": 0,
+              },
+              Object {
+                "flex": 0,
+                "height": 24,
+                "width": 24,
+              },
+            ]
+          }
+          width={24}
+        >
+          <RNSVGGroup>
+            <RNSVGPath
+              d="M4 8 12 16 20 8"
+              fill={null}
+              propList={
+                Array [
+                  "fill",
+                  "stroke",
+                  "strokeWidth",
+                ]
+              }
+              stroke={4278190080}
+              strokeWidth="1.5"
+            />
+          </RNSVGGroup>
+        </RNSVGSvgView>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "stretch",
+            "display": "flex",
+            "width": 300,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "fontSize": 20,
+              "fontWeight": "bold",
+            }
+          }
+          testID="activity"
+        >
+          Flight to Rome
+        </Text>
+        <Text
+          style={
+            Object {
+              "padding": 5,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "red",
+                "fontWeight": "bold",
+                "margin": 20,
+              }
+            }
+            testID="time"
+          >
+            9.00am
+          </Text>
+          <Text>
+                    
+          </Text>
+          <Text>
+                    
+          </Text>
+          <Text>
+                    
+          </Text>
+          <Text>
+                 
+          </Text>
+          <Text>
+                 
+          </Text>
+          <Text>
+                 
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "black",
+                "fontSize": 12,
+              }
+            }
+          >
+            [OPTIONAL]
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

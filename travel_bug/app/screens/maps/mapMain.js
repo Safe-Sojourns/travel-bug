@@ -1,8 +1,18 @@
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, Image, SafeAreaView, Alert, Linking} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  SafeAreaView,
+  Alert,
+  Linking,
+} from 'react-native';
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHouseUser} from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   searchView: {
@@ -14,7 +24,7 @@ const styles = StyleSheet.create({
     top: 720,
   },
 });
-const MapMain = () => {
+const MapMain = ({allEvents, importantInfo}) => {
   const [pinView, setPinView] = useState(false);
   const [searchAddr, setSearchAddr] = useState();
   const [centeredLat, setCenteredLat] = useState(41.8933);
@@ -22,6 +32,7 @@ const MapMain = () => {
   const [searchLat, setSearchLat] = useState();
   const [searchLong, setSearchLong] = useState();
   const [currentModal, setCurrentModal] = useState({});
+  const [pinTitle, setPinTitle] = useState();
 
   const changePinView = () => {
     setPinView(!pinView);
@@ -34,7 +45,13 @@ const MapMain = () => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => Linking.openURL(`http://maps.apple.com/?sll=${centeredLat},${centeredLong}&daddr=${searchAddr}`)}
+      {
+        text: 'OK',
+        onPress: () =>
+          Linking.openURL(
+            `http://maps.apple.com/?sll=${centeredLat},${centeredLong}&daddr=${searchAddr}`,
+          ),
+      },
     ]);
 
   return (
@@ -60,8 +77,9 @@ const MapMain = () => {
           setCenteredLong={setCenteredLong}
           setCenteredLat={setCenteredLat}
           setSearchAddr={setSearchAddr}
+          setPinTitle={setPinTitle}
         />
-        {arrayOfEventLocations.map((event, index) => (
+        {allEvents.map((event, index) => (
           <Marker
             onPress={() => {
               setCurrentModal(event);
@@ -69,8 +87,8 @@ const MapMain = () => {
               setCenteredLong(event.longitude);
               setPinView(!pinView);
             }}
-            key={event.eventIdNumber}
-            title={event.name}
+            key={event._id}
+            title={event.event_name}
             coordinate={{
               latitude: event.latitude,
               longitude: event.longitude,
@@ -92,12 +110,22 @@ const MapMain = () => {
         {searchLat && searchLong ? (
           <Marker
             onPress={createTwoButtonAlert}
+            description={pinTitle}
+            isPreselected={true}
             coordinate={{
               latitude: searchLat,
               longitude: searchLong,
             }}
           />
         ) : null}
+        <Marker
+          description={'Home Base'}
+          coordinate={{
+            latitude: 41.8933,
+            longitude: 12.4889,
+          }}>
+          <FontAwesomeIcon icon={faHouseUser} size={25} accessibilityLabel="Info" />
+        </Marker>
       </MapView>
     </SafeAreaView>
   );
