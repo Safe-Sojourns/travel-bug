@@ -17,10 +17,8 @@ export default function CardDetails(props) {
   const navigation = useNavigation();
 
   function setLocation() {
-    console.log('this is the longitude: ', props.event.longitude);
     props.setCenteredLong(props.event.longitude);
     props.setCenteredLat(props.event.latitude);
-    console.log('this is the latitude: ', props.event.latitude);
     navigation.jumpTo('Map');
   }
   return (
