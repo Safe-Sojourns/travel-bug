@@ -119,7 +119,6 @@ const AddEvent = () => {
                 transportation: values.transportation,
                 mandatory: values.mandatory,
               };
-              console.log(values.mandatory);
               axios
                 .post('http://localhost:3001/api/events', formObj)
                 .then(() => console.log('successfully created new event'))

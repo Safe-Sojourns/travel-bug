@@ -37,7 +37,7 @@ const Routes = () => {
   useEffect(() => {
     setTimeout(() => {
       setSplash(false);
-    }, 5000);
+    }, 3000);
   }, []);
 
   const onAuthStateChanged = user => {

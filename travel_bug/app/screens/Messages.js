@@ -250,7 +250,7 @@ export default function Messages({
           <Button
             onPress={submitMessage}
             title="Send"
-            color="black"
+            color="white"
             disabled={chatMessage === ''}
           />
         </View>

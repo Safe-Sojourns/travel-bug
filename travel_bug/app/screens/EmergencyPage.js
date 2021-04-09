@@ -84,7 +84,6 @@ function EmergencyPage({id, email}) {
       id: id,
       notes: notes,
     };
-    console.log(notesObj);
     axios
       .post('http://localhost:3001/api/notes', notesObj)
       .then(() => getUserNotes(email))
