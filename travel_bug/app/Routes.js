@@ -15,6 +15,7 @@ import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 import SignIn from './navigation/SignIn';
 import SignUp from './navigation/SignUp';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,16 @@ const Routes = () => {
   const {user, setUser, logout} = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
   const [splash, setSplash] = useState(true);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`http://localhost:3001/api/users/${user.email}`)
+        .then(results => setUserData(results.data))
+        .catch(err => console.log(err));
+    }
+  }, [user]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -61,7 +72,6 @@ const Routes = () => {
         <Stack.Navigator>
           <Stack.Screen
             name="Travel Bug"
-            component={AppTabs}
             options={{
               headerTitle: () => (
                 <Image source={require('./screens/maps/bug.png')} />
@@ -79,16 +89,15 @@ const Routes = () => {
               headerTitleStyle: {
                 fontWeight: '900',
               },
-            }}
-        />
+            }}>
+            {props => <AppTabs userData={userData} />}
+          </Stack.Screen>
         </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRoutName="Login">
-          <Stack.Screen
-            name="Login"
-            component={SignIn}
-            options={{header: () => null}}
-          />
+          <Stack.Screen name="Login" options={{header: () => null}}>
+            {props => <SignIn setUserData={setUserData} />}
+          </Stack.Screen>
           <Stack.Screen
             name="Register"
             component={SignUp}
