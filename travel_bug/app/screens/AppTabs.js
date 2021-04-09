@@ -24,6 +24,7 @@ const AppTabs = ({userData}) => {
   const [urgentMessage, setUrgentMessage] = useState(false);
   const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
+  const [critical, setCritical] = useState([]);
   const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
   const [email, setEmail] = useState();
   const [pastMessages, setPastMessages] = useState([]);
@@ -60,13 +61,21 @@ const AppTabs = ({userData}) => {
       .get('http://localhost:3001/logallmessages/1')
       .then(({data}) => {
         setPastMessages(data.messages);
-        data.criticalInfo.map(criticalMessage => {
-          if (criticalMessage.seen_by_user_email.indexOf(email) < 0) {
+        if (userData[0].email) {
+          const unseenIds = data.criticalInfo
+            .map(criticalMessage => {
+              if (criticalMessage.seen_by_user_email.indexOf(email) >= 0) {
+                return;
+              } else {
+                return criticalMessage._id;
+              }
+            })
+            .filter(id => id !== undefined);
+          if (unseenIds.length > 0) {
             setUrgentMessage(true);
-          } else {
-            return;
+            setCritical(unseenIds);
           }
-        });
+        }
       })
       .catch(err => console.log(err));
   }, []);
@@ -100,6 +109,20 @@ const AppTabs = ({userData}) => {
         .catch(err => console.log(err));
     }
   };
+
+  // const handleCriticalInfo = () => {
+  //   critical.map(id => {
+  //     axios
+  //       .put('http://localhost:3001/api/criticalseen', {
+  //         _id: id,
+  //         email: email,
+  //       })
+  //       .then(() => console.log('Successfully put to critical messages'))
+  //       .catch(err => console.log(err));
+  //   });
+  //   setCritical([]);
+  //   setUrgentMessage(false);
+  // };
 
   return (
     <Tabs.Navigator
@@ -140,7 +163,6 @@ const AppTabs = ({userData}) => {
                 size={30}
                 color={'#007AFF'}
                 accessibilityLabel="Messages"
-                onPress={() => setUrgentMessage(false)}
               />
             );
           }
@@ -176,7 +198,7 @@ const AppTabs = ({userData}) => {
             {...props}
             id={userData[0].id}
             email={userData[0].email}
-            // notes={userData[0].notes}
+            notes={userData[0].notes}
           />
         )}
       </Tabs.Screen>
@@ -191,6 +213,8 @@ const AppTabs = ({userData}) => {
             setUrgentMessage={setUrgentMessage}
             admin={userData[0].admin}
             pastMessages={pastMessages}
+            critical={critical}
+            setCritical={setCritical}
           />
         )}
       </Tabs.Screen>
