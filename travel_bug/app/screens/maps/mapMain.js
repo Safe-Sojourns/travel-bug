@@ -44,7 +44,6 @@ const MapMain = ({
   const [searchLong, setSearchLong] = useState();
   const [currentModal, setCurrentModal] = useState({});
   const [pinTitle, setPinTitle] = useState();
-  console.log(allEvents)
 
   const changePinView = () => {
     setPinView(!pinView);
