@@ -9,12 +9,16 @@ import {
   View,
 } from 'react-native';
 import {AuthContext} from './AuthProvider';
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
-const SignIn = ({navigation}) => {
+const SignIn = ({setUserData}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const {login} = useContext(AuthContext);
+
+  const navigation = useNavigation();
 
   return (
     <View
@@ -53,7 +57,11 @@ const SignIn = ({navigation}) => {
         accessible={true}
         accessibilityLabel="Login button"
         onPress={() => {
-          login(email, password);
+          axios
+            .get(`http://localhost:3001/api/users/${email}`)
+            .then(results => setUserData(results.data))
+            .then(login(email, password))
+            .catch(err => console.log(err));
         }}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Let's Go Traveling!</Text>

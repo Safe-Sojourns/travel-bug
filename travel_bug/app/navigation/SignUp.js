@@ -29,9 +29,6 @@ const SignUp = ({navigation}) => {
     }
   };
 
-  console.log('password: ', password);
-  console.log('confirmPassword: ', confirmPassword);
-
   useEffect(() => {
     if (isValidPassword === true) {
       register(email, password);
