@@ -12,7 +12,6 @@ import MapMain from './maps/mapMain.js';
 import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
 import axios from 'axios';
-import {format} from 'date-fns';
 import {AuthContext} from '../navigation/AuthProvider';
 import key from './maps/keyConfig.js';
 import Geocoder from 'react-native-geocoding';
@@ -57,6 +56,10 @@ const AppTabs = ({userData}) => {
   }, [currentDay]);
 
   useEffect(() => {
+    getMessages();
+  }, [userData]);
+
+  const getMessages = () => {
     axios
       .get('http://localhost:3001/logallmessages/1')
       .then(({data}) => {
@@ -64,7 +67,10 @@ const AppTabs = ({userData}) => {
         if (userData[0].email) {
           const unseenIds = data.criticalInfo
             .map(criticalMessage => {
-              if (criticalMessage.seen_by_user_email.indexOf(email) >= 0) {
+              if (
+                criticalMessage.seen_by_user_email.indexOf(userData[0].email) >=
+                0
+              ) {
                 return;
               } else {
                 return criticalMessage._id;
@@ -78,7 +84,7 @@ const AppTabs = ({userData}) => {
         }
       })
       .catch(err => console.log(err));
-  }, []);
+  };
 
   const getEvents = (tripId, date) => {
     const selectedDate = formatDate(date);
@@ -108,20 +114,6 @@ const AppTabs = ({userData}) => {
         .catch(err => console.log(err));
     }
   };
-
-  // const handleCriticalInfo = () => {
-  //   critical.map(id => {
-  //     axios
-  //       .put('http://localhost:3001/api/criticalseen', {
-  //         _id: id,
-  //         email: email,
-  //       })
-  //       .then(() => console.log('Successfully put to critical messages'))
-  //       .catch(err => console.log(err));
-  //   });
-  //   setCritical([]);
-  //   setUrgentMessage(false);
-  // };
 
   return (
     <Tabs.Navigator
@@ -209,7 +201,7 @@ const AppTabs = ({userData}) => {
         {props => (
           <Messages
             {...props}
-            user={email}
+            user={userData[0].email}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
             admin={userData[0].admin}
