@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
@@ -13,25 +13,43 @@ import EmergencyPage from './EmergencyPage.js';
 import Messages from './Messages.js';
 import axios from 'axios';
 import {format} from 'date-fns';
+import {AuthContext} from '../navigation/AuthProvider';
+import key from './maps/keyConfig.js';
+import Geocoder from 'react-native-geocoding';
 
 const Tabs = createBottomTabNavigator();
 
-const AppTabs = ({user}) => {
+const AppTabs = ({userData}) => {
+  const {user} = useContext(AuthContext);
   const [urgentMessage, setUrgentMessage] = useState(false);
-  const [allEvents, setAllEvents] = useState();
+  const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
-  const [currentDay, setCurrentDay] = useState();
+  const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
   const [email, setEmail] = useState();
-  const [pastMessages, setPastMessages] = useState([]);
 
-  const date = new Date();
-  const formattedDate = format(date, 'yyyy-MM-dd');
+  const [pastMessages, setPastMessages] = useState([]);
+  const [centeredLat, setCenteredLat] = useState(41.8933);
+  const [centeredLong, setCenteredLong] = useState(12.4889);
+  Geocoder.init(key);
+
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + (d.getDate() + 1),
+      year = d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+    return [year, month, day].join('-');
+  }
 
   useEffect(() => {
-    getEvents(1, currentDay);
     getImportantInfo(1);
-    setCurrentDay(formattedDate);
-    setEmail('aaronfink@tempmail.com');
+    getEvents(1, currentDay)
   }, []);
 
   useEffect(() => {
@@ -52,20 +70,37 @@ const AppTabs = ({user}) => {
         });
       })
       .catch(err => console.log(err));
-  }, [urgentMessage, email]);
+  }, []);
+
 
   const getEvents = (tripId, date) => {
+    const selectedDate = formatDate(date);
     axios
-      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
-      .then(results => setAllEvents(results.data))
+    .get(`http://localhost:3001/api/events/${tripId}/${selectedDate}`)
+      .then(results => {
+        let tempEvents = results.data;
+        tempEvents.forEach(element => {
+          Geocoder.from(element.location)
+            .then(json => {
+              let location = json.results[0].geometry.location;
+              element.latitude = location.lat;
+              element.longitude = location.lng;
+              console.log(location);
+            })
+            .catch(error => console.warn(error));
+        });
+        setAllEvents(tempEvents);
+      })
       .catch(err => console.log(err));
   };
 
-  const getImportantInfo = id => {
-    axios
-      .get(`http://localhost:3001/logallimportantinfo/${id}`)
-      .then(results => setImportantInfo(results.data))
-      .catch(err => console.log(err));
+  const getImportantInfo = (tripId) => {
+    if (userData) {
+      axios
+        .get(`http://localhost:3001/logallimportantinfo/${tripId}`)
+        .then(results => setImportantInfo(results.data))
+        .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -113,27 +148,50 @@ const AppTabs = ({user}) => {
           }
         },
       })}>
-      <Tabs.Screen name="Itinerary" component={Itinerary} />
+      <Tabs.Screen name="Itinerary">
+        {props => (
+          <Itinerary
+            {...props}
+            allEvents={allEvents}
+            setCurrentDay={setCurrentDay}
+            admin={userData[0].admin}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen name="Map">
         {props => (
           <MapMain
             {...props}
             allEvents={allEvents}
             importantInfo={importantInfo}
+            userData={userData}
+            centeredLat={centeredLat}
+            centeredLong={centeredLong}
+            setCenteredLat={setCenteredLat}
+            setCenteredLong={setCenteredLong}
           />
         )}
       </Tabs.Screen>
-      <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
+      <Tabs.Screen name="Important Contacts">
+        {props => (
+          <EmergencyPage
+            {...props}
+            id={userData[0].id}
+            email={userData[0].email}
+            // notes={userData[0].notes}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen
         name="Messages"
         options={!urgentMessage ? null : {tabBarBadge: '!'}}>
         {props => (
           <Messages
             {...props}
-            user={'lucipak@tempmail.com'}
+            user={email}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={true}
+            admin={userData[0].admin}
             pastMessages={pastMessages}
           />
         )}
