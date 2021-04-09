@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {Formik} from 'formik';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import * as yup from 'yup';
 import {
   View,
@@ -13,6 +13,7 @@ import {
   TextInput,
 } from 'react-native';
 import FlatButton from './button';
+import axios from 'axios';
 
 const EventSchema = yup.object({
   title: yup.string().required(),
@@ -28,7 +29,7 @@ const EventSchema = yup.object({
       },
     ),
   location: yup.string().required(),
-  cost: yup.number().integer(),
+  cost: yup.string(),
   transportation: yup.string(),
   start_time: yup
     .string()
@@ -50,7 +51,7 @@ const EventSchema = yup.object({
         return parseInt(val);
       },
     ),
-  mandatory: yup.boolean().required(),
+  mandatory: yup.string().required(),
 });
 
 const AddEvent = () => {
@@ -63,10 +64,18 @@ const AddEvent = () => {
     <View style={{padding: 10}}>
       <TouchableHighlight onPress={() => {}}>
         <View>
-          <FontAwesomeIcon icon={faEdit} size={26} onPress={toggleModal} />
+          <FontAwesomeIcon icon={faEdit} size={24} onPress={toggleModal} />
         </View>
       </TouchableHighlight>
       <Modal isVisible={isModalVisible} style={styles.modal}>
+        <View>
+          <FontAwesomeIcon
+            icon={faTimesCircle}
+            size={26}
+            style={{display: 'flex', bottom: 15}}
+            onPress={toggleModal}
+          />
+        </View>
         <View>
           <Image
             style={styles.image}
@@ -80,17 +89,41 @@ const AddEvent = () => {
               description: '',
               date: '',
               location: '',
-              cost: 0,
+              cost: '',
               transportation: '',
               start_time: '',
               end_time: '',
-              mandatory: false,
+              mandatory: '',
             }}
             validationSchema={EventSchema}
             onSubmit={(values, actions) => {
               actions.resetForm();
               toggleModal();
-              console.log(values);
+
+              if (values.mandatory === 'False') {
+                values.mandatory = false;
+              } else {
+                values.mandatory = true;
+              }
+
+              let formObj = {
+                trip_id: 1,
+                event_name: values.title,
+                location: values.location,
+                start_time: values.start_time,
+                end_time: values.end_time,
+                description: values.description,
+                start_date: values.date,
+                end_date: values.date,
+                cost: parseInt(values.cost),
+                transportation: values.transportation,
+                mandatory: values.mandatory,
+              };
+              console.log(values.mandatory);
+              axios
+                .post('http://localhost:3001/api/events', formObj)
+                .then(() => console.log('successfully created new event'))
+                .catch(err => console.log(err));
             }}>
             {props => (
               <View>
@@ -187,12 +220,6 @@ const AddEvent = () => {
                   {props.touched.mandatory && props.errors.mandatory}
                 </Text>
                 <FlatButton text="SUBMIT" onPress={props.handleSubmit} />
-                {/* <Button
-                  title="Submit"
-                  color="#013220"
-                  borderWidth="1"
-                  onPress={props.handleSubmit}
-                /> */}
               </View>
             )}
           </Formik>
@@ -216,6 +243,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     margin: 10,
+    marginTop: 2,
     fontWeight: 'bold',
   },
   input: {
@@ -234,7 +262,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    height: 700,
+    height: 600,
     width: 400,
     position: 'absolute',
     top: 0,

@@ -34,7 +34,7 @@ const AppTabs = ({userData}) => {
   function formatDate(date) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
-      day = '' + (d.getDate() + 1),
+      day = '' + d.getDate(),
       year = d.getFullYear();
 
     if (month.length < 2) {
@@ -98,7 +98,6 @@ const AppTabs = ({userData}) => {
               let location = json.results[0].geometry.location;
               element.latitude = location.lat;
               element.longitude = location.lng;
-              console.log(location);
             })
             .catch(error => console.warn(error));
         });
@@ -166,6 +165,8 @@ const AppTabs = ({userData}) => {
             {...props}
             allEvents={allEvents}
             setCurrentDay={setCurrentDay}
+            setCenteredLat={setCenteredLat}
+            setCenteredLong={setCenteredLong}
             admin={userData[0].admin}
           />
         )}

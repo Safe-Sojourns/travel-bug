@@ -1,29 +1,66 @@
 import React from 'react';
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import CollapsibleView from '@eliav2/react-native-collapsible-view';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faMapMarkedAlt} from '@fortawesome/free-solid-svg-icons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MapMain from '../maps/mapMain';
+import {useNavigation} from '@react-navigation/native';
 
-export default function CardDetails(event) {
+export default function CardDetails(props) {
+  const navigation = useNavigation();
+
+  function setLocation() {
+    props.setCenteredLong(props.event.longitude);
+    props.setCenteredLat(props.event.latitude);
+    navigation.jumpTo('Map');
+  }
   return (
-    <View>
-      <CollapsibleView title={<Card event={event} />} style={styles.app}>
-        <ImageBackground
-          source={{uri: `${event.event.photos[0]}`}}
-          style={{width: 320, height: 170}}
-        />
-        <Text />
-        <Text>{event.event.description}</Text>
-        <Text />
-        <Text>{event.event.location}</Text>
-        <Text>
-          {event.event.cost > 0 ? `Cost: ${event.event.cost} euros` : null}
-        </Text>
-        <Text>
-          {event.event.transportation
-            ? `Transport: ${event.event.transportation}`
-            : null}
-        </Text>
-      </CollapsibleView>
-    </View>
+    <React.Fragment>
+      <View>
+        <CollapsibleView title={<Card event={props} />} style={styles.app}>
+          {props.event.photos.length > 0 ? (
+            <ImageBackground
+              source={{uri: `${props.event.photos[0]}`}}
+              style={{width: 330, height: 140}}
+            />
+          ) : (
+            <ImageBackground
+              source={require('../assets/rome.jpg')}
+              style={{width: 330, height: 140}}
+            />
+          )}
+          <Text />
+          <Text style={styles.textStyle}>{props.event.description}</Text>
+          <Text />
+          <TouchableOpacity onPress={() => setLocation()}>
+            <FontAwesomeIcon
+              icon={faMapMarkedAlt}
+              size={30}
+              color={'#007AFF'}
+              accessibilityLabel="Map"
+            />
+            <Text>{'   '}</Text>
+            <Text style={styles.textStyle}>{props.event.location}</Text>
+            {/* </Text> */}
+          </TouchableOpacity>
+          <Text style={styles.textStyle}>
+            {props.event.cost > 0 ? `Cost: ${props.event.cost} euros` : null}
+          </Text>
+          <Text style={styles.textStyle}>
+            {props.event.transportation
+              ? `Transport: ${props.event.transportation}`
+              : null}
+          </Text>
+        </CollapsibleView>
+      </View>
+    </React.Fragment>
   );
 }
 
@@ -83,5 +120,10 @@ const styles = StyleSheet.create({
   optional: {
     fontSize: 12,
     color: 'black',
+  },
+  textStyle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    // textAlign: 'center',
   },
 });

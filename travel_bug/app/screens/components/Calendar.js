@@ -7,6 +7,7 @@ import DatePicker from 'react-native-date-picker';
 // import axios from 'axios';
 
 export default function Calendar({setCurrentDay}) {
+  const [date, setDate] = useState(new Date());
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -14,6 +15,7 @@ export default function Calendar({setCurrentDay}) {
 
   const handleDateChange = selectedDate => {
     setCurrentDay(selectedDate);
+    setDate(selectedDate);
   };
 
   return (
@@ -35,7 +37,7 @@ export default function Calendar({setCurrentDay}) {
           />
         </View>
         <View style={{alignItems: 'center'}}>
-          <DatePicker mode="date" onDateChange={handleDateChange} />
+          <DatePicker date={date} mode="date" onDateChange={handleDateChange} />
           <TouchableHighlight style={styles.button} onPress={toggleModal}>
             <Text style={styles.textButton}>Ok</Text>
           </TouchableHighlight>
