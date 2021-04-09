@@ -95,7 +95,7 @@ const Routes = () => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRoutName="Login">
-          <Stack.Screen name="Login">
+          <Stack.Screen name="Login" options={{header: () => null}}>
             {props => <SignIn setUserData={setUserData} />}
           </Stack.Screen>
           <Stack.Screen

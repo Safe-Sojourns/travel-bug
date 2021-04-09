@@ -101,6 +101,7 @@ const AppTabs = ({userData}) => {
         .then(results => setImportantInfo(results.data))
         .catch(err => console.log(err));
     }
+  };
 
   return (
     <Tabs.Navigator
