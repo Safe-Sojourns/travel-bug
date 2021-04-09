@@ -13,6 +13,7 @@ import {
   TextInput,
 } from 'react-native';
 import FlatButton from './button';
+import axios from 'axios';
 
 const EventSchema = yup.object({
   title: yup.string().required(),
@@ -98,7 +99,27 @@ const AddEvent = () => {
             onSubmit={(values, actions) => {
               actions.resetForm();
               toggleModal();
-              console.log(values);
+              let formObj = {
+                trip_id: 1,
+                event_name: values.title,
+                location: values.location,
+                latitude: null,
+                longitude: null,
+                photos: [],
+                start_time: values.start_time,
+                end_time: values.end_time,
+                description: values.description,
+                start_date: values.date,
+                end_date: values.date,
+                cost: values.cost,
+                transportation: values.transportation,
+                mandatory: values.mandatory,
+              };
+              console.log(formObj);
+              axios
+                .post('http://localhost:3001/api/events', formObj)
+                .then(() => console.log('successfully created new event'))
+                .catch(err => console.log(err));
             }}>
             {props => (
               <View>
