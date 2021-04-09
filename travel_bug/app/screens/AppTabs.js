@@ -26,7 +26,6 @@ const AppTabs = ({userData}) => {
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
   const [email, setEmail] = useState();
-
   const [pastMessages, setPastMessages] = useState([]);
   const [centeredLat, setCenteredLat] = useState(41.8933);
   const [centeredLong, setCenteredLong] = useState(12.4889);
@@ -49,7 +48,7 @@ const AppTabs = ({userData}) => {
 
   useEffect(() => {
     getImportantInfo(1);
-    getEvents(1, currentDay)
+    getEvents(1, currentDay);
   }, []);
 
   useEffect(() => {
@@ -72,11 +71,10 @@ const AppTabs = ({userData}) => {
       .catch(err => console.log(err));
   }, []);
 
-
   const getEvents = (tripId, date) => {
     const selectedDate = formatDate(date);
     axios
-    .get(`http://localhost:3001/api/events/${tripId}/${selectedDate}`)
+      .get(`http://localhost:3001/api/events/${tripId}/${selectedDate}`)
       .then(results => {
         let tempEvents = results.data;
         tempEvents.forEach(element => {
@@ -94,7 +92,7 @@ const AppTabs = ({userData}) => {
       .catch(err => console.log(err));
   };
 
-  const getImportantInfo = (tripId) => {
+  const getImportantInfo = tripId => {
     if (userData) {
       axios
         .get(`http://localhost:3001/logallimportantinfo/${tripId}`)
