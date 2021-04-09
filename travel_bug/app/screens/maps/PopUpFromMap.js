@@ -47,15 +47,15 @@ const styles = StyleSheet.create({
     top: 25,
   },
   h1: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
-    paddingLeft: 20,
+    textAlign: 'center',
     paddingBottom: 5,
     paddingTop: 15,
   },
   h2: {
-    fontSize: 10,
-    paddingLeft: 20,
+    fontSize: 15,
+    textAlign: 'center',
     paddingBottom: 4,
   },
   tab: {
@@ -116,14 +116,14 @@ function PopUpFromMap({
                       }
                     />
                   </View>
-                  <View style={styles.textBox}>
+                  {/* <View style={styles.textBox}>
                     <Button
                       color="#013220"
                       title="Go to Itinerary"
                       accesibilityLabel="Go to Itinerary"
                       onPress={() => changePinView()}
                     />
-                  </View>
+                  </View> */}
                 </View>
               </View>
             </TouchableWithoutFeedback>

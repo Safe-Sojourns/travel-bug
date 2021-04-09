@@ -22,6 +22,7 @@ import {
   Image,
 } from 'react-native';
 import axios from 'axios';
+import {useFocusEffect} from '@react-navigation/native';
 
 const socket = io('http://localhost:4000');
 
@@ -31,6 +32,8 @@ export default function Messages({
   setUrgentMessage,
   admin,
   pastMessages,
+  critical,
+  setCritical,
 }) {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
@@ -42,6 +45,22 @@ export default function Messages({
   const toggleSwitch = () => {
     setUrgent(previousState => !previousState);
   };
+
+  useEffect(() => {
+    critical.map(id => {
+      axios
+        .put('http://localhost:3001/api/criticalseen', {
+          _id: id,
+          email: user,
+        })
+        .then(() => console.log('Successfully put to critical messages'))
+        .then(() => {
+          setCritical([]);
+          setUrgentMessage(false);
+        })
+        .catch(err => console.log(err));
+    });
+  }, []);
 
   useEffect(() => {
     setChatMessages(pastMessages);
