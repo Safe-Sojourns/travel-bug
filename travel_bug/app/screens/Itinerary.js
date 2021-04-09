@@ -11,7 +11,12 @@ import Calendar from './components/Calendar';
 import CardListInfo from './components/CardList';
 import AddEvent from './components/AddEvent';
 
-const Itinerary = ({setCurrentDay, allEvents}) => {
+const Itinerary = ({
+  setCurrentDay,
+  allEvents,
+  setCenteredLat,
+  setCenteredLong,
+}) => {
   var months = [
     'January',
     'February',
@@ -42,11 +47,18 @@ const Itinerary = ({setCurrentDay, allEvents}) => {
         <Text style={styles.calendarDisplay}>
           {date}th {month}, {year}
         </Text>
-        <Calendar setCurrentDay={setCurrentDay} />
+        <View style={{flexDirection: 'row'}}>
+          <Calendar setCurrentDay={setCurrentDay} />
+          <Text style={styles.title}>Calendar</Text>
+        </View>
         <AddEvent />
       </View>
       <ScrollView style={{height: 500}}>
-        <CardListInfo allEvents={allEvents} />
+        <CardListInfo
+          allEvents={allEvents}
+          setCenteredLat={setCenteredLat}
+          setCenteredLong={setCenteredLong}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -66,6 +78,13 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     opacity: 0.06,
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingTop: 10,
   },
 });
 

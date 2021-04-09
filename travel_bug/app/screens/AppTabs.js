@@ -160,6 +160,8 @@ const AppTabs = () => {
             {...props}
             allEvents={allEvents}
             setCurrentDay={setCurrentDay}
+            setCenteredLat={setCenteredLat}
+            setCenteredLong={setCenteredLong}
           />
         )}
       </Tabs.Screen>
