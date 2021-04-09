@@ -29,7 +29,7 @@ const EventSchema = yup.object({
       },
     ),
   location: yup.string().required(),
-  cost: yup.number().integer(),
+  cost: yup.string(),
   transportation: yup.string(),
   start_time: yup
     .string()
@@ -51,7 +51,7 @@ const EventSchema = yup.object({
         return parseInt(val);
       },
     ),
-  mandatory: yup.boolean().required(),
+  mandatory: yup.string().required(),
 });
 
 const AddEvent = () => {
@@ -89,11 +89,11 @@ const AddEvent = () => {
               description: '',
               date: '',
               location: '',
-              cost: 0,
+              cost: '',
               transportation: '',
               start_time: '',
               end_time: '',
-              mandatory: false,
+              mandatory: '',
             }}
             validationSchema={EventSchema}
             onSubmit={(values, actions) => {
@@ -115,7 +115,7 @@ const AddEvent = () => {
                 description: values.description,
                 start_date: values.date,
                 end_date: values.date,
-                cost: values.cost,
+                cost: parseInt(values.cost),
                 transportation: values.transportation,
                 mandatory: values.mandatory,
               };
