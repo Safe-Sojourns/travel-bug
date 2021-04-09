@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+  Linking,
   TextInput,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -21,7 +22,6 @@ import Modal from 'react-native-modal';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function EmergencyPage({id, email}) {
-  const [emergencyInput, setEmergencyInput] = React.useState('');
   const [notes, setNotes] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
   const [emergencyInfo, setEmergencyInfo] = React.useState();
@@ -34,7 +34,6 @@ function EmergencyPage({id, email}) {
     getUserNotes(email);
     // readData();
   }, []);
-
 
   // const saveData = async () => {
   //   try {
@@ -74,10 +73,6 @@ function EmergencyPage({id, email}) {
   const getUserNotes = userEmail => {
     axios
       .get(`http://localhost:3001/api/users/${userEmail}`)
-      .then(data => {
-        console.log('data after get', data.data[0])
-        return data;
-      })
       .then(data => setNotes(data.data[0].notes))
       .catch(err => console.log(err));
   };
@@ -109,7 +104,13 @@ function EmergencyPage({id, email}) {
           <Text testID="emergency" style={styles.text}>
             Emergency:
           </Text>
-          <Text style={styles.textNum}>{emergencyInfo}</Text>
+          <Text
+            onPress={() => {
+              Linking.openURL(`tel:${emergencyInfo}`);
+            }}
+            style={styles.textNum}>
+            {emergencyInfo}
+          </Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -130,7 +131,13 @@ function EmergencyPage({id, email}) {
               size={20}
               accessibilityLabel="Phone"
             />
-            <Text style={styles.textNum}>{num}</Text>
+            <Text
+              onPress={() => {
+                Linking.openURL(`tel:${num}`);
+              }}
+              style={styles.textNum}>
+              {num}
+            </Text>
           </View>
         ))}
         <View style={styles.iconText}>
