@@ -16,6 +16,7 @@ export default function Calendar({setCurrentDay}) {
   const handleDateChange = selectedDate => {
     setDate(selectedDate);
     setCurrentDay(selectedDate);
+    setDate(selectedDate);
   };
 
   return (

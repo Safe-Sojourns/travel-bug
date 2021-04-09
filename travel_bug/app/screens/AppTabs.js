@@ -92,7 +92,6 @@ const AppTabs = ({userData}) => {
               let location = json.results[0].geometry.location;
               element.latitude = location.lat;
               element.longitude = location.lng;
-              console.log(location);
             })
             .catch(error => console.warn(error));
         });

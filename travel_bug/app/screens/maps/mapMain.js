@@ -12,7 +12,12 @@ import {
 import PopUpFromMap from './PopUpFromMap.js';
 import SearchAutoComplete from './SearchAutoComplete.js';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHouseUser, faBuilding, faAmbulance, faFlagUsa} from '@fortawesome/free-solid-svg-icons';
+import {
+  faHouseUser,
+  faBuilding,
+  faAmbulance,
+  faFlagUsa,
+} from '@fortawesome/free-solid-svg-icons';
 import key from './keyConfig.js';
 
 const styles = StyleSheet.create({
@@ -69,8 +74,8 @@ const MapMain = ({
           showsUserLocation={true}
           showsMyLocationButton={true}
           region={{
-            latitude: centeredLat,
-            longitude: centeredLong,
+            latitude: Number(centeredLat),
+            longitude: Number(centeredLong),
             latitudeDelta: 0.075,
             longitudeDelta: 0.075,
           }}>
@@ -135,8 +140,8 @@ const MapMain = ({
             }}
             isPreselected={true}
             coordinate={{
-              latitude: importantInfo[0].homebase_lat,
-              longitude: importantInfo[0].homebase_long,
+              latitude: Number(importantInfo[0].homebase_long),
+              longitude: Number(importantInfo[0].homebase_lat),
             }}>
             <FontAwesomeIcon
               icon={faHouseUser}
@@ -153,8 +158,8 @@ const MapMain = ({
             }}
             isPreselected={true}
             coordinate={{
-              latitude: importantInfo[0].us_embassy_latitude,
-              longitude: importantInfo[0].us_embassy_longitude,
+              latitude: Number(importantInfo[0].us_embassy_latitude),
+              longitude: Number(importantInfo[0].us_embassy_longitude),
             }}>
             <FontAwesomeIcon
               icon={faFlagUsa}
@@ -175,14 +180,13 @@ const MapMain = ({
               longitude: 12.49534,
             }}>
             <Image
-                source={{
-                  uri: 'https://www.clipartmax.com/png/small/449-4494182_complain-of-the-post-complain-criticize-icon-police-icon-png-blue.png',
-                }}
-                style={{height: 25, width: 25}}
-                resizeMode="contain"
-              />
-            </Marker>
-            <Marker
+              source={require('./popo2.png')}
+              backgroundColor="transparent"
+              style={{height: 25, width: 25}}
+              resizeMode="contain"
+            />
+          </Marker>
+          <Marker
             description={'Hospital'}
             onPress={() => {
               setCenteredLat(importantInfo[0].us_embassy_latitude);
@@ -208,33 +212,3 @@ const MapMain = ({
 };
 
 export default MapMain;
-
-const arrayOfEventLocations = [
-  {
-    name: 'Roman Forum',
-    description: 'Via della Salara Vecchia, 5/6, 00186 Roma RM, Italy',
-    date: 'March 16, 2021',
-    time: '11:00 am',
-    longitude: 12.4853,
-    latitude: 41.8925,
-    eventIdNumber: 2,
-  },
-  {
-    name: 'Colosseum of Rome',
-    description: 'Piazza del Colosseo, 1, 00184 Roma RM, Italy',
-    date: 'March 16, 2021',
-    time: '09:00 am',
-    longitude: 12.4922,
-    latitude: 41.8902,
-    eventIdNumber: 1,
-  },
-  {
-    name: 'Pantheon',
-    description: 'Piazza della Rotonda, 00186 Roma RM, Italy',
-    date: 'March 16, 2021',
-    time: '1:00 pm',
-    longitude: 12.4748,
-    latitude: 41.8996,
-    eventIdNumber: 3,
-  },
-];
