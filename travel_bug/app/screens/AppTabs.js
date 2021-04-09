@@ -19,14 +19,14 @@ import Geocoder from 'react-native-geocoding';
 
 const Tabs = createBottomTabNavigator();
 
-const AppTabs = () => {
+const AppTabs = ({userData}) => {
   const {user} = useContext(AuthContext);
   const [urgentMessage, setUrgentMessage] = useState(false);
   const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
-  const [userData, setUserData] = useState();
   const [email, setEmail] = useState();
+
   const [pastMessages, setPastMessages] = useState([]);
   const [centeredLat, setCenteredLat] = useState(41.8933);
   const [centeredLong, setCenteredLong] = useState(12.4889);
@@ -49,10 +49,8 @@ const AppTabs = () => {
 
   useEffect(() => {
     getImportantInfo(1);
-    getEvents(1, currentDay);
-    // setCurrentDay(formattedDate);
-    setEmail(user.email);
-  }, [email]);
+    getEvents(1, currentDay)
+  }, []);
 
   useEffect(() => {
     getEvents(1, currentDay);
@@ -72,7 +70,8 @@ const AppTabs = () => {
         });
       })
       .catch(err => console.log(err));
-  }, [urgentMessage, email]);
+  }, []);
+
 
   const getEvents = (tripId, date) => {
     const selectedDate = formatDate(date);
@@ -95,18 +94,13 @@ const AppTabs = () => {
       .catch(err => console.log(err));
   };
 
-  const getImportantInfo = id => {
-    axios
-      .get(`http://localhost:3001/logallimportantinfo/${id}`)
-      .then(results => setImportantInfo(results.data))
-      .catch(err => console.log(err));
-  };
-
-  const getUsersInfo = email => {
-    axios
-      .get(`http://localhost:3001/api/users/${email}`)
-      .then(results => setUserData(results.data))
-      .catch(err => console.log(err));
+  const getImportantInfo = (tripId) => {
+    if (userData) {
+      axios
+        .get(`http://localhost:3001/logallimportantinfo/${tripId}`)
+        .then(results => setImportantInfo(results.data))
+        .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -160,6 +154,7 @@ const AppTabs = () => {
             {...props}
             allEvents={allEvents}
             setCurrentDay={setCurrentDay}
+            admin={userData[0].admin}
           />
         )}
       </Tabs.Screen>
@@ -177,17 +172,26 @@ const AppTabs = () => {
           />
         )}
       </Tabs.Screen>
-      <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
+      <Tabs.Screen name="Important Contacts">
+        {props => (
+          <EmergencyPage
+            {...props}
+            id={userData[0].id}
+            email={userData[0].email}
+            // notes={userData[0].notes}
+          />
+        )}
+      </Tabs.Screen>
       <Tabs.Screen
         name="Messages"
         options={!urgentMessage ? null : {tabBarBadge: '!'}}>
         {props => (
           <Messages
             {...props}
-            user={'lucipak@tempmail.com'}
+            user={email}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            admin={true}
+            admin={userData[0].admin}
             pastMessages={pastMessages}
           />
         )}
