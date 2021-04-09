@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Button,
   View,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+  Linking,
   TextInput,
   Image,
 } from 'react-native';
@@ -17,11 +18,79 @@ import {
   faPhone,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import Modal from 'react-native-modal';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function EmergencyPage(props) {
-  const [emergencyInput, onChangeText] = React.useState('');
+function EmergencyPage({id, email}) {
+  const [notes, setNotes] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [emergencyInfo, setEmergencyInfo] = React.useState();
+  const [staffInfo, setStaffInfo] = React.useState([]);
+
+  // const STORAGE_KEY = '@save_age';
+
+  useEffect(() => {
+    getEmergencyInfo(1);
+    getUserNotes(email);
+    // readData();
+  }, []);
+
+  // const saveData = async () => {
+  //   try {
+  //     await AsyncStorage.setItem(STORAGE_KEY, emergencyInput);
+  //     console.log('Data successfully saved');
+  //   } catch (e) {
+  //     console.log('Failed to save the data to the storage');
+  //   }
+  // };
+
+  // const readData = async () => {
+  //   try {
+  //     const notes = await AsyncStorage.getItem(STORAGE_KEY);
+
+  //     if (notes !== null) {
+  //       onChangeText(notes);
+  //     }
+  //   } catch (e) {
+  //     console.log('Failed to fetch the data from storage');
+  //   }
+  // };
+
+  const getEmergencyInfo = tripId => {
+    const numArray = [];
+    axios
+      .get(`http://localhost:3001/api/staffimportant/?trip_id=${tripId}`)
+      .then(({data}) => {
+        setEmergencyInfo(data.important[0].popo_phone);
+        data.staff.map(staff => {
+          numArray.push(staff.number);
+        });
+        setStaffInfo(numArray);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getUserNotes = userEmail => {
+    axios
+      .get(`http://localhost:3001/api/users/${userEmail}`)
+      .then(data => setNotes(data.data[0].notes))
+      .catch(err => console.log(err));
+  };
+
+  const handleSave = () => {
+    // saveData();
+    let notesObj = {
+      id: id,
+      notes: notes,
+    };
+    console.log(notesObj);
+    axios
+      .post('http://localhost:3001/api/notes', notesObj)
+      .then(() => getUserNotes(email))
+      .catch(err => console.log(err));
+    setModalVisible(false);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,7 +111,13 @@ function EmergencyPage(props) {
           <Text testID="emergency" style={styles.text}>
             Emergency:
           </Text>
-          <Text style={styles.textNum}>112</Text>
+          <Text
+            onPress={() => {
+              Linking.openURL(`tel:${emergencyInfo}`);
+            }}
+            style={styles.textNum}>
+            {emergencyInfo}
+          </Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -55,24 +130,23 @@ function EmergencyPage(props) {
             Staff Contact Info:
           </Text>
         </View>
-        <View style={styles.numberView}>
-          <FontAwesomeIcon
-            style={styles.icon}
-            icon={faPhone}
-            size={20}
-            accessibilityLabel="Phone"
-          />
-          <Text style={styles.textNum}>+ 1 425-567-8976</Text>
-        </View>
-        <View style={styles.numberView}>
-          <FontAwesomeIcon
-            style={styles.icon}
-            icon={faPhone}
-            size={20}
-            accessibilityLabel="Phone"
-          />
-          <Text style={styles.textNum}>+ 1 425-563-2566</Text>
-        </View>
+        {staffInfo.map(num => (
+          <View key={num} style={styles.numberView}>
+            <FontAwesomeIcon
+              style={styles.icon}
+              icon={faPhone}
+              size={20}
+              accessibilityLabel="Phone"
+            />
+            <Text
+              onPress={() => {
+                Linking.openURL(`tel:${num}`);
+              }}
+              style={styles.textNum}>
+              {num}
+            </Text>
+          </View>
+        ))}
         <View style={styles.iconText}>
           <FontAwesomeIcon
             style={styles.icon}
@@ -86,7 +160,7 @@ function EmergencyPage(props) {
         </View>
         <SafeAreaView style={styles.view}>
           <ScrollView style={styles.info}>
-            <Text style={styles.infoText}>{emergencyInput}</Text>
+            <Text style={styles.infoText}>{notes}</Text>
           </ScrollView>
         </SafeAreaView>
         <View style={styles.buttonView}>
@@ -105,15 +179,15 @@ function EmergencyPage(props) {
                   multiline
                   testID="input"
                   style={styles.input}
-                  value={emergencyInput}
-                  onChangeText={text => onChangeText(text)}
+                  value={notes}
+                  onChangeText={text => setNotes(text)}
                 />
                 <View testID="view" style={styles.buttonView}>
                   <Button
                     testID="saveButton"
                     color="white"
                     title="Save"
-                    onPress={() => setModalVisible(false)}
+                    onPress={handleSave}
                   />
                 </View>
               </View>
@@ -219,9 +293,6 @@ const styles = StyleSheet.create({
     height: 1200,
     width: 400,
     position: 'relative',
-    // top: 0,
-    // left: 0,
-    // right: 0,
     opacity: 0.06,
   },
 });
