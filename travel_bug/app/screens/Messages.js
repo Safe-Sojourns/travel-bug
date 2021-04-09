@@ -1,8 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState, useRef} from 'react';
 import {io} from 'socket.io-client';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faImages} from '@fortawesome/free-solid-svg-icons';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import KeyboardStickyView from 'rn-keyboard-sticky-view';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {openSettings} from 'react-native-permissions';
+import {openLimitedPhotoLibraryPicker} from 'react-native-permissions';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {
   View,
   Text,
@@ -10,7 +15,6 @@ import {
   TextInput,
   Button,
   ScrollView,
-  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   Switch,
@@ -33,6 +37,7 @@ export default function Messages({
   const [isExpanded, setIsExpanded] = useState(true);
   const [currentUser, setCurrentUser] = useState('');
   const [urgent, setUrgent] = useState(false);
+  const [photo, setPhoto] = useState('');
 
   const toggleSwitch = () => {
     setUrgent(previousState => !previousState);
@@ -51,12 +56,51 @@ export default function Messages({
   }, [chatMessages, user]);
 
   function checkPermission() {
-    check(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log('the feature is unavailable on this device', result);
-      }
-    });
+    check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log('feature is not available on this device');
+            break;
+          case RESULTS.BLOCKED:
+            openSettings().catch(() => console.warn('cannot open settings'));
+            console.log('permission blocked');
+            break;
+          case RESULTS.LIMITED:
+            openLimitedPhotoLibraryPicker().catch(() => {
+              console.warn('Cannot open photo library picker');
+            });
+            break;
+          case RESULTS.GRANTED:
+            console.log('permission is granted by user');
+            launchImageLibrary(
+              {
+                mediaType: 'photo',
+                maxWidth: 40,
+                maxHeight: 40,
+                quality: 1,
+              },
+              response => {
+                console.log('library opened', response);
+                setPhoto(response.uri);
+              },
+            );
+            break;
+          case RESULTS.DENIED:
+            request(PERMISSIONS.IOS.PHOTO_LIBRARY)
+              .then(results => {
+                switch (results) {
+                  case RESULTS.BLOCKED:
+                    console.log('permission denied');
+                    break;
+                  case RESULTS.GRANTED:
+                    console.log('permission granted');
+                }
+              })
+              .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   const scroll = useRef();
@@ -123,7 +167,7 @@ export default function Messages({
           })}
         </ScrollView>
       </SafeAreaView>
-      <KeyboardAvoidingView
+      <KeyboardStickyView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.footer}>
         <View
@@ -140,23 +184,22 @@ export default function Messages({
               />{' '}
             </Text>
           ) : null}
-          <TouchableOpacity>
+          <TouchableOpacity onPressIn={checkPermission}>
             <FontAwesomeIcon
               icon={faImages}
               size={30}
-              color="blue"
+              color="#007AFF"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignSelf: 'center',
               }}
-              onPress={checkPermission}
             />
           </TouchableOpacity>
         </View>
         <TextInput
           multiline
-          value={chatMessage}
+          value={photo ? <View><Image source={{uri: photo}} style={{height: 20, width: 20}}/></View> : chatMessage}
           onChangeText={message => setChatMessage(message)}
           style={styles.adminTextInput}
           onSubmitEditing={submitMessage}
@@ -174,7 +217,7 @@ export default function Messages({
             disabled={chatMessage === ''}
           />
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardStickyView>
     </View>
   );
 }
@@ -193,7 +236,6 @@ const styles = StyleSheet.create({
   container: {
     height: 400,
     flex: 1,
-    // backgroundColor: '#EAF9FF',
   },
   adminTextInput: {
     height: 'auto',
@@ -209,7 +251,7 @@ const styles = StyleSheet.create({
   adminButtonContainer: {
     height: 'auto',
     width: '16%',
-    backgroundColor: 'white',
+    backgroundColor: '#013220',
     borderWidth: 1,
     borderRadius: 10,
     borderStyle: 'solid',
@@ -249,7 +291,7 @@ const styles = StyleSheet.create({
   },
   expandedContainer: {
     overflow: 'hidden',
-    maxHeight: 365,
+    maxHeight: 355,
     height: 'auto',
   },
   currentUser: {
