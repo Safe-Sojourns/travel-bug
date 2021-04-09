@@ -14,25 +14,49 @@ import Messages from './Messages.js';
 import axios from 'axios';
 import {format} from 'date-fns';
 import {AuthContext} from '../navigation/AuthProvider';
+import key from './maps/keyConfig.js';
+import Geocoder from 'react-native-geocoding';
 
 const Tabs = createBottomTabNavigator();
 
 const AppTabs = ({userData}) => {
   const {user} = useContext(AuthContext);
   const [urgentMessage, setUrgentMessage] = useState(false);
-  const [allEvents, setAllEvents] = useState();
+  const [allEvents, setAllEvents] = useState([]);
   const [importantInfo, setImportantInfo] = useState();
-  const [currentDay, setCurrentDay] = useState();
-  const [email, setEmail] = useState(userData.email);
-  const [pastMessages, setPastMessages] = useState([]);
+  const [currentDay, setCurrentDay] = useState(formatDate(new Date()));
+  const [email, setEmail] = useState();
 
-  const date = new Date();
-  const formattedDate = format(date, 'yyyy-MM-dd');
+  const [pastMessages, setPastMessages] = useState([]);
+  const [centeredLat, setCenteredLat] = useState(41.8933);
+  const [centeredLong, setCenteredLong] = useState(12.4889);
+  Geocoder.init(key);
+
+  function formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + (d.getDate() + 1),
+      year = d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month;
+    }
+    if (day.length < 2) {
+      day = '0' + day;
+    }
+    return [year, month, day].join('-');
+  }
 
   useEffect(() => {
     getImportantInfo(1);
+    getEvents(1, currentDay)
+  }, []);
+
+  useEffect(() => {
     getEvents(1, currentDay);
-    setCurrentDay(formattedDate);
+  }, [currentDay]);
+
+  useEffect(() => {
     axios
       .get('http://localhost:3001/logallmessages/1')
       .then(({data}) => {
@@ -48,24 +72,35 @@ const AppTabs = ({userData}) => {
       .catch(err => console.log(err));
   }, []);
 
-  const getEvents = () => {
-    if (userData) {
-      axios
-        .get(`http://localhost:3001/api/events/${userData[0].trip_id}/${'2021-04-12'}`)
-        // .get(`http://localhost:3001/api/events/${userData[0].trip_id}/${currentDay}`)
-        .then(results => setAllEvents(results.data))
-        .catch(err => console.log(err));
-    }
+
+  const getEvents = (tripId, date) => {
+    const selectedDate = formatDate(date);
+    axios
+    .get(`http://localhost:3001/api/events/${tripId}/${selectedDate}`)
+      .then(results => {
+        let tempEvents = results.data;
+        tempEvents.forEach(element => {
+          Geocoder.from(element.location)
+            .then(json => {
+              let location = json.results[0].geometry.location;
+              element.latitude = location.lat;
+              element.longitude = location.lng;
+              console.log(location);
+            })
+            .catch(error => console.warn(error));
+        });
+        setAllEvents(tempEvents);
+      })
+      .catch(err => console.log(err));
   };
 
-  const getImportantInfo = () => {
+  const getImportantInfo = (tripId) => {
     if (userData) {
       axios
-        .get(`http://localhost:3001/logallimportantinfo/${userData[0].trip_id}`)
+        .get(`http://localhost:3001/logallimportantinfo/${tripId}`)
         .then(results => setImportantInfo(results.data))
         .catch(err => console.log(err));
     }
-  };
 
   return (
     <Tabs.Navigator
@@ -129,6 +164,10 @@ const AppTabs = ({userData}) => {
             allEvents={allEvents}
             importantInfo={importantInfo}
             userData={userData}
+            centeredLat={centeredLat}
+            centeredLong={centeredLong}
+            setCenteredLat={setCenteredLat}
+            setCenteredLong={setCenteredLong}
           />
         )}
       </Tabs.Screen>
@@ -151,7 +190,6 @@ const AppTabs = ({userData}) => {
             user={email}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
-            // admin={true}
             admin={userData[0].admin}
             pastMessages={pastMessages}
           />
