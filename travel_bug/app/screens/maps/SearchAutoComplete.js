@@ -19,15 +19,6 @@ function SearchAutoComplete({
   setPinTitle,
   importantInfo,
 }) {
-  const hospital = {
-    description: 'Hospital',
-    geometry: {location: {lat: 41.88597, lng: 12.5032}},
-  };
-  const popo = {
-    description: 'Police Station',
-    geometry: {location: {lat: 41.88815, lng: 12.49534}},
-  };
-
   return (
     <GooglePlacesAutocomplete
       placeholder="Search"
