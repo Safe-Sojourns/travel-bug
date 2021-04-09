@@ -35,7 +35,7 @@ const AppTabs = ({userData}) => {
   function formatDate(date) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
-      day = '' + (d.getDate() + 1),
+      day = '' + d.getDate(),
       year = d.getFullYear();
 
     if (month.length < 2) {
