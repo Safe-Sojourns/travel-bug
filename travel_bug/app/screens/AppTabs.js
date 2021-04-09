@@ -24,7 +24,7 @@ const AppTabs = ({userData}) => {
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState();
   // const [userData, setUserData] = useState();
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState(userData.email);
   const [pastMessages, setPastMessages] = useState([]);
 
   const date = new Date();
@@ -59,19 +59,19 @@ const AppTabs = ({userData}) => {
   //     .catch(err => console.log(err));
   // }, [urgentMessage, email]);
 
-  const getEvents = (tripId, date) => {
-    axios
-      .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
-      .then(results => setAllEvents(results.data))
-      .catch(err => console.log(err));
-  };
+  // const getEvents = (tripId, date) => {
+  //   axios
+  //     .get(`http://localhost:3001/api/events/${tripId}/${'2021-04-09'}`)
+  //     .then(results => setAllEvents(results.data))
+  //     .catch(err => console.log(err));
+  // };
 
-  const getImportantInfo = id => {
-    axios
-      .get(`http://localhost:3001/logallimportantinfo/${id}`)
-      .then(results => setImportantInfo(results.data))
-      .catch(err => console.log(err));
-  };
+  // const getImportantInfo = id => {
+  //   axios
+  //     .get(`http://localhost:3001/logallimportantinfo/${id}`)
+  //     .then(results => setImportantInfo(results.data))
+  //     .catch(err => console.log(err));
+  // };
 
   // const getUsersInfo = (email) => {
   //   axios.get(`http://localhost:3001/api/users/${email}`)
@@ -79,17 +79,14 @@ const AppTabs = ({userData}) => {
   //     .catch(err => console.log(err));
   // };
 
-  useEffect(() => {
-    setEmail(user.email);
-  }, []);
+  // useEffect(() => {
+  //   setEmail(userData.email);
+  // }, []);
 
   useEffect(() => {
     getImportantInfo(1);
     getEvents(1, currentDay);
     setCurrentDay(formattedDate);
-  }, []);
-
-  useEffect(() => {
     axios
       .get('http://localhost:3001/logallmessages/1')
       .then(({data}) => {
@@ -105,22 +102,24 @@ const AppTabs = ({userData}) => {
       .catch(err => console.log(err));
   }, []);
 
-  // const getEvents = () => {
-  //   axios
-  //     .get(`http://localhost:3001/api/events/${importantInfo[0].trip_id}/${'2021-04-12'}`)
-  //     // .get(`http://localhost:3001/api/events/${importantInfo[0].trip_id}/${currentDay}`)
-  //     .then(results => setAllEvents(results.data))
-  //     .catch(err => console.log(err));
-  // };
+  const getEvents = () => {
+    if (userData) {
+      axios
+        .get(`http://localhost:3001/api/events/${userData[0].trip_id}/${'2021-04-12'}`)
+        // .get(`http://localhost:3001/api/events/${userData[0].trip_id}/${currentDay}`)
+        .then(results => setAllEvents(results.data))
+        .catch(err => console.log(err));
+    }
+  };
 
-  // const getImportantInfo = () => {
-  //   axios
-  //     .get(
-  //       `http://localhost:3001/logallimportantinfo/${importantInfo[0].trip_id}`
-  //     )
-  //     .then(results => setImportantInfo(results.data))
-  //     .catch(err => console.log(err));
-  // };
+  const getImportantInfo = () => {
+    if (userData) {
+      axios
+        .get(`http://localhost:3001/logallimportantinfo/${userData[0].trip_id}`)
+        .then(results => setImportantInfo(results.data))
+        .catch(err => console.log(err));
+    }
+  };
 
   // const getUsersInfo = () => {
   //   axios.get(`http://localhost:3001/api/users/${email}`)
@@ -131,9 +130,9 @@ const AppTabs = ({userData}) => {
   // getUsersInfo();
 
   const getUserData = () => {
-    // console.log(user);
+    console.log(user);
     // console.log(importantInfo);
-    console.log('hello');
+    // console.log('hello');
   };
 
   getUserData();
@@ -189,7 +188,7 @@ const AppTabs = ({userData}) => {
             {...props}
             allEvents={allEvents}
             setCurrentDay={setCurrentDay}
-            // admin={userData[0].admin}
+            admin={userData[0].admin}
           />
         )}
       </Tabs.Screen>
@@ -199,22 +198,23 @@ const AppTabs = ({userData}) => {
             {...props}
             allEvents={allEvents}
             importantInfo={importantInfo}
-            // userData={userData}
+            userData={userData}
           />
         )}
       </Tabs.Screen>
-      <Tabs.Screen name="Important Contacts" component={EmergencyPage} />
-      {/* <Tabs.Screen name="Important Contacts">
+      {/* <Tabs.Screen name="Important Contacts" component={EmergencyPage} /> */}
+      <Tabs.Screen name="Important Contacts">
         {props => (
           <EmergencyPage
             {...props}
             id={userData[0].id}
-            notes={userData[0].notes}
+            email={userData[0].email}
+            // notes={userData[0].notes}
           />
         )}
-      </Tabs.Screen> */}
-      <Tabs.Screen name="Messages" component={Messages} />
-      {/* <Tabs.Screen
+      </Tabs.Screen>
+      {/* <Tabs.Screen name="Messages" component={Messages} /> */}
+      <Tabs.Screen
         name="Messages"
         options={!urgentMessage ? null : {tabBarBadge: '!'}}>
         {props => (
@@ -228,7 +228,7 @@ const AppTabs = ({userData}) => {
             pastMessages={pastMessages}
           />
         )}
-      </Tabs.Screen> */}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };

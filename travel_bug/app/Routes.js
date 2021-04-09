@@ -15,6 +15,7 @@ import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
 import SignIn from './navigation/SignIn';
 import SignUp from './navigation/SignUp';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,16 @@ const Routes = () => {
   const [userData, setUserData] = useState(null);
 
   console.log('userData: ', userData);
+  // console.log('navigation: ', navigation.navigate);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`http://localhost:3001/api/users/${user.email}`)
+        .then(results => setUserData(results.data))
+        .catch(err => console.log(err));
+    }
+  }, [user]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -123,7 +134,7 @@ const Routes = () => {
         //   />
         // </Stack.Navigator>
         <Stack.Navigator initialRoutName="Login">
-          <Stack.Screen name="Login" options={{header: () => null}}>
+          <Stack.Screen name="Login">
             {props => <SignIn setUserData={setUserData} />}
           </Stack.Screen>
           <Stack.Screen

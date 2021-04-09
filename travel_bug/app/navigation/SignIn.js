@@ -10,12 +10,15 @@ import {
 } from 'react-native';
 import {AuthContext} from './AuthProvider';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
-const SignIn = ({navigation, setUserData}) => {
+const SignIn = ({setUserData}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const {login} = useContext(AuthContext);
+
+  const navigation = useNavigation();
 
   return (
     <View
@@ -68,6 +71,7 @@ const SignIn = ({navigation, setUserData}) => {
         <Button
           title="I need to register first!"
           onPress={() => {
+            // console.log('navigation: ', navigation);
             navigation.navigate('Register');
           }}
         />
