@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {io} from 'socket.io-client';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faImages} from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,7 @@ import {
   Image,
 } from 'react-native';
 import axios from 'axios';
+import {useFocusEffect} from '@react-navigation/native';
 
 const socket = io('http://localhost:4000');
 
@@ -27,6 +28,8 @@ export default function Messages({
   setUrgentMessage,
   admin,
   pastMessages,
+  critical,
+  setCritical,
 }) {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
@@ -37,6 +40,22 @@ export default function Messages({
   const toggleSwitch = () => {
     setUrgent(previousState => !previousState);
   };
+
+  useEffect(() => {
+    critical.map(id => {
+      axios
+        .put('http://localhost:3001/api/criticalseen', {
+          _id: id,
+          email: user,
+        })
+        .then(() => console.log('Successfully put to critical messages'))
+        .then(() => {
+          setCritical([]);
+          setUrgentMessage(false);
+        })
+        .catch(err => console.log(err));
+    });
+  }, []);
 
   useEffect(() => {
     setChatMessages(pastMessages);
@@ -88,7 +107,7 @@ export default function Messages({
 
   return (
     <View style={styles.container}>
-       <View>
+      <View>
         <Image
           style={{
             height: 800,
@@ -96,7 +115,7 @@ export default function Messages({
             position: 'absolute',
             top: 0,
             left: 0,
-            opacity:0.06,
+            opacity: 0.06,
           }}
           source={require('./assets/travelbackground.jpeg')}
         />

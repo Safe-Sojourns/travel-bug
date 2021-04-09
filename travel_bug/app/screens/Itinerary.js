@@ -11,7 +11,13 @@ import Calendar from './components/Calendar';
 import CardListInfo from './components/CardList';
 import AddEvent from './components/AddEvent';
 
-const Itinerary = ({setCurrentDay, allEvents}) => {
+const Itinerary = ({
+  setCurrentDay,
+  allEvents,
+  setCenteredLat,
+  setCenteredLong,
+  admin,
+}) => {
   var months = [
     'January',
     'February',
@@ -39,14 +45,26 @@ const Itinerary = ({setCurrentDay, allEvents}) => {
         />
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
-        <Text style={styles.calendarDisplay}>
+        <Text style={styles.title}>
           {date}th {month}, {year}
         </Text>
-        <Calendar setCurrentDay={setCurrentDay} />
-        <AddEvent />
+        <View style={{flexDirection: 'row'}}>
+          <Calendar setCurrentDay={setCurrentDay} />
+          <Text style={styles.title}>Calendar</Text>
+        </View>
+        {admin ? (
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.title}>Add Event</Text>
+            <AddEvent />
+          </View>
+        ) : null}
       </View>
       <ScrollView style={{height: 500}}>
-        <CardListInfo allEvents={allEvents} />
+        <CardListInfo
+          allEvents={allEvents}
+          setCenteredLat={setCenteredLat}
+          setCenteredLong={setCenteredLong}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -66,6 +84,13 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     opacity: 0.06,
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingTop: 10,
   },
 });
 
