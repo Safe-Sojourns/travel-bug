@@ -25,9 +25,6 @@ const Routes = () => {
   const [splash, setSplash] = useState(true);
   const [userData, setUserData] = useState(null);
 
-  console.log('userData: ', userData);
-  // console.log('navigation: ', navigation.navigate);
-
   useEffect(() => {
     if (user) {
       axios
@@ -72,30 +69,6 @@ const Routes = () => {
   return (
     <NavigationContainer>
       {user ? (
-        // <Stack.Navigator>
-        //   <Stack.Screen
-        //     name="Travel Bug"
-        //     component={AppTabs}
-        // options={{
-        //   headerTitle: () => (
-        //     <Image source={require('./screens/maps/bug.png')} />
-        //   ),
-        //   headerTitleAlign: 'left',
-        //   headerRight: () => (
-        //     <TouchableOpacity accessible={true} accessibilityLabel="logout">
-        //       <Button title="Logout" onPress={() => logout()} />
-        //     </TouchableOpacity>
-        //   ),
-        //   headerStyle: {
-        //     backgroundColor: '#ABDA9A',
-        //   },
-        //   headerTintColor: '#007AFF',
-        //   headerTitleStyle: {
-        //     fontWeight: '900',
-        //   },
-        // }}
-        //   />
-        // </Stack.Navigator>
         <Stack.Navigator>
           <Stack.Screen
             name="Travel Bug"
@@ -121,18 +94,6 @@ const Routes = () => {
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
-        // <Stack.Navigator initialRoutName="Login">
-        //   <Stack.Screen
-        //     name="Login"
-        //     component={SignIn}
-        //     options={{header: () => null}}
-        //   />
-        //   <Stack.Screen
-        //     name="Register"
-        //     component={SignUp}
-        //     options={{header: () => null}}
-        //   />
-        // </Stack.Navigator>
         <Stack.Navigator initialRoutName="Login">
           <Stack.Screen name="Login">
             {props => <SignIn setUserData={setUserData} />}

@@ -71,7 +71,6 @@ const SignIn = ({setUserData}) => {
         <Button
           title="I need to register first!"
           onPress={() => {
-            // console.log('navigation: ', navigation);
             navigation.navigate('Register');
           }}
         />
