@@ -174,6 +174,8 @@ const AppTabs = ({userData}) => {
             {...props}
             allEvents={allEvents}
             setCurrentDay={setCurrentDay}
+            setCenteredLat={setCenteredLat}
+            setCenteredLong={setCenteredLong}
             admin={userData[0].admin}
           />
         )}
