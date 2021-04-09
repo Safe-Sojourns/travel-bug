@@ -22,7 +22,6 @@ import {
   Image,
 } from 'react-native';
 import axios from 'axios';
-import {useFocusEffect} from '@react-navigation/native';
 
 const socket = io('http://localhost:4000');
 
@@ -37,7 +36,7 @@ export default function Messages({
 }) {
   const [chatMessage, setChatMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
   const [urgent, setUrgent] = useState(false);
   const [photo, setPhoto] = useState('');
@@ -60,10 +59,12 @@ export default function Messages({
         })
         .catch(err => console.log(err));
     });
+    scroll.current.scrollToEnd();
   }, []);
 
   useEffect(() => {
     setChatMessages(pastMessages);
+    scroll.current.scrollToEnd();
   }, [pastMessages]);
 
   useEffect(() => {
@@ -73,6 +74,10 @@ export default function Messages({
     scroll.current.scrollToEnd();
     setCurrentUser(user);
   }, [chatMessages, user]);
+
+  useEffect(() => {
+    scroll.current.scrollToEnd();
+  }, [isExpanded]);
 
   function checkPermission() {
     check(PERMISSIONS.IOS.PHOTO_LIBRARY)
@@ -141,12 +146,8 @@ export default function Messages({
         critical: urgent,
         date: formattedDate,
       })
-      .then(() => console.log('posted message'))
       .catch(err => console.log(err));
     setUrgent(false);
-    if (urgent === true) {
-      setUrgentMessage(true);
-    }
     setChatMessage('');
     scroll.current.scrollToEnd();
   }
@@ -208,17 +209,34 @@ export default function Messages({
               icon={faImages}
               size={30}
               color="#007AFF"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignSelf: 'center',
-              }}
+              style={
+                admin
+                  ? {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignSelf: 'center',
+                    }
+                  : {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignSelf: 'center',
+                      margin: 12,
+                    }
+              }
             />
           </TouchableOpacity>
         </View>
         <TextInput
           multiline
-          value={photo ? <View><Image source={{uri: photo}} style={{height: 20, width: 20}}/></View> : chatMessage}
+          value={
+            photo ? (
+              <View>
+                <Image source={{uri: photo}} style={{height: 20, width: 20}} />
+              </View>
+            ) : (
+              chatMessage
+            )
+          }
           onChangeText={message => setChatMessage(message)}
           style={styles.adminTextInput}
           onSubmitEditing={submitMessage}
@@ -305,13 +323,11 @@ const styles = StyleSheet.create({
   },
   messageList: {
     overflow: 'hidden',
-    maxHeight: 615,
-    height: 'auto',
+    maxHeight: 605,
   },
   expandedContainer: {
     overflow: 'hidden',
-    maxHeight: 355,
-    height: 'auto',
+    maxHeight: 350,
   },
   currentUser: {
     height: 'auto',
