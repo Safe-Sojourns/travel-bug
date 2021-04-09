@@ -18,41 +18,44 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Modal from 'react-native-modal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function EmergencyPage({id}) {
-  const [emergencyInput, onChangeText] = React.useState('');
+function EmergencyPage({id, email}) {
+  const [emergencyInput, setEmergencyInput] = React.useState('');
+  const [notes, setNotes] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
   const [emergencyInfo, setEmergencyInfo] = React.useState();
   const [staffInfo, setStaffInfo] = React.useState([]);
 
-  const STORAGE_KEY = '@save_age';
+  // const STORAGE_KEY = '@save_age';
 
   useEffect(() => {
     getEmergencyInfo(1);
-    readData();
+    getUserNotes(email);
+    // readData();
   }, []);
 
-  const saveData = async () => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, emergencyInput);
-      console.log('Data successfully saved');
-    } catch (e) {
-      console.log('Failed to save the data to the storage');
-    }
-  };
 
-  const readData = async () => {
-    try {
-      const notes = await AsyncStorage.getItem(STORAGE_KEY);
+  // const saveData = async () => {
+  //   try {
+  //     await AsyncStorage.setItem(STORAGE_KEY, emergencyInput);
+  //     console.log('Data successfully saved');
+  //   } catch (e) {
+  //     console.log('Failed to save the data to the storage');
+  //   }
+  // };
 
-      if (notes !== null) {
-        onChangeText(notes);
-      }
-    } catch (e) {
-      console.log('Failed to fetch the data from storage');
-    }
-  };
+  // const readData = async () => {
+  //   try {
+  //     const notes = await AsyncStorage.getItem(STORAGE_KEY);
+
+  //     if (notes !== null) {
+  //       onChangeText(notes);
+  //     }
+  //   } catch (e) {
+  //     console.log('Failed to fetch the data from storage');
+  //   }
+  // };
 
   const getEmergencyInfo = tripId => {
     const numArray = [];
@@ -68,17 +71,29 @@ function EmergencyPage({id}) {
       .catch(err => console.log(err));
   };
 
+  const getUserNotes = userEmail => {
+    axios
+      .get(`http://localhost:3001/api/users/${userEmail}`)
+      .then(data => {
+        console.log('data after get', data.data[0])
+        return data;
+      })
+      .then(data => setNotes(data.data[0].notes))
+      .catch(err => console.log(err));
+  };
+
   const handleSave = () => {
-    saveData();
+    // saveData();
+    let notesObj = {
+      id: id,
+      notes: notes,
+    };
+    console.log(notesObj);
+    axios
+      .post('http://localhost:3001/api/notes', notesObj)
+      .then(() => getUserNotes(email))
+      .catch(err => console.log(err));
     setModalVisible(false);
-    // let notesObj = {
-    //   id: id,
-    //   notes: emergencyInput,
-    // };
-    // axios
-    //   .post('http://localhost:3001/api/notes', notesObj)
-    //   .then(console.log('notes posted'));
-    // setModalVisible(true);
   };
 
   return (
@@ -131,7 +146,7 @@ function EmergencyPage({id}) {
         </View>
         <SafeAreaView style={styles.view}>
           <ScrollView style={styles.info}>
-            <Text style={styles.infoText}>{emergencyInput}</Text>
+            <Text style={styles.infoText}>{notes}</Text>
           </ScrollView>
         </SafeAreaView>
         <View style={styles.buttonView}>
@@ -150,8 +165,8 @@ function EmergencyPage({id}) {
                   multiline
                   testID="input"
                   style={styles.input}
-                  value={emergencyInput}
-                  onChangeText={text => onChangeText(text)}
+                  value={notes}
+                  onChangeText={text => setNotes(text)}
                 />
                 <View testID="view" style={styles.buttonView}>
                   <Button
