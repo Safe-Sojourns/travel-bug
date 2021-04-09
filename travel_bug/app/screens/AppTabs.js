@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {Pressable, View, TouchableWithoutFeedback} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faClipboardList,
@@ -21,8 +22,9 @@ const AppTabs = ({user}) => {
   const [allEvents, setAllEvents] = useState();
   const [importantInfo, setImportantInfo] = useState();
   const [currentDay, setCurrentDay] = useState();
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState('');
   const [pastMessages, setPastMessages] = useState([]);
+  const [critical, setCritical] = useState([]);
 
   const date = new Date();
   const formattedDate = format(date, 'yyyy-MM-dd');
@@ -43,16 +45,25 @@ const AppTabs = ({user}) => {
       .get('http://localhost:3001/logallmessages/1')
       .then(({data}) => {
         setPastMessages(data.messages);
-        data.criticalInfo.map(criticalMessage => {
-          if (criticalMessage.seen_by_user_email.indexOf(email) < 0) {
+        if (email.length > 0) {
+          const unseenIds = data.criticalInfo
+            .map(criticalMessage => {
+              if (criticalMessage.seen_by_user_email.indexOf(email) >= 0) {
+                return;
+              } else {
+                return criticalMessage._id;
+              }
+            })
+            .filter(id => id !== undefined);
+          console.log('ids', unseenIds);
+          if (unseenIds.length > 0) {
             setUrgentMessage(true);
-          } else {
-            return;
+            setCritical(unseenIds);
           }
-        });
+        }
       })
       .catch(err => console.log(err));
-  }, [urgentMessage, email]);
+  }, [email]);
 
   const getEvents = (tripId, date) => {
     axios
@@ -67,6 +78,20 @@ const AppTabs = ({user}) => {
       .then(results => setImportantInfo(results.data))
       .catch(err => console.log(err));
   };
+
+  // const handleCriticalInfo = () => {
+  //   critical.map(id => {
+  //     axios
+  //       .put('http://localhost:3001/api/criticalseen', {
+  //         _id: id,
+  //         email: email,
+  //       })
+  //       .then(() => console.log('Successfully put to critical messages'))
+  //       .catch(err => console.log(err));
+  //   });
+  //   setCritical([]);
+  //   setUrgentMessage(false);
+  // };
 
   return (
     <Tabs.Navigator
@@ -107,7 +132,6 @@ const AppTabs = ({user}) => {
                 size={30}
                 color={'#007AFF'}
                 accessibilityLabel="Messages"
-                onPress={() => setUrgentMessage(false)}
               />
             );
           }
@@ -130,11 +154,13 @@ const AppTabs = ({user}) => {
         {props => (
           <Messages
             {...props}
-            user={'lucipak@tempmail.com'}
+            user={email}
             urgentMessage={urgentMessage}
             setUrgentMessage={setUrgentMessage}
             admin={true}
             pastMessages={pastMessages}
+            critical={critical}
+            setCritical={setCritical}
           />
         )}
       </Tabs.Screen>
