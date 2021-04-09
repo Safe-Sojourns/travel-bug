@@ -99,13 +99,17 @@ const AddEvent = () => {
             onSubmit={(values, actions) => {
               actions.resetForm();
               toggleModal();
+
+              if (values.mandatory === 'False') {
+                values.mandatory = false;
+              } else {
+                values.mandatory = true;
+              }
+
               let formObj = {
                 trip_id: 1,
                 event_name: values.title,
                 location: values.location,
-                latitude: null,
-                longitude: null,
-                photos: [],
                 start_time: values.start_time,
                 end_time: values.end_time,
                 description: values.description,
@@ -115,7 +119,7 @@ const AddEvent = () => {
                 transportation: values.transportation,
                 mandatory: values.mandatory,
               };
-              console.log(formObj);
+              console.log(values.mandatory);
               axios
                 .post('http://localhost:3001/api/events', formObj)
                 .then(() => console.log('successfully created new event'))
