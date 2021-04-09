@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
   TextInput,
+  Image,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -24,6 +25,12 @@ function EmergencyPage(props) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+        <Image
+          style={styles.image}
+          source={require('./assets/travelbackground.jpeg')}
+        />
+      </View>
       <View style={styles.card}>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -121,7 +128,7 @@ function EmergencyPage(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAF9FF',
+    // backgroundColor: '#EAF9FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -150,6 +157,8 @@ const styles = StyleSheet.create({
     height: 450,
     padding: 20,
     borderRadius: 15,
+    display: 'flex',
+    bottom: 600,
   },
   cardModal: {
     backgroundColor: '#ABDA9A',
@@ -205,6 +214,15 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: '#013220',
+  },
+  image: {
+    height: 1200,
+    width: 400,
+    position: 'relative',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    opacity: 0.06,
   },
 });
 

@@ -16,6 +16,7 @@ const Itinerary = ({
   allEvents,
   setCenteredLat,
   setCenteredLong,
+  admin,
 }) => {
   var months = [
     'January',
@@ -44,14 +45,19 @@ const Itinerary = ({
         />
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
-        <Text style={styles.calendarDisplay}>
+        <Text style={styles.title}>
           {date}th {month}, {year}
         </Text>
         <View style={{flexDirection: 'row'}}>
           <Calendar setCurrentDay={setCurrentDay} />
           <Text style={styles.title}>Calendar</Text>
         </View>
-        <AddEvent />
+        {admin ? (
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.title}>Add Event</Text>
+            <AddEvent />
+          </View>
+        ) : null}
       </View>
       <ScrollView style={{height: 500}}>
         <CardListInfo

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {Formik} from 'formik';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import * as yup from 'yup';
 import {
   View,
@@ -63,10 +63,18 @@ const AddEvent = () => {
     <View style={{padding: 10}}>
       <TouchableHighlight onPress={() => {}}>
         <View>
-          <FontAwesomeIcon icon={faEdit} size={26} onPress={toggleModal} />
+          <FontAwesomeIcon icon={faEdit} size={24} onPress={toggleModal} />
         </View>
       </TouchableHighlight>
       <Modal isVisible={isModalVisible} style={styles.modal}>
+        <View>
+          <FontAwesomeIcon
+            icon={faTimesCircle}
+            size={26}
+            style={{display: 'flex', bottom: 15}}
+            onPress={toggleModal}
+          />
+        </View>
         <View>
           <Image
             style={styles.image}
@@ -187,12 +195,6 @@ const AddEvent = () => {
                   {props.touched.mandatory && props.errors.mandatory}
                 </Text>
                 <FlatButton text="SUBMIT" onPress={props.handleSubmit} />
-                {/* <Button
-                  title="Submit"
-                  color="#013220"
-                  borderWidth="1"
-                  onPress={props.handleSubmit}
-                /> */}
               </View>
             )}
           </Formik>
@@ -216,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     margin: 10,
+    marginTop: 2,
     fontWeight: 'bold',
   },
   input: {
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    height: 700,
+    height: 600,
     width: 400,
     position: 'absolute',
     top: 0,
