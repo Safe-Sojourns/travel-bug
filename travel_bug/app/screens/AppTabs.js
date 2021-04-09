@@ -50,7 +50,6 @@ const AppTabs = () => {
   useEffect(() => {
     getImportantInfo(1);
     getEvents(1, currentDay);
-    // setCurrentDay(formattedDate);
     setEmail(user.email);
   }, [email]);
 

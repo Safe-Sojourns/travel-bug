@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: 390,
     height: 200,
     top: 325,
-    backgroundColor: '#EAF9FF',
+    backgroundColor: '#ABDA9A',
     borderRadius: 20,
   },
   modal: {
@@ -35,9 +35,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   textBox: {
-    backgroundColor: '#ABDA9A',
+    backgroundColor: '#013220',
     borderRadius: 15,
-    borderColor: '#007AFF',
     padding: 5,
   },
   buttonContainer: {
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 2,
     borderColor: 'grey',
-    left: '42%',
+    left: '46%',
     top: 4,
   },
 });
@@ -106,7 +105,7 @@ function PopUpFromMap({
                 <View style={styles.buttonContainer}>
                   <View style={styles.textBox}>
                     <Button
-                      color="#013220"
+                      color="#ABDA9A"
                       title="Get Directions"
                       accesibilityLabel="Get Directions"
                       onPress={() =>
