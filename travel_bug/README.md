@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Safe-Sojourns/travel-bug">
-    <img src="app/screens/maps/bug.png" alt="Logo" width="90" height="90">
+    <img src="./app/screens/assets/ladybug.png" alt="Logo" width="90" height="90">
   </a>
 </p>
 
@@ -32,20 +32,22 @@ Travel Bug is a mobile app designed for a client who's business is dedicated to 
 There is separation between admin and student access levels in the app with authentication handled through Firebase.  Admins are able to create urgent messages for students and other admins to see as well as create new events in the itinerary.  Students are able to utilize the messaging system, but cannot flag urgent messages.  All users are able to add custom notes to the important contacts page.
 
 # Tech stack
--React Native
--React Navigation
--Jest
--Firebase Authentication
--Express
--Axios
--NodeJS
--Google Maps API
--XCode Simulator
--Formik
--Yup
--Socket.IO
--MongoDB
--PostgreSQL
+<ul>
+<li>React Native</li>
+<li>React Navigation</li>
+<li>Jest</li>
+<li>Firebase Authentication</li>
+<li>Express</li>
+<li>Axios</li>
+<li>NodeJS</li>
+<li>Google Maps API</li>
+<li>XCode Simulator</li>
+<li>Formik</li>
+<li>Yup</li>
+<li>Socket.IO</li>
+<li>MongoDB</li>
+<li>PostgreSQL</li>
+<ul>
 
 # Technical Challenges and Research
 Some unexpected challenges included:
