@@ -47,7 +47,7 @@ There is separation between admin and student access levels in the app with auth
 <li>Socket.IO</li>
 <li>MongoDB</li>
 <li>PostgreSQL</li>
-<ul>
+</ul>
 
 # Technical Challenges and Research
 Some unexpected challenges included:
