@@ -103,6 +103,7 @@ The MVP per client expectations of the app is to be able to see itinerary events
 # How does the app work?
 Splash Screen:
 <br />
+
 <img src="./travel_bug/app/screens/assets/App Loading Screen.gif" width="150">
 
 Login and Register:
@@ -128,6 +129,7 @@ Important Contacts:
 Messages:
 <br />
 <img src="./travel_bug/app/screens/assets/Messages.gif" width="150">
+
 
 # Workflow and Key Lessons
 Workflow was managed through GitHub and utilizing Agile workflow through Trello ticketing system.  The team also had daily standup meetings to ensure everyone was on the same page on what was getting worked on and what still needed to be done.
