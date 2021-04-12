@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Safe-Sojourns/travel-bug">
-    <img src="./app/screens/assets/ladybug.png" alt="Logo" width="90" height="90">
+    <img src="./travel_bug/app/screens/assets/ladybug.png" alt="Logo" width="90" height="90">
   </a>
 </p>
 
@@ -103,31 +103,33 @@ The MVP per client expectations of the app is to be able to see itinerary events
 # How does the app work?
 Splash Screen:
 <br />
-<img src="./app/screens/assets/App Loading Screen.gif" width="150">
+
+<img src="./travel_bug/app/screens/assets/App Loading Screen.gif" width="150">
 
 Login and Register:
 <br />
-<img src="./app/screens/assets/Login and Register.gif" width="150">
+<img src="./travel_bug/app/screens/assets/Login and Register.gif" width="150">
 
 Itinerary and Calendar:
 <br />
-<img src="./app/screens/assets/Itinerary Screen.gif" width="150">
+<img src="./travel_bug/app/screens/assets/Itinerary Screen.gif" width="150">
 
 Map Directions:
 <br />
-<img src="./app/screens/assets/Map Directions.gif" width="150">
+<img src="./travel_bug/app/screens/assets/Map Directions.gif" width="150">
 
 Map Search:
 <br />
-<img src="./app/screens/assets/Map Search.gif" width="150">
+<img src="./travel_bug/app/screens/assets/Map Search.gif" width="150">
 
 Important Contacts:
 <br />
-<img src="./app/screens/assets/Important Contacts.gif" width="150">
+<img src="./travel_bug/app/screens/assets/Important Contacts.gif" width="150">
 
 Messages:
 <br />
-<img src="./app/screens/assets/Messages.gif" width="150">
+<img src="./travel_bug/app/screens/assets/Messages.gif" width="150">
+
 
 # Workflow and Key Lessons
 Workflow was managed through GitHub and utilizing Agile workflow through Trello ticketing system.  The team also had daily standup meetings to ensure everyone was on the same page on what was getting worked on and what still needed to be done.

@@ -1,144 +1,110 @@
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect, useContext} from 'react';
 import {
-  ActivityIndicator,
+  Button,
+  Image,
   ImageBackground,
   StyleSheet,
-  AsyncStorage,
-  Image,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import {AuthContext} from './navigation/AuthProvider';
 import AppTabs from './screens/AppTabs.js';
+import SignIn from './navigation/SignIn';
+import SignUp from './navigation/SignUp';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 
-// const login = (userOjb) => {
-//   return (
-//     value={{
-//       userStr,
-//       login: () => {
-//         const fakeUser = {username: 'Frodo'};
-//         setUser(fakeUser);
-//         AsyncStorage.setItem('user', JSON.stringify(fakeUser));
-//       },
-//       logout: () => {
-//         AsyncStorage.removeItem('user');
-//       },
-//     }}>
-//   );
-// };
+const Routes = () => {
+  const {user, setUser, logout} = useContext(AuthContext);
+  const [initializing, setInitializing] = useState(true);
+  const [splash, setSplash] = useState(true);
+  const [userData, setUserData] = useState(null);
 
-// const SignIn = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [user, setUser] = useState({});
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(`http://localhost:3001/api/users/${user.email}`)
+        .then(results => setUserData(results.data))
+        .catch(err => console.log(err));
+    }
+  }, [user]);
 
-//   return (
-//     <View style={styles.loginScreen} autoCapitalize="none">
-//       <Image
-//         accessible={true}
-//         accessibilityLable="Travel Bug"
-//         source={require('./screens/maps/bug.png')}
-//       />
-//       <TextInput
-//         style={styles.inputField}
-//         autoCapitalize="none"
-//         type="email"
-//         defaultValue={email}
-//         placeholder="Email"
-//         onChangeText={text => setEmail(text)}
-//       />
-//     </View>
-//   );
-// };
+  useEffect(() => {
+    setTimeout(() => {
+      setSplash(false);
+    }, 3000);
+  }, []);
 
-function SplashScreenPage({navigation}) {
-  setTimeout(() => {
-    navigation.navigate('Login');
-  }, 5000);
-  return (
-    <ImageBackground
-      style={{flex: 1}}
-      source={require('./screens/assets/globe.gif')}>
-      <Text style={styles.splashscreen}>Travel Bug</Text>
-    </ImageBackground>
-    //   <TextInput
-    //     style={styles.inputField}
-    //     autoCapitalize="none"
-    //     onChangeText={text => setPassword(text)}
-    //     defaultValue={password}
-    //     placeholder="Password"
-    //     secureTextEntry={true}
-    //   />
-    //   <TouchableOpacity
-    //     accessible={true}
-    //     accessibilityLable="Login button"
-    //     onPress={() => {
-    //       // login(user);
-    //       setUser({email: email, password: password});
-    //       setEmail('');
-    //       setPassword('');
-    //     }}>
-    //     <View style={styles.button}>
-    //       <Text style={styles.buttonText}>Let's Go Traveling!</Text>
-    //     </View>
-    //   </TouchableOpacity>
-    // </View>
-  );
-}
+  const onAuthStateChanged = user => {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  };
 
-const Routes = ({}) => {
-  // const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
 
-  // useEffect(() => {
-  //   // check if the user is logged in or not with async function
-  //   AsyncStorage.getItem('user')
-  //     .then(userString => {
-  //       if (userString) {
-  //         // Decode it
-  //         login();
-  //       }
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  if (initializing) {
+    return null;
+  }
 
-  // if (loading) {
-  //   return (
-  //     <View
-  //       style={{
-  //         flex: 1,
-  //         alignItems: 'center',
-  //         justifyContent: 'center',
-  //       }}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
-
+  if (splash) {
+    return (
+      <ImageBackground
+        style={{flex: 1}}
+        source={require('./screens/assets/globe.gif')}>
+        <Text style={styles.splashscreen}>Travel Bug</Text>
+      </ImageBackground>
+    );
+  }
 
   return (
     <NavigationContainer>
       {user ? (
-        <AppTabs />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Travel Bug"
+            options={{
+              headerTitle: () => (
+                <Image source={require('./screens/maps/bug.png')} />
+              ),
+              headerTitleAlign: 'left',
+              headerRight: () => (
+                <TouchableOpacity accessible={true} accessibilityLabel="logout">
+                  <Button title="Logout" onPress={() => logout()} />
+                </TouchableOpacity>
+              ),
+              headerStyle: {
+                backgroundColor: '#ABDA9A',
+              },
+              headerTintColor: '#007AFF',
+              headerTitleStyle: {
+                fontWeight: '900',
+              },
+            }}>
+            {props => <AppTabs userData={userData} />}
+          </Stack.Screen>
+        </Stack.Navigator>
       ) : (
-        <Stack.Navigator
-          screenOptions={{
-            header: () => null,
-          }}
-          initialRouteName="SplashScreen">
-          <Stack.Screen name="SplashScreen" component={SplashScreenPage} />
-          <Stack.Screen name="Login" component={AppTabs} />
+        <Stack.Navigator initialRoutName="Login">
+          <Stack.Screen name="Login" options={{header: () => null}}>
+            {props => <SignIn setUserData={setUserData} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Register"
+            component={SignUp}
+            options={{header: () => null}}
+          />
         </Stack.Navigator>
       )}
-      {/* <AppTabs /> */}
     </NavigationContainer>
   );
 };
@@ -159,13 +125,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#EAF9FF',
   },
+  introText: {
+    color: '#6EAD58',
+    fontSize: 35,
+    marginBottom: 50,
+  },
   inputField: {
     height: 30,
     width: 200,
     margin: 12,
+    paddingLeft: 5,
     borderWidth: 1,
     backgroundColor: 'white',
-    color: '#6EAD58',
+    color: '#007AFF',
   },
   loadingIcon: {
     flex: 1,
@@ -180,7 +152,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   buttonText: {
-    color: '#5B58AD',
+    color: '#007AFF',
   },
 });
 

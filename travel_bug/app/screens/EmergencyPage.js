@@ -1,26 +1,104 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Button,
   View,
+  ScrollView,
   Text,
   StyleSheet,
   SafeAreaView,
+  StatusBar,
+  Linking,
   TextInput,
+  Image,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faAmbulance,
   faUser,
+  faPhone,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import Modal from 'react-native-modal';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function EmergencyPage(props) {
-  const [emergencyInput, onChangeText] = React.useState('');
+function EmergencyPage({id, email}) {
+  const [notes, setNotes] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [emergencyInfo, setEmergencyInfo] = React.useState();
+  const [staffInfo, setStaffInfo] = React.useState([]);
+
+  // const STORAGE_KEY = '@save_age';
+
+  useEffect(() => {
+    getEmergencyInfo(1);
+    getUserNotes(email);
+    // readData();
+  }, []);
+
+  // const saveData = async () => {
+  //   try {
+  //     await AsyncStorage.setItem(STORAGE_KEY, emergencyInput);
+  //     console.log('Data successfully saved');
+  //   } catch (e) {
+  //     console.log('Failed to save the data to the storage');
+  //   }
+  // };
+
+  // const readData = async () => {
+  //   try {
+  //     const notes = await AsyncStorage.getItem(STORAGE_KEY);
+
+  //     if (notes !== null) {
+  //       onChangeText(notes);
+  //     }
+  //   } catch (e) {
+  //     console.log('Failed to fetch the data from storage');
+  //   }
+  // };
+
+  const getEmergencyInfo = tripId => {
+    const numArray = [];
+    axios
+      .get(`http://localhost:3001/api/staffimportant/?trip_id=${tripId}`)
+      .then(({data}) => {
+        setEmergencyInfo(data.important[0].popo_phone);
+        data.staff.map(staff => {
+          numArray.push(staff.number);
+        });
+        setStaffInfo(numArray);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getUserNotes = userEmail => {
+    axios
+      .get(`http://localhost:3001/api/users/${userEmail}`)
+      .then(data => setNotes(data.data[0].notes))
+      .catch(err => console.log(err));
+  };
+
+  const handleSave = () => {
+    // saveData();
+    let notesObj = {
+      id: id,
+      notes: notes,
+    };
+    axios
+      .post('http://localhost:3001/api/notes', notesObj)
+      .then(() => getUserNotes(email))
+      .catch(err => console.log(err));
+    setModalVisible(false);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+        <Image
+          style={styles.image}
+          source={require('./assets/travelbackground.jpeg')}
+        />
+      </View>
       <View style={styles.card}>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -29,8 +107,16 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="Ambulance"
           />
-          <Text style={styles.text}>Emergency:</Text>
-          <Text style={styles.textNum}>911</Text>
+          <Text testID="emergency" style={styles.text}>
+            Emergency:
+          </Text>
+          <Text
+            onPress={() => {
+              Linking.openURL(`tel:${emergencyInfo}`);
+            }}
+            style={styles.textNum}>
+            {emergencyInfo}
+          </Text>
         </View>
         <View style={styles.iconText}>
           <FontAwesomeIcon
@@ -39,9 +125,27 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="User"
           />
-          <Text style={styles.text}>Staff:</Text>
-          <Text style={styles.textNum}>425-567-8976</Text>
+          <Text testID="staff" style={styles.text}>
+            Staff Contact Info:
+          </Text>
         </View>
+        {staffInfo.map(num => (
+          <View key={num} style={styles.numberView}>
+            <FontAwesomeIcon
+              style={styles.icon}
+              icon={faPhone}
+              size={20}
+              accessibilityLabel="Phone"
+            />
+            <Text
+              onPress={() => {
+                Linking.openURL(`tel:${num}`);
+              }}
+              style={styles.textNum}>
+              {num}
+            </Text>
+          </View>
+        ))}
         <View style={styles.iconText}>
           <FontAwesomeIcon
             style={styles.icon}
@@ -49,32 +153,40 @@ function EmergencyPage(props) {
             size={25}
             accessibilityLabel="Info"
           />
-          <Text style={styles.text}>Additional Information:</Text>
+          <Text testID="addInfo" style={styles.text}>
+            Additional Information:
+          </Text>
         </View>
-        <View style={styles.info}>
-          <Text style={styles.infoText}>{emergencyInput}</Text>
-        </View>
+        <SafeAreaView style={styles.view}>
+          <ScrollView style={styles.info}>
+            <Text style={styles.infoText}>{notes}</Text>
+          </ScrollView>
+        </SafeAreaView>
         <View style={styles.buttonView}>
           <Button
+            testID="editButton"
             color="white"
             title="Edit"
             onPress={() => setModalVisible(true)}
           />
         </View>
         <View>
-          <Modal isVisible={modalVisible}>
+          <Modal testID="modal" isVisible={modalVisible}>
             <View style={styles.modal}>
               <View containerStyle={styles.cardModal} title="title">
                 <TextInput
+                  multiline
+                  testID="input"
                   style={styles.input}
-                  value={emergencyInput}
-                  onChangeText={text => onChangeText(text)}
+                  value={notes}
+                  onChangeText={text => setNotes(text)}
                 />
-                <View style={styles.buttonView}>
+                <View testID="view" style={styles.buttonView}>
                   <Button
+                    testID="saveButton"
                     color="white"
                     title="Save"
-                    onPress={() => setModalVisible(false)}
+                    onPress={handleSave}
                   />
                 </View>
               </View>
@@ -89,9 +201,13 @@ function EmergencyPage(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAF9FF',
+    // backgroundColor: '#EAF9FF',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  view: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
   },
   modal: {
     flex: 1,
@@ -111,9 +227,11 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#ABDA9A',
     width: 300,
-    height: 350,
+    height: 450,
     padding: 20,
     borderRadius: 15,
+    display: 'flex',
+    bottom: 600,
   },
   cardModal: {
     backgroundColor: '#ABDA9A',
@@ -125,6 +243,11 @@ const styles = StyleSheet.create({
   iconText: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  numberView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 40,
   },
   input: {
     height: 120,
@@ -160,10 +283,16 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 16,
-    color: '#013220',
+    color: '#007AFF',
   },
   icon: {
     color: '#013220',
+  },
+  image: {
+    height: 1200,
+    width: 400,
+    position: 'relative',
+    opacity: 0.06,
   },
 });
 
